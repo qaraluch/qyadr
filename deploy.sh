@@ -56,19 +56,16 @@ isFile() {
 cleanUps () {
   isDir ${DOTNAME_FULL} && rm -rf ${DOTNAME_FULL}
   isDir ${DOTNAMESEC_FULL} && rm -rf ${DOTNAMESEC_FULL}
-  echoIt "Cleaned up QYADR source dirs from home directory." "$I_T"
 }
 
 cloneQyadr () {
   isDir  "$HOME/${DOTNAME}" || \
     git clone --depth 1 https://github.com/qaraluch/qyadr.git ${DOTNAME}
-  echoIt "Cloned QYADR repo." "$I_T"
 }
 
 copyPurgeScript () {
   isFile ${CLEANUP_FULL} && \
     cp "${DOTNAME_FULL}" "${HOME}/.qyadr-purge.sh"
-  echoIt "Copied purge script to home directory." "$I_T"
 }
 
 ################################### VARS ###################################
@@ -88,14 +85,15 @@ main () {
   echoIt "Check above installation settings." "$I_W"
   yesConfirm "Ready to roll [y/n]? " 
 
-  # Cleans up repo dirs e.i.: qyadr and qyadr-secret
   cleanUps || errorExitMainScript
+  echoIt "Cleaned up old QYADR source dirs from home directory." "$I_T"
 
   cloneQyadr || errorExitMainScript
+  echoIt "Cloned QYADR repo." "$I_T"
   # cloneQyadrSecret || errorExitMainScript
   
-  # Copy to homedir script that purge all qyadr files.
   copyPurgeScript || errorExitMainScript
+  echoIt "Copied purge script to home directory for further use." "$I_T"
 
   echoIt "DONE!"
 }
