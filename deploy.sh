@@ -67,6 +67,11 @@ cloneQyadr () {
     git clone --depth 1 https://github.com/qaraluch/qyadr.git ${DOTNAME}
 }
 
+copyInstallScript () {
+  isFile ${INSTALL_FULL} && \
+    cp "${INSTALL_FULL}" "${HOME}/.qyadr-install.sh"
+}
+
 copyPurgeScript () {
   isFile ${CLEANUP_FULL} && \
     cp "${CLEANUP_FULL}" "${HOME}/.qyadr-purge.sh"
@@ -80,6 +85,7 @@ readonly DOTNAMESEC='.qyadr-secret'
 readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
 
 readonly CLEANUP_FULL="${DOTNAME_FULL}/purge.sh"
+readonly INSTALL_FULL="${DOTNAME_FULL}/install.sh"
 
 ################################### MAIN ###################################
 main () {
@@ -96,6 +102,9 @@ main () {
   echoIt "Cloned QYADR repo." "$I_T"
   # cloneQyadrSecret || errorExitMainScript
   
+  copyInstallScript || errorExitMainScript
+  echoIt "Copied install script to home directory for further use." "$I_T"
+
   copyPurgeScript || errorExitMainScript
   echoIt "Copied purge script to home directory for further use." "$I_T"
 
