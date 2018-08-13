@@ -54,8 +54,12 @@ isFile() {
 
 ################################### FNS ###################################
 cleanUps () {
-  isDir ${DOTNAME_FULL} && rm -rf ${DOTNAME_FULL}
-  isDir ${DOTNAMESEC_FULL} && rm -rf ${DOTNAMESEC_FULL}
+  if isDir ${DOTNAME_FULL} ; then
+    rm -rf ${DOTNAME_FULL}
+  fi
+  if isDir ${DOTNAMESEC_FULL} ; then
+    rm -rf ${DOTNAMESEC_FULL}
+  fi
 }
 
 cloneQyadr () {
@@ -65,7 +69,7 @@ cloneQyadr () {
 
 copyPurgeScript () {
   isFile ${CLEANUP_FULL} && \
-    cp "${DOTNAME_FULL}" "${HOME}/.qyadr-purge.sh"
+    cp "${CLEANUP_FULL}" "${HOME}/.qyadr-purge.sh"
 }
 
 ################################### VARS ###################################

@@ -54,13 +54,21 @@ isFile() {
 
 ################################### FNS ###################################
 purgeRepos () {
-  isDir ${DOTNAME_FULL} && rm -rf ${DOTNAME_FULL}
-  isDir ${DOTNAMESEC_FULL} && rm -rf ${DOTNAMESEC_FULL}
+  if isDir ${DOTNAME_FULL} ; then
+    rm -rf ${DOTNAME_FULL}
+  fi
+  if isDir ${DOTNAMESEC_FULL} ; then
+    rm -rf ${DOTNAMESEC_FULL}
+  fi
 }
 
 purgeUtils () {
-  isFile ${DEPLOY_FULL} && rm -f ${DEPLOY_FULL}
-  isFile ${PURGE_FULL} && rm -f ${PURGE_FULL}
+  if isFile ${DEPLOY_FULL} ; then
+    rm -rf ${DEPLOY_FULL}
+  fi
+  if isFile ${PURGE_FULL} ; then
+    rm -rf ${PURGE_FULL}
+  fi
 }
 
 ################################### VARS ###################################
@@ -77,7 +85,11 @@ readonly PURGE_FULL="${HOME}/.qyadr-purge.sh"
 main () {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Purge Script (QYADR-PURGE)${C_E}"
   echoIt "Used variables:"
-  echoIt "  - home dir:       ${C_Y}$HOME${C_E}"
+  echoIt "  - home dir:             ${C_Y}$HOME${C_E}"
+  echoIt "  - qyadr repo:           ${C_Y}$DOTNAME_FULL${C_E}"
+  echoIt "  - qyadr-secret repo:    ${C_Y}$DOTNAMESEC_FULL${C_E}"
+  echoIt "  - qyadr deploy script:  ${C_Y}$DEPLOY_FULL${C_E}"
+  echoIt "  - qyadr purge script:   ${C_Y}$PURGE_FULL${C_E}"
   echoIt "Check above installation settings." "$I_W"
   yesConfirm "Ready to roll [y/n]? " 
 
