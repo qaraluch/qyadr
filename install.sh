@@ -53,6 +53,17 @@ isFile() {
 }
 
 ################################### FNS ###################################
+stowAll () {
+  for PACK in "${PACKS[@]}" ; do
+  if isDir "$DOTNAME_FULL/$PACK" ; then
+    stow -vd ${DOTNAME_FULL} -S ${PACK} -t ${HOME} 
+    echoIt "Stowed package name: ${PACK}" "$I_T" 
+  else 
+    echoIt "Cannot stowed package name: ${PACK} (Is this correct name?)" "$I_C" 
+    return 1
+  fi
+  done
+}
 
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
@@ -61,6 +72,10 @@ readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
 readonly DOTNAMESEC='.qyadr-secret'
 readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
 
+declare -a PACKS=( \
+  zsh \
+  terefere
+)
 ################################### MAIN ###################################
 main () {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Deploy Script (QYADR)${C_E}"
@@ -71,10 +86,10 @@ main () {
   echoIt "Check above installation settings." "$I_W"
   yesConfirm "Ready to roll [y/n]? " 
 
-  # stowAll || errorExitMainScript
-  # echoIt "Installed all dofiles in home directory." "$I_T"
+  stowAll || errorExitMainScript
+  echoIt "Installed all dofiles in home directory."
 
-  echoIt "DONE!"
+  echoIt "DONE!" "$I_T"
 }
 
 main # run it!
