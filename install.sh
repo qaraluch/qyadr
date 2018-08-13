@@ -53,17 +53,34 @@ isFile() {
 }
 
 ################################### FNS ###################################
+stowErrorMsg () {
+  echoIt "Cannot stowed package name: $1 (Is this correct name?)" "$I_C" 
+}
+
 stowAll () {
   for PACK in "${PACKS[@]}" ; do
   if isDir "$DOTNAME_FULL/$PACK" ; then
     stow -vd ${DOTNAME_FULL} -S ${PACK} -t ${HOME} 
     echoIt "Stowed package name: ${PACK}" "$I_T" 
   else 
-    echoIt "Cannot stowed package name: ${PACK} (Is this correct name?)" "$I_C" 
+    stowErrorMsg ${PACK}
     return 1
   fi
   done
 }
+
+unstowAll () {
+  for PACK in "${PACKS[@]}" ; do
+  if isDir "$DOTNAME_FULL/$PACK" ; then
+    stow -vd ${DOTNAME_FULL} -D ${PACK} -t ${HOME} 
+    echoIt "Unstowed package name: ${PACK}" "$I_T" 
+  else 
+    stowErrorMsg ${PACK}
+    return 1
+  fi
+  done
+}
+
 
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
@@ -74,7 +91,6 @@ readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
 
 declare -a PACKS=( \
   zsh \
-  terefere
 )
 ################################### MAIN ###################################
 main () {
@@ -88,6 +104,9 @@ main () {
 
   stowAll || errorExitMainScript
   echoIt "Installed all dofiles in home directory."
+
+  unstowAll || errorExitMainScript
+  echoIt "Uninstalled all dofiles in home directory."
 
   echoIt "DONE!" "$I_T"
 }
