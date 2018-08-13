@@ -71,10 +71,15 @@ isDir() {
     [[ -d $dir ]]
 }
 
+isFile() {
+    local file=$1
+    [[ -f $file ]]
+}
+
 ################################### FNS ###################################
 cleanUps () {
-  isDir && rm -fm "$HOME/${DOTNAME}"
-  isDir && rm -fm "$HOME/${DOTNAMESEC}" 
+  isDir ${DOTNAME_FULL} && rm -fm ${DOTNAME_FULL}
+  isDir ${DOTNAMESEC_FULL} && rm -fm ${DOTNAMESEC_FULL}
   echoIt "Cleaned up QYADR source dirs from home directory." "$I_T"
 }
 
@@ -84,11 +89,20 @@ cloneQyadr () {
   echoIt "Cloned QYADR repo." "$I_T"
 }
 
-# copyCleanUpScript () {}
+copyPurgeScript () {
+  isFile ${CLEANUP_FULL} && \
+    cp "${DOTNAME_FULL}/purge.sh" "${HOME}/.qyadr-purge.sh"
+  echoIt "Copied purge script to home directory." "$I_T"
+}
 
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
+readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
+
 readonly DOTNAMESEC='.qyadr-secret'
+readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
+
+readonly CLEANUP_FULL="${DOTNAME_FULL}/cleanup.sh"
 
 ################################### MAIN ###################################
 main () {
@@ -97,10 +111,16 @@ main () {
   echoIt "  - home dir:       ${C_Y}$HOME${C_E}"
   echoIt "Check above installation settings." "$I_W"
   yesConfirm "Ready to roll [y/n]? " 
+
+  # Cleans up repo dirs e.i.: qyadr and qyadr-secret
   cleanUps || errorExitMainScript
+
   cloneQyadr || errorExitMainScript
-  # copyCleanUpScript || errorExitMainScript
   # cloneQyadrSecret || errorExitMainScript
+  
+  # Copy to homedir script that purge all qyadr files.
+  copyPurgeScript || errorExitMainScript
+
   echoIt "DONE!"
 }
 
