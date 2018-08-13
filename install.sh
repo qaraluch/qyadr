@@ -23,6 +23,10 @@ echoIt () {
   local msg=$1 ; local icon=${2:-''} ; echo "$D_APP$icon $msg" 
 }
 
+echoDone () {
+  echoIt "DONE!" "$I_T"
+}
+
 errorExit () {
   echo "$D_APP$I_C $1" 1>&2 ; exit 1
 }
@@ -34,7 +38,7 @@ errorExitMainScript () {
 yesConfirm () {
   local ABORT_MSG_DEFAULT="Abort script!"
   local ABORT_MSG=${2:-$ABORT_MSG_DEFAULT}
-  read -p "$D_APP$I_A $1" -n 1 -r
+  read -p "$D_APP$I_A $1 " -n 1 -r
   echo >&2
   if [[ ! $REPLY =~ ^[Yy]$ ]]
   then
@@ -92,7 +96,50 @@ readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
 declare -a PACKS=( \
   zsh \
 )
+
 ################################### MAIN ###################################
+declare -a MENU_OPTIONS=( \
+  "   [ 1 ] Install all configs" \
+  "   [ 2 ] Delete all the configs installed" \
+  "   [ 3 ] View all QYADR's packages" \
+  "   [ 4 ] Quit" \
+)
+
+showMenuOptions () {
+  echoIt "  [ Choose one of the options bellow: ] ---------------" "${I_A}"
+  for OPTION in "${MENU_OPTIONS[@]}" ; do
+    echoIt "${OPTION}"
+  done
+}
+
+readMenuOptionInput () {
+  read  -p "                 [ Enter your choice: ${C_B}>${C_E} " -n 1 -r
+  echo >&2
+  echo ${REPLY}
+}
+
+execMenuOption () {
+  local CHOSEN=$1
+  local CHOSEN_MENU_OPTION_TXT=${MENU_OPTIONS[${CHOSEN}-1]}
+  if [[ "$CHOSEN" == 1 ]] ; then
+    yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?" \
+      && stowAll || errorExitMainScript
+    echoIt "Installed all dofiles in home directory."
+    echoDone
+  elif [[ "$CHOSEN" == 2 ]] ; then
+    yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?" \
+      && unstowAll || errorExitMainScript
+    echoIt "Uninstalled all dofiles in home directory."
+    echoDone
+  elif [[ "$CHOSEN" == 3 ]] ; then
+    yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?"
+    # TODO: implement show packages
+  else
+    echoIt "Quitting script!"
+    exit 0
+  fi
+}
+
 main () {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Deploy Script (QYADR)${C_E}"
   echoIt "Used variables:"
@@ -100,15 +147,9 @@ main () {
   echoIt "  - qyadr repo:         ${C_Y}$DOTNAME_FULL${C_E}"
   echoIt "  - qyadr secret repo:  ${C_Y}$DOTNAMESEC_FULL${C_E}"
   echoIt "Check above installation settings." "$I_W"
-  yesConfirm "Ready to roll [y/n]? " 
-
-  stowAll || errorExitMainScript
-  echoIt "Installed all dofiles in home directory."
-
-  unstowAll || errorExitMainScript
-  echoIt "Uninstalled all dofiles in home directory."
-
-  echoIt "DONE!" "$I_T"
+  showMenuOptions
+  local CHOSENOPTION=$(readMenuOptionInput)
+  execMenuOption $CHOSENOPTION
 }
 
 main # run it!
