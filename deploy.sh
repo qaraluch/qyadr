@@ -42,30 +42,6 @@ yesConfirm () {
   fi
 }
 
-pressAnyKey () {
-  read -n 1 -s -r -p "$D_APP Press [any] key to continue."
-  echo >&2
-}
-
-isEqualY () {
-  local STRING=$1
-  [[ "$STRING" == "Y" ]]
-}
-
-isEqualN () {
-  local STRING=$1
-  [[ "$STRING" == "N" ]]
-}
-
-switchYN () {
-  local SWITCH=$1
-  if isEqualY $SWITCH; then
-    return 0
-  else
-    return 1
-  fi
-} 
-
 isDir() {
     local dir=$1
     [[ -d $dir ]]
@@ -78,8 +54,8 @@ isFile() {
 
 ################################### FNS ###################################
 cleanUps () {
-  isDir ${DOTNAME_FULL} && rm -fm ${DOTNAME_FULL}
-  isDir ${DOTNAMESEC_FULL} && rm -fm ${DOTNAMESEC_FULL}
+  isDir ${DOTNAME_FULL} && rm -rf ${DOTNAME_FULL}
+  isDir ${DOTNAMESEC_FULL} && rm -rf ${DOTNAMESEC_FULL}
   echoIt "Cleaned up QYADR source dirs from home directory." "$I_T"
 }
 
@@ -91,7 +67,7 @@ cloneQyadr () {
 
 copyPurgeScript () {
   isFile ${CLEANUP_FULL} && \
-    cp "${DOTNAME_FULL}/purge.sh" "${HOME}/.qyadr-purge.sh"
+    cp "${DOTNAME_FULL}" "${HOME}/.qyadr-purge.sh"
   echoIt "Copied purge script to home directory." "$I_T"
 }
 
@@ -102,7 +78,7 @@ readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
 readonly DOTNAMESEC='.qyadr-secret'
 readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
 
-readonly CLEANUP_FULL="${DOTNAME_FULL}/cleanup.sh"
+readonly CLEANUP_FULL="${DOTNAME_FULL}/purge.sh"
 
 ################################### MAIN ###################################
 main () {
