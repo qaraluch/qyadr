@@ -92,6 +92,12 @@ showPackages () {
   done
 }
 
+showManualCommands () {
+  echoIt "Manual commands:"
+  echoIt "stow -vt ~ -d .qyadr <package-name> # installation"
+  echoIt "stow -vt ~ -d .qyadr -D <package-name> # remove"
+}
+
 
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
@@ -109,7 +115,8 @@ declare -a MENU_OPTIONS=( \
   "   [ 1 ] Install all configs" \
   "   [ 2 ] Delete all the configs installed" \
   "   [ 3 ] View all QYADR's packages" \
-  "   [ 4 ] Quit" \
+  "   [ 4 ] Show manual install/uninstall commands" \
+  "   [ 5 ] Quit" \
 )
 
 showMenuOptions () {
@@ -123,6 +130,11 @@ readMenuOptionInput () {
   read  -p "                 [ Enter your choice: ${C_B}>${C_E} " -n 1 -r
   echo >&2
   echo ${REPLY}
+}
+
+quitMenu () {
+    echoIt "Quitting script!"
+    exit 0
 }
 
 execMenuOption () {
@@ -141,9 +153,11 @@ execMenuOption () {
   elif [[ "$CHOSEN" == 3 ]] ; then
       showPackages || errorExitMainScript
       launchMenu
+  elif [[ "$CHOSEN" == 4 ]] ; then
+      showManualCommands || errorExitMainScript
+      quitMenu
   else
-    echoIt "Quitting script!"
-    exit 0
+    quitMenu
   fi
 }
 
