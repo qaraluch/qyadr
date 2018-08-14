@@ -85,6 +85,13 @@ unstowAll () {
   done
 }
 
+showPackages () {
+  echoIt "List of packages:"
+  for PACK in "${PACKS[@]}" ; do
+    echoIt " - ${PACK}"  
+  done
+}
+
 
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
@@ -132,24 +139,28 @@ execMenuOption () {
     echoIt "Uninstalled all dofiles in home directory."
     echoDone
   elif [[ "$CHOSEN" == 3 ]] ; then
-    yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?"
-    # TODO: implement show packages
+      showPackages || errorExitMainScript
+      launchMenu
   else
     echoIt "Quitting script!"
     exit 0
   fi
 }
 
+launchMenu () {
+  showMenuOptions
+  local CHOSENOPTION=$(readMenuOptionInput)
+  execMenuOption $CHOSENOPTION
+}
+
 main () {
-  echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Deploy Script (QYADR)${C_E}"
+  echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo script (QYADR)${C_E}"
   echoIt "Used variables:"
   echoIt "  - home dir:           ${C_Y}$HOME${C_E}"
   echoIt "  - qyadr repo:         ${C_Y}$DOTNAME_FULL${C_E}"
   echoIt "  - qyadr secret repo:  ${C_Y}$DOTNAMESEC_FULL${C_E}"
   echoIt "Check above installation settings." "$I_W"
-  showMenuOptions
-  local CHOSENOPTION=$(readMenuOptionInput)
-  execMenuOption $CHOSENOPTION
+  launchMenu
 }
 
 main # run it!
