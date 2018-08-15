@@ -53,6 +53,11 @@ isFile() {
 }
 
 ################################### FNS ###################################
+uninstallPackages () {
+  # auto mode of uninstall script
+  isFile ~/.qyadr-install.sh && bash ~/.qyadr-install.sh 2
+}
+
 purgeRepos () {
   if isDir ${DOTNAME_FULL} ; then
     rm -rf ${DOTNAME_FULL}
@@ -97,6 +102,9 @@ main () {
   echoIt "  - qyadr purge script:   ${C_Y}$PURGE_FULL${C_E}"
   echoIt "Check above installation settings." "$I_W"
   yesConfirm "Ready to roll [y/n]? " 
+
+  uninstallPackages || errorExitMainScript
+  echoIt "Uninstalled all QYADR packages." "$I_T"
 
   purgeRepos || errorExitMainScript
   echoIt "Purged QYADR source dirs from home directory." "$I_T"

@@ -186,12 +186,8 @@ runMainAuto () {
   local CHOSEN=$1
   if [[ "$CHOSEN" == 1 ]] ; then
     stowAll || errorExitMainScript
-    echoIt "Installed all dofiles in home directory."
-    echoDone
   elif [[ "$CHOSEN" == 2 ]] ; then
     unstowAll || errorExitMainScript
-    echoIt "Uninstalled all dofiles in home directory."
-    echoDone
   else
     quitMenu
   fi
