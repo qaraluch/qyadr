@@ -56,6 +56,11 @@ isFile() {
     [[ -f $file ]]
 }
 
+isEmpty() {
+    local var=$1
+    [[ -z $var ]]
+}
+
 ################################### FNS ###################################
 stowErrorMsg () {
   echoIt "Cannot stowed package name: $1 (Is this correct name?)" "$I_C" 
@@ -167,7 +172,7 @@ launchMenu () {
   execMenuOption $CHOSENOPTION
 }
 
-main () {
+runMainInteractive () {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo script (QYADR)${C_E}"
   echoIt "Used variables:"
   echoIt "  - home dir:           ${C_Y}$HOME${C_E}"
@@ -177,4 +182,29 @@ main () {
   launchMenu
 }
 
-main # run it!
+runMainAuto () {
+  local CHOSEN=$1
+  if [[ "$CHOSEN" == 1 ]] ; then
+    stowAll || errorExitMainScript
+    echoIt "Installed all dofiles in home directory."
+    echoDone
+  elif [[ "$CHOSEN" == 2 ]] ; then
+    unstowAll || errorExitMainScript
+    echoIt "Uninstalled all dofiles in home directory."
+    echoDone
+  else
+    quitMenu
+  fi
+}
+
+main () {
+  # If args is passed to the script run auto mode
+  # otherwise launch interactive one with menu. 
+  if isEmpty $@ ; then
+    runMainInteractive
+  else
+    runMainAuto $1
+  fi
+}
+
+main $@ # run it!
