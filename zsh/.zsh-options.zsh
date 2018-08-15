@@ -1,1 +1,1 @@
-echo "This si zshrc_opts"
+export LS_COLORS="ow=01;36;40"          # better ls dir colors
