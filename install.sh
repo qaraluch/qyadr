@@ -69,7 +69,7 @@ stowErrorMsg () {
 stowAll () {
   for PACK in "${PACKS[@]}" ; do
   if isDir "$DOTNAME_FULL/$PACK" ; then
-    stow -vd ${DOTNAME_FULL} -S ${PACK} -t ${HOME} 
+    stow -vd ${DOTNAME_FULL} -S ${PACK} -t ${HOME} || errorExitMainScript
     echoIt "Stowed package name: ${PACK}" "$I_T" 
   else 
     stowErrorMsg ${PACK}
@@ -81,7 +81,7 @@ stowAll () {
 unstowAll () {
   for PACK in "${PACKS[@]}" ; do
   if isDir "$DOTNAME_FULL/$PACK" ; then
-    stow -vd ${DOTNAME_FULL} -D ${PACK} -t ${HOME} 
+    stow -vd ${DOTNAME_FULL} -D ${PACK} -t ${HOME} || errorExitMainScript
     echoIt "Unstowed package name: ${PACK}" "$I_T" 
   else 
     stowErrorMsg ${PACK}
@@ -150,19 +150,19 @@ execMenuOption () {
   local CHOSEN_MENU_OPTION_TXT=${MENU_OPTIONS[${CHOSEN}-1]}
   if [[ "$CHOSEN" == 1 ]] ; then
     yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?" \
-      && stowAll || errorExitMainScript
+      && stowAll
     echoIt "Installed all dofiles in home directory."
     echoDone
   elif [[ "$CHOSEN" == 2 ]] ; then
     yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?" \
-      && unstowAll || errorExitMainScript
+      && unstowAll
     echoIt "Uninstalled all dofiles in home directory."
     echoDone
   elif [[ "$CHOSEN" == 3 ]] ; then
-      showPackages || errorExitMainScript
+      showPackages
       launchMenu
   elif [[ "$CHOSEN" == 4 ]] ; then
-      showManualCommands || errorExitMainScript
+      showManualCommands
       quitMenu
   else
     quitMenu
@@ -188,9 +188,9 @@ runMainInteractive () {
 runMainAuto () {
   local CHOSEN=$1
   if [[ "$CHOSEN" == 1 ]] ; then
-    stowAll || errorExitMainScript
+    stowAll 
   elif [[ "$CHOSEN" == 2 ]] ; then
-    unstowAll || errorExitMainScript
+    unstowAll 
   else
     quitMenu
   fi
