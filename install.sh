@@ -113,6 +113,7 @@ readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
 
 declare -a PACKS=( \
   zsh \
+  aliases \
 )
 
 ################################### MAIN ###################################
