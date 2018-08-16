@@ -25,3 +25,16 @@ echoIt () {
 echoDone () {
   echoIt "DONE!" "$I_T"
 }
+
+# TIMESTAMPS
+getTimeStamp () {
+  echo $(date +%s)
+}
+
+getTimeStampHuman () { 
+  echo $(date -d @"$(getTimeStamp)" +'%Y-%m-%d %H:%M:%S')
+}
+
+getTimeStampHumanFile () { 
+  echo $(date -d @"$(getTimeStamp)" +'%Y-%m-%d_%H%M%S')
+}

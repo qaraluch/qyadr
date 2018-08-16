@@ -7,6 +7,7 @@ alias qyadr-update='./.qyadr/update.sh'
 # zsh - mgmt
 alias reload='reload-zsh'
 alias exit-zsh='exit'
+alias time-zsh='measure-zsh-loading-time'
 
 # dirs - list contents
 alias ls-default='ls -1FcrtA'         # 1 line, classify, ? , reverse, by time, almost all
