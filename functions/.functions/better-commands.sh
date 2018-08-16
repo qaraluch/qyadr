@@ -7,4 +7,3 @@ better-man-command() {                                 # from Arch Wiki
     LESS_TERMCAP_us=$'\e[01;32m' \
     command man "$@"
 }
-
