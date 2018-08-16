@@ -16,19 +16,48 @@ alias ls-long-size='ls -lahS'         # long, all, human, by size
 alias ls-long-time='ls -laht'         # long, all, human, by time 
 alias ls-long-no-dotfiles='ls -lh'    # long, all, human, by time 
 
+# dirs - movements
+alias cd-grandparent='../..'
+alias cd-great-grandparent='../../..'
+alias show-dirs='dirs -v | head -10'
+
 # history
 alias show-history='history -20'
 alias show-history-screen='history -60'
 alias show-history-all='history 1'
 
 # ALPHABETICALLY ACRONYMS --------------------------------------------------
-alias e='exit-zsh'
+alias -g ...='cd-grandparent'
+alias -g ....='cd-great-grandparent'
+
+alias -- -='cd -'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
+
+alias cp='cp -ivrf'
+alias d='show-dirs'
+
 alias h='show-history'
 alias ha='show-history-all'
 alias hs='show-history-screen'
+
+alias ln='ln -iv'
+
+alias mv='mv -iv'
+alias mvt='mv -ivt'                                     # move to the target
+
 alias l='ls-default'
 alias ll='ls-long'
 alias llnd='ls-long-no-dotfiles'
 alias lls='ls-long-size'
 alias llt='ls-long-time'
 alias ls='ls --color=auto --group-directories-first'
+
+alias rm='rm -Irf'
