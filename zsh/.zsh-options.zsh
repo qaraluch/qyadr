@@ -16,3 +16,4 @@ export GREP_COLOR="1;32"                # better grep color from Arch Wiki
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt pushdminus
+setopt autocd
