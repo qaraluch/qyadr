@@ -62,9 +62,9 @@ purgeRepos () {
   if isDir ${DOTNAME_FULL} ; then
     rm -rf ${DOTNAME_FULL}
   fi
-  if isDir ${DOTNAMESEC_FULL} ; then
-    rm -rf ${DOTNAMESEC_FULL}
-  fi
+  # if isDir ${DOTNAMESEC_FULL} ; then
+  #   rm -rf ${DOTNAMESEC_FULL}
+  # fi
 }
 
 purgeUtils () {
@@ -77,18 +77,22 @@ purgeUtils () {
   if isFile ${PURGE_FULL} ; then
     rm -rf ${PURGE_FULL}
   fi
+  if isFile ${UPDATE_FULL} ; then
+    rm -rf ${UPDATE_FULL}
+  fi
 }
 
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
 readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
 
-readonly DOTNAMESEC='.qyadr-secret'
-readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
+# readonly DOTNAMESEC='.qyadr-secret'
+# readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
 
 readonly DEPLOY_FULL="${HOME}/.qyadr-deploy.sh"
 readonly PURGE_FULL="${HOME}/.qyadr-purge.sh"
 readonly INSTALL_FULL="${HOME}/.qyadr-install.sh"
+readonly UPDATE_FULL="${HOME}/.qyadr-update.sh"
 
 ################################### MAIN ###################################
 main () {
