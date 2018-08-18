@@ -61,31 +61,69 @@ updateRepos () {
   if isDir ${DOTNAME_FULL} ; then
     cd ${DOTNAME_FULL}
     execGitPull || errorExitMainScript
+    showGitLogs
     echoIt "Updated: ${DOTNAME}" "${I_T}"
   fi
-  if isDir ${DOTNAMESEC_FULL} ; then
-    cd ${DOTNAMESEC_FULL}
-    execGitPull || errorExitMainScript
-    echoIt "Updated: ${DOTNAMESEC}" "${I_T}"
-  fi
+  # if isDir ${DOTNAMESEC_FULL} ; then
+  #   cd ${DOTNAMESEC_FULL}
+  #   execGitPull || errorExitMainScript
+  #   echoIt "Updated: ${DOTNAMESEC}" "${I_T}"
+  # fi
 }
 
 execGitPull () {
   git pull --rebase --stat origin master
 }
 
+showGitLogs () {
+  local git_log_default_format='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc) %cd - %C(auto,reset)%s%C(auto,cyan)% gD% D'
+  echoIt ""
+  git --no-pager log --pretty=format:"$git_log_default_format" --abbrev-commit --date=relative -10
+}
+
+updateQyadrUtilScripts () {
+  copyInstallScript || errorExitMainScript
+  echoIt "Copied again install script to home directory." "$I_T"
+
+  copyPurgeScript || errorExitMainScript
+  echoIt "Copied again purge script to home directory." "$I_T"
+
+  copyUpdateScript || errorExitMainScript
+  echoIt "Copied again update script to home directory." "$I_T"
+}
+
+copyInstallScript () {
+  isFile ${INSTALL_FULL} && \
+    cp "${INSTALL_FULL}" "${HOME}/.qyadr-install.sh"
+}
+
+copyPurgeScript () {
+  isFile ${CLEANUP_FULL} && \
+    cp "${CLEANUP_FULL}" "${HOME}/.qyadr-purge.sh"
+}
+
+copyUpdateScript () {
+  isFile ${UPDATE_FULL} && \
+    cp "${UPDATE_FULL}" "${HOME}/.qyadr-update.sh"
+}
+
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
 readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
 
-readonly DOTNAMESEC='.qyadr-secret'
-readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
+# readonly DOTNAMESEC='.qyadr-secret'
+# readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
+
+readonly CLEANUP_FULL="${DOTNAME_FULL}/purge.sh"
+readonly INSTALL_FULL="${DOTNAME_FULL}/install.sh"
+readonly UPDATE_FULL="${DOTNAME_FULL}/update.sh"
 
 ################################### MAIN ###################################
 main () {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo ${C_G}UPDATE${C_E} Script (QYADR-UPDATE)${C_E}"
   yesConfirm "Ready to roll [y/n]? " 
   updateRepos 
+  updateQyadrUtilScripts
   echoIt "${C_G}QYADR is up-to-date!${C_E}" "$I_T"
   echoDone
 }
