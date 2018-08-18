@@ -1,3 +1,6 @@
+# vars
+D_QYADR="${HOME}/.qyadr" 
+# 
 export PATH=$HOME/.scripts:$PATH
 for fn (~/.functions/*.sh) source $fn
 [ -f ~/.zsh-options.zsh ] && source ~/.zsh-options.zsh
