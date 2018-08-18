@@ -62,7 +62,7 @@ updateRepos () {
     cd ${DOTNAME_FULL}
     execGitPull || errorExitMainScript
     showGitLogs
-    echoIt "Updated: ${DOTNAME}" "${I_T}"
+    echoIt "Updated: ${DOTNAME} repo." "${I_T}"
   fi
   # if isDir ${DOTNAMESEC_FULL} ; then
   #   cd ${DOTNAMESEC_FULL}
@@ -76,9 +76,9 @@ execGitPull () {
 }
 
 showGitLogs () {
-  local git_log_default_format='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc) %cd - %C(auto,reset)%s%C(auto,cyan)% gD% D'
-  echoIt ""
+  local git_log_default_format='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc) %cd - %C(auto,reset)%s%C(auto,cyan)% gD% %Creset'
   git --no-pager log --pretty=format:"$git_log_default_format" --abbrev-commit --date=relative -10
+  echo ""
 }
 
 updateQyadrUtilScripts () {

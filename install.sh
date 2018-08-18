@@ -76,7 +76,7 @@ stowAll () {
     return 1
   fi
   done
-  resourceDotfiles || errorExitMainScript
+  echoIt "${C_Y}Warn: source .zshrc to see changes!${C_E}" "${I_W}"
 }
 
 unstowAll () {
@@ -102,11 +102,6 @@ showManualCommands () {
   echoIt "Manual commands:"
   echoIt "stow -vt ~ -d .qyadr <package-name> # installation"
   echoIt "stow -vt ~ -d .qyadr -D <package-name> # remove"
-}
-
-resourceDotfiles () {
-  source "${HOME}/.zshrc"
-  echoIt "Re-source dotfiles!" "$I_W"
 }
 
 ################################### VARS ###################################
