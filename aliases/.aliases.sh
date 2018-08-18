@@ -1,11 +1,12 @@
 # TOPICAL ORDER ------------------------------------------------------------
 # qyadr - dotfiles mgmt 
-alias qyadr-purge='./.qyadr-purge.sh'
-alias qyadr-install='./.qyadr-install.sh'
-alias qyadr-update='./.qyadr/update.sh'
+alias qyadr-purge='bash ~/.qyadr-purge.sh'
+alias qyadr-purge-repo='rm -rf $D_QYADR/.git'     # env from .zshrc
+alias qyadr-install='bash ~/.qyadr-install.sh'
+alias qyadr-update='bash ~/.qyadr/update.sh'
 
 # zsh - mgmt
-alias reload='zsh-reload'                     # .functions/zsh-mgmt.sh
+alias reload='zsh-reload'                      # .functions/zsh-mgmt.sh
 alias time-zsh='zsh-measure-loading-times'     # .functions/zsh-mgmt.sh
 
 # dirs - list contents
