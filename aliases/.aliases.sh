@@ -5,9 +5,8 @@ alias qyadr-install='./.qyadr-install.sh'
 alias qyadr-update='./.qyadr/update.sh'
 
 # zsh - mgmt
-alias reload='reload-zsh'                     # .functions/zsh-mgmt.sh
-alias exit-zsh='exit'
-alias time-zsh='measure-zsh-loading-time'     # .functions/zsh-mgmt.sh
+alias reload='zsh-reload'                     # .functions/zsh-mgmt.sh
+alias time-zsh='zsh-measure-loading-times'     # .functions/zsh-mgmt.sh
 
 # dirs - list contents
 alias ls-default='ls -1FcrtA'         # 1 line, classify, ? , reverse, by time, almost all
@@ -45,6 +44,7 @@ alias 9='cd -9'
 alias cp='cp -ivrf'
 alias d='show-dirs'
 alias diff='diff --color=auto'
+alias e='exit'
 alias grep='grep --color=auto'
 
 alias h='show-history'
@@ -53,7 +53,7 @@ alias hs='show-history-screen'
 
 alias ln='ln -iv'
 
-alias man='better-man-command'                          # .functions/better-commands.sh
+alias man='man-better-command'                          # .functions/better-commands.sh
 alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target
 

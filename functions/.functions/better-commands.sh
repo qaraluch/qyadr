@@ -1,4 +1,4 @@
-better-man-command() {                                 # from Arch Wiki
+man-better-command() {                                 # from Arch Wiki
     LESS_TERMCAP_md=$'\e[01;31m' \
     LESS_TERMCAP_me=$'\e[0m' \
     LESS_TERMCAP_se=$'\e[0m' \
