@@ -76,6 +76,7 @@ stowAll () {
     return 1
   fi
   done
+  resourceDotfiles || errorExitMainScript
 }
 
 unstowAll () {
@@ -103,6 +104,10 @@ showManualCommands () {
   echoIt "stow -vt ~ -d .qyadr -D <package-name> # remove"
 }
 
+resourceDotfiles () {
+  source "${HOME}/.zshrc"
+  echoIt "Re-source dotfiles!" "$I_W"
+}
 
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
