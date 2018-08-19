@@ -116,6 +116,7 @@ declare -a PACKS=( \
   functions \
   aliases \
   scripts \
+  git \
 )
 
 ################################### MAIN ###################################
