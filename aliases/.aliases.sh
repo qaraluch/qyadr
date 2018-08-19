@@ -66,3 +66,4 @@ alias llt='ls-long-time'
 alias ls='ls --color=auto --group-directories-first'
 
 alias rm='rm -Irf'
+alias take='mkdir-and-cd-better-command'

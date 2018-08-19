@@ -1,5 +1,5 @@
 # vars
-D_QYADR="${HOME}/.qyadr"                                      # dotfiles path 
+D_QYADR="${HOME}/.qyadr"                                      # dotfiles path, used in aliases 
 
 export PATH=$HOME/.scripts:$PATH
 

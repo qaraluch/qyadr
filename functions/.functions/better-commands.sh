@@ -7,3 +7,7 @@ man-better-command() {                                 # from Arch Wiki
     LESS_TERMCAP_us=$'\e[01;32m' \
     command man "$@"
 }
+
+mkdir-and-cd-better-command() {                        # from oh-my-zsh
+    mkdir -p $@ && cd ${@:$#}
+}
