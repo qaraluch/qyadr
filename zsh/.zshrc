@@ -20,10 +20,5 @@ fi
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug 'softmoth/zsh-vim-mode'
 
-if ! zplug check; then
-    zplug install
-    zplug update
-fi
-
 zplug load
 

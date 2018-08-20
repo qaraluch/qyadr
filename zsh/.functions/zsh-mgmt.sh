@@ -23,3 +23,10 @@ zsh-run-loading-time() {
 
 # Prompt hook function to add empty line before prompt redraw
 precmd() { print "" }
+
+zplug-check () {
+  if ! zplug check; then
+      zplug install
+      zplug update
+  fi
+}
