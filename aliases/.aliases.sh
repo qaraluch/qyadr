@@ -69,12 +69,12 @@ alias gl='git-log-recent 10'
 alias gld='git-log-date 10'
 alias glt='git-log-tree'
 alias gp='git-push'
+alias gpforce='git-push --force'
 
 alias h='show-history'
 alias ha='show-history-all'
 alias hs='show-history-screen'
 
-alias ln='ln -iv'
 
 alias man='man-better-command'                          # .functions/better-commands.sh
 alias mv='mv -iv'
@@ -82,6 +82,7 @@ alias mvt='mv -ivt'                                     # move to the target
 
 alias l='ls-default'
 alias ll='ls-long'
+alias ln='ln -iv'
 alias llnd='ls-long-no-dotfiles'
 alias lls='ls-long-size'
 alias llt='ls-long-time'
