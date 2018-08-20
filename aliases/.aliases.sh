@@ -48,6 +48,28 @@ alias diff='diff --color=auto'
 alias e='exit'
 alias grep='grep --color=auto'
 
+# git - see: .functions/gis.sh
+alias g='git-g-alias'
+alias ga='git-add-status'
+alias gaac='git-add-all-commit'
+alias gaacm='git-add-all-commit-message'
+alias gaaca='git-add-all-commit-amend'
+alias gac='git-add-commit'
+alias gacm='git-add-commit-message'
+alias gacma='git-add-commit-amend'
+alias gauc='git-add-update-commit'
+alias gaucm='git-add-update-commit-message'
+alias gauca='git-add-update-commit-amend'
+alias gc="git-commit-better"
+alias gca="git-commit-amend"
+alias gch='git checkout'
+alias gchm='git checkout master'
+alias gcm="git-commit-message"
+alias gl='git-log-recent 10'
+alias gld='git-log-date 10'
+alias glt='git-log-tree'
+alias gp='git-push'
+
 alias h='show-history'
 alias ha='show-history-all'
 alias hs='show-history-screen'

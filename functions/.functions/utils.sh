@@ -18,6 +18,8 @@ readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
 readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
 readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
 
+emptyLine() { echo "" >&2 }
+
 echoIt () {
   local MSG=$1 ; local ICON=${2:-''} ; echo "${D_Q}${ICON} $MSG" >&2
 }
