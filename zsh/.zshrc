@@ -12,13 +12,22 @@ for FILE ($HOME/.functions/*.sh) source $FILE
 [ -f ~/.aliases.sh ] && source ~/.aliases.sh
 [ -f ~/.zsh-test.zsh ] && source ~/.zsh-test.zsh              # for rapid testing purposes only
 
-# Plugins
-if [[ -d "$ZPLUG_HOME" ]]; then
-  source "${ZPLUG_HOME}/init.zsh"
-fi
+# # Plugins
+# if [[ -d "$ZPLUG_HOME" ]]; then
+#   source "${ZPLUG_HOME}/init.zsh"
+# fi
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug 'softmoth/zsh-vim-mode'
+# zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+# zplug 'softmoth/zsh-vim-mode'
 
-zplug load
+# zplug load
 
+### ANTIGEN
+source "$HOME/antigen.zsh"
+
+# Syntax highlighting on the readline
+# $b zsh-users/zsh-syntax-highlighting
+antigen bundle softmoth/zsh-vim-mode
+
+# Tell antigen that you're done.
+antigen apply
