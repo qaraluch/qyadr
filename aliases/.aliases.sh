@@ -75,7 +75,6 @@ alias h='show-history'
 alias ha='show-history-all'
 alias hs='show-history-screen'
 
-
 alias man='man-better-command'                          # .functions/better-commands.sh
 alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target

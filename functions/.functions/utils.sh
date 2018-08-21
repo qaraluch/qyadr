@@ -40,3 +40,32 @@ getTimeStampHuman () {
 getTimeStampHumanFile () { 
   echo $(date -d @"$(getTimeStamp)" +'%Y-%m-%d_%H%M%S')
 }
+
+# SWITCHES
+isEqualY () {
+  local STRING=$1
+  [[ "$STRING" == "Y" ]]
+}
+
+isEqualN () {
+  local STRING=$1
+  [[ "$STRING" == "N" ]]
+}
+
+switchY () {
+  local SWITCH=$1
+  if isEqualY $SWITCH; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+switchN () {
+  local SWITCH=$1
+  if isEqualN $SWITCH; then
+    return 0
+  else
+    return 1
+  fi
+}
