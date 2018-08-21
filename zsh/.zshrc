@@ -1,6 +1,6 @@
 # Vars
 export D_QYADR="${HOME}/.qyadr"                                      # dotfiles path, used in aliases 
-export ZPLUG_HOME="${HOME}/.zplug"
+export ANTIGEN_HOME="${HOME}/.antigen"
 
 export PATH=$HOME/.scripts:$PATH
 
@@ -12,13 +12,9 @@ for FILE ($HOME/.functions/*.sh) source $FILE
 [ -f ~/.aliases.sh ] && source ~/.aliases.sh
 [ -f ~/.zsh-test.zsh ] && source ~/.zsh-test.zsh              # for rapid testing purposes only
 
-# Plugins
-if [[ -d "$ZPLUG_HOME" ]]; then
-  source "${ZPLUG_HOME}/init.zsh"
-fi
-
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug 'softmoth/zsh-vim-mode'
-
-zplug load
-
+# Antigen
+source "$HOME/.antigen.zsh"
+antigen bundle softmoth/zsh-vim-mode
+# antigen bundle zsh-users/zsh-syntax-highlighting
+# antigen bundle urbainvaes/fzf-marks
+antigen apply

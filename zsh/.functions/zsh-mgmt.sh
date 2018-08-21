@@ -25,6 +25,7 @@ zsh-run-loading-time() {
 precmd() { print "" }
 
 zplug-check () {
+  echoIt "Checking zplug plugins..."
   if ! zplug check; then
       zplug install
       zplug update
