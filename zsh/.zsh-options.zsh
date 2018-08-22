@@ -32,4 +32,8 @@ setopt no_beep                         # no beep on error
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
+autoload -U edit-command-line         # edit command in editro (in vim)
+zle -N edit-command-line
+
 # Bindkeys
+bindkey '\C-x\C-e' edit-command-line  # ctrl-x ctrl-e - edit command in editro (in vim)
