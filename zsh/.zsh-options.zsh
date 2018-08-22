@@ -36,4 +36,5 @@ autoload -U edit-command-line         # edit command in editro (in vim)
 zle -N edit-command-line
 
 # Bindkeys
-bindkey '\C-x\C-e' edit-command-line  # ctrl-x ctrl-e - edit command in editro (in vim)
+bindkey '\C-x\C-e' edit-command-line              # ctrl-x ctrl-e - edit command in editro (in vim)
+bindkey "\C-x\C-l" zle-insert-last-typed-word     # ctrl-x ctrl-l - insert last typed word, see: .functions/zsh-terminal.zsh

@@ -6,7 +6,7 @@ export D_PLUGS="${HOME}/.plugs"
 export PATH=$HOME/.scripts:$PATH
 
 # Sources
-for FILE ($HOME/.functions/*.sh) source $FILE
+for FILE ($HOME/.functions/*.{sh,zsh}) source $FILE
 [ -f ~/.zsh-options.zsh ] && source ~/.zsh-options.zsh
 [ -f ~/.zsh-prompt.zsh ] && source ~/.zsh-prompt.zsh
 [ -f ~/.aliases.sh ] && source ~/.aliases.sh
