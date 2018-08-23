@@ -15,4 +15,8 @@ for FILE ($HOME/.functions/*.{sh,zsh}) source $FILE
 # Plugs
 # Create cache dir for plugins if not exists
 if [[ ! -d "${D_PLUGS}-cache" ]]; then mkdir "${D_PLUGS}-cache" ; fi
-for INSTALLATOR ($D_PLUGS/*.sh) source $INSTALLATOR
+# for INSTALLATOR ($D_PLUGS/*.sh) source $INSTALLATOR
+source $D_PLUGS/install-zsh-vimto.sh
+source $D_PLUGS/install-zsh-syntax-highlighting.sh
+source $D_PLUGS/install-zsh-autosuggestions.sh
+# source $D_PLUGS/install-fzf.sh

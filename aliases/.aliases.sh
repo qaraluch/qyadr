@@ -65,6 +65,7 @@ alias gca="git-commit-amend"
 alias gch='git checkout'
 alias gchm='git checkout master'
 alias gcm="git-commit-message"
+alias gd='git diff'
 alias gl='git-log-recent 10'
 alias gld='git-log-date 10'
 alias glt='git-log-tree'
