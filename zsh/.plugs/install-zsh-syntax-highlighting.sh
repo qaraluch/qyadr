@@ -51,6 +51,7 @@ fi
 # Ls all colors run: zsh-spectrum-ls
 export ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 typeset -xA ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=007'              # white 
 ZSH_HIGHLIGHT_STYLES[alias]='fg=191'                      # greenish 
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=191'                       
 ZSH_HIGHLIGHT_STYLES[command]='fg=191'          
