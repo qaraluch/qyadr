@@ -27,6 +27,7 @@ PROMPT_EOL_MARK='.'
 # Misc
 setopt extendedglob                    # globling see zsh.md
 setopt no_beep                         # no beep on error
+setopt interactivecomments    
 
 # Editor
 export VISUAL=vim
