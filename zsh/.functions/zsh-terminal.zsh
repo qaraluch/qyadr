@@ -8,10 +8,22 @@ zle-insert-last-typed-word() {
 };
 zle -N zle-insert-last-typed-word;
 
-# from zsh-pony
+# From zsh-pony
 zle-slash-backward-kill-word() {
   local WORDCHARS="${WORDCHARS:s@/@}"
   zle backward-kill-word
 }
 zle -N zle-slash-backward-kill-word
 
+# From .grml.org
+# Useful to add options.
+function zle-jump-after-first-word () {
+  local WORDS
+  WORDS=(${(z)BUFFER})
+  if (( ${#WORDS} <= 1 )) ; then
+      CURSOR=${#BUFFER}
+  else
+      CURSOR=${#${WORDS[1]}}
+  fi
+}
+zle -N zle-jump-after-first-word
