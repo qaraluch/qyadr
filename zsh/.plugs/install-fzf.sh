@@ -47,7 +47,6 @@ fi
 # Setup fzf
 # ---------
 if [[ ! "$PATH" == */fzf/bin* ]]; then
-  echoIt "FZF is not in your PATH variable. Adding..."
   export PATH="$PATH:${D_PLUG_FZF}/bin"
   echoDone
 fi

@@ -69,3 +69,18 @@ switchN () {
     return 1
   fi
 }
+
+# PROFILING
+profileFor() {
+  if switchY $ZSH_PROFILE ; then
+    PROFILE_MSG=${1:-Run profile for sth...}
+    _timer=$(($(date +%s%N)/1000000)) 
+  fi
+}
+
+profileStop() {
+  if switchY $ZSH_PROFILE ; then
+    _now=$(($(date +%s%N)/1000000))
+    echo "[!] ---> elapsed: $(($_now-$_timer)) ms for: ${PROFILE_MSG}"
+  fi
+}
