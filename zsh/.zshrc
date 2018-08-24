@@ -41,3 +41,5 @@ profileFor 'plugin - fzf'
 source $D_PLUGS/install-fzf.sh
 profileStop
 
+# Bindkeys
+source ~/.zsh-bindkeys.zsh
