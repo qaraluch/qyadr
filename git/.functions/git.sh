@@ -45,3 +45,11 @@ function git-get-current-branch() {
   fi
   echo ${ref#refs/heads/}
 }
+
+git-is-in-repo() {
+  git rev-parse HEAD > /dev/null 2>&1
+}
+
+git-get-logs() {
+  echo $(git log --pretty=oneline --abbrev-commit)
+}

@@ -2,6 +2,42 @@
 # dependencies:
 # ???
 
+# zle utils
+function _zle-init-widget () {                # when init widget, save what is typed in command line 
+  if [[ -n $1 ]]; then
+    BUFFER="$1 "
+    CURSOR=$#BUFFER
+    zle redisplay
+  fi
+}
+
+# from fzf-widgets
+function _zle-insert () {
+  local -a items
+  IFS=$'\n' items=(`cat`)
+  if [[ -n $items ]]; then
+    for item in $items; do
+      if [[ $1 = -q ]]; then
+        # quote special characters with backslashes
+        BUFFER+="$item:q:gs/\\~/~/ "
+      else
+        BUFFER+="$item "
+      fi
+    done
+    BUFFER="${BUFFER% } "
+    CURSOR=$#BUFFER
+    zle redisplay
+  else
+    _zle-clear
+  fi
+}
+
+function _zle-clear () {
+  BUFFER=""
+  CURSOR=$#BUFFER
+  zle redisplay
+}
+
 # From zsh-pony
 zle-insert-last-typed-word() { 
   zle insert-last-word -- 0 -1
