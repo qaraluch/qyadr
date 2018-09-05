@@ -53,3 +53,7 @@ git-is-in-repo() {
 git-get-logs() {
   echo $(git log --pretty=oneline --abbrev-commit)
 }
+
+git-get-status-items() {
+    echo $(git status --short)
+}
