@@ -11,5 +11,4 @@ bindkey '\C-x\C-f' zle-jump-after-first-word      # ctrl-x ctrl-f - jum after fi
 #   * `A+C` - fzf - cd dir
 #   * `C+R` - fzf - history
 
-# bindkey '^N' '_my_zle_widget_mygit_get_status_item'     # C+N - get & clip git status item; see: .rc_git
 # bindkey '\eo' '_my_zle_widget_myfzf_locate_file'        # A+o - locate file
