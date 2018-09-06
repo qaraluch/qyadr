@@ -91,7 +91,8 @@ readonly INSTALL_FULL="${DOTNAME_FULL}/install.sh"
 main () {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Deploy Script (QYADR-DEPLOY)${C_E}"
   echoIt "Used variables:"
-  echoIt "  - home dir:       ${C_Y}$HOME${C_E}"
+  echoIt "  - home dir:                 ${C_Y}$HOME${C_E}"
+  echoIt "  - qyadr deployment dir:     ${C_Y}${DOTNAME}${C_E}"
   echoIt "Check above installation settings." "$I_W"
   yesConfirm "Ready to roll [y/n]? " 
 
