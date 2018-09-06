@@ -11,6 +11,9 @@ export D_PLUGS="${HOME}/.plugs"
 # Path
 export PATH=$HOME/.scripts:$PATH
 
+# Env
+[ -f ~/.qyadr-env ] && export QYADR_ENV=$(cat ~/.qyadr-env)
+
 # Sources
 profileFor 'all fns'
 for FILE ($HOME/.functions/*.{sh,zsh}) source $FILE
@@ -40,6 +43,11 @@ profileStop
 profileFor 'plugin - fzf'
 source $D_PLUGS/install-fzf.sh
 profileStop
+
+# Env - wsl 
+if [[ "$QYADR_ENV" == "wsl" ]] ; then 
+  [ -f ~/.wsl_test ] && source ~/.wsl_test
+fi
 
 # Bindkeys
 source ~/.zsh-bindkeys.zsh
