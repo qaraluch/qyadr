@@ -104,8 +104,52 @@ showManualCommands () {
   echoIt "stow -vt ~ -d .qyadr -D <package-name> # remove"
 }
 
+setupEnvInteractive() {
+  local MSG="Choose for witch enviroment install qyadr: ${C_Y}${DEFAULT_QYADR_ENV}${C_E} [enter] or ${C_Y}vb${C_E} or ${C_Y}linux${C_E} ?"
+  local CHOOSE=$(inputWithDefault "${MSG}" ${DEFAULT_QYADR_ENV})
+  local PARSED=$(parseEnvInput ${CHOOSE} ${DEFAULT_QYADR_ENV})
+  saveEnvToFile $PARSED
+  echoIt "Saved enviroment variable: ${C_Y}${PARSED}${C_E}, to the file: .qyadr-env"
+}
+
+inputWithDefault() {
+  local MSG=$1
+  local DEFAULT_VLUE=$2
+  read -p "$D_APP$I_A $MSG " -r
+  if  isEmpty $REPLY
+  then
+    echo  $DEFAULT_VLUE
+  else 
+    echo $REPLY
+  fi
+}
+
+parseEnvInput() {
+  local INPUT=$1
+  local DEFAULT=$2
+  case $INPUT in
+    wsl)
+      echo $INPUT
+      ;;
+    vb)
+      echo $INPUT 
+      ;;
+    linux)
+      echo $INPUT 
+      ;;
+    *) echo $DEFAULT
+    ;;
+  esac
+}
+
+saveEnvToFile () {
+  local ENV=$1
+  echo $ENV > .qyadr-env
+}
+
 ################################### VARS ###################################
 readonly DOTNAME='.qyadr'
+readonly DEFAULT_QYADR_ENV='wsl'
 readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
 
 readonly DOTNAMESEC='.qyadr-secret'
@@ -117,6 +161,7 @@ declare -a PACKS=( \
   aliases \
   scripts \
   git \
+  _wsl \
 )
 
 ################################### MAIN ###################################
@@ -153,6 +198,7 @@ execMenuOption () {
     yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?" \
       && stowAll
     echoIt "Installed all dofiles in home directory."
+    setupEnvInteractive
     echoDone
   elif [[ "$CHOSEN" == 2 ]] ; then
     yesConfirm "Ready to: ${C_Y}$CHOSEN_MENU_OPTION_TXT${C_E} [y/n]?" \
@@ -188,8 +234,11 @@ runMainInteractive () {
 
 runMainAuto () {
   local CHOSEN=$1
+  local ENV=$2
+  local ENV_PARSED=$(parseEnvInput ${ENV} ${DEFAULT_QYADR_ENV})
   if [[ "$CHOSEN" == 1 ]] ; then
     stowAll 
+    saveEnvToFile $ENV_PARSED
   elif [[ "$CHOSEN" == 2 ]] ; then
     unstowAll 
   else
@@ -198,12 +247,13 @@ runMainAuto () {
 }
 
 main () {
+  local ENV=${2:-$DEFAULT_QYADR_ENV}
   # If args is passed to the script run auto mode
   # otherwise launch interactive one with menu. 
   if isEmpty $@ ; then
     runMainInteractive
   else
-    runMainAuto $1
+    runMainAuto $1 $ENV
   fi
 }
 

@@ -7,7 +7,7 @@ function fzf-choose-git-msg () {
  echo "\"$( git-get-logs | fzf --layout=reverse --border | cut -d " " -f2-)\""                                    # see: git/.functions/git.sh
 }
 
-function zle-fzf-git-get-commit-msg {
+function zle-fzf-git-get-commit-msg () {
   if git-is-in-repo ; then
     _zle-init-widget
     fzf-choose-git-msg | \
@@ -27,7 +27,7 @@ function fzf-choose-git-hash () {                           # see: git/.function
   )"                                                
 }
 
-function zle-fzf-git-get-hash {
+function zle-fzf-git-get-hash  () {
   if git-is-in-repo ; then
     _zle-init-widget
     fzf-choose-git-hash | \
@@ -46,7 +46,7 @@ function fzf-choose-git-status-item () {                    # see: git/.function
   )"              
 }
 
-function zle-fzf-git-get-status-item {
+function zle-fzf-git-get-status-item () {
   if git-is-in-repo ; then
     _zle-init-widget
     fzf-choose-git-status-item | \
