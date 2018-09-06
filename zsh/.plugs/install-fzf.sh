@@ -13,7 +13,7 @@ export D_PLUG_FZF="${D_PLUGS}-cache/${PLUG_NAME_FZF}"
 export PLUG_CMD_INSTALLATION_FZF="git clone --depth 1 ${PLUG_GIT_URL_FZF} ${D_PLUG_FZF}"
 
 # First time installation
-zsh-plug-install-fzf () {
+zsh-plug-install-fzf() {
     if [[ ! -d $D_PLUG_FZF ]]; then
         echoIt "It seemed you have no installed a '${C_Y}${PLUG_NAME_FZF}${C_E}'." "$I_W"
         echoIt "About to install it..."
@@ -27,7 +27,7 @@ if switchY $PLUG_DO_INSTALL_FZF ; then
 fi
 
 # Uninstall
-zsh-plug-uninstall-fzf () {
+zsh-plug-uninstall-fzf() {
     if [[ -d $D_PLUG_FZF ]]; then
         echoIt "About to uninstall a '${C_Y}${PLUG_NAME_FZF}${C_E}'." "$I_W"
         rm -rf $D_PLUG_FZF

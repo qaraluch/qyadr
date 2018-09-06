@@ -19,23 +19,23 @@ readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
 readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
 readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
 
-echoIt () {
+echoIt() {
   local msg=$1 ; local icon=${2:-''} ; echo "$D_APP$icon $msg" 
 }
 
-echoDone () {
+echoDone() {
   echoIt "DONE!" "$I_T"
 }
 
-errorExit () {
+errorExit() {
   echo "$D_APP$I_C $1" 1>&2 ; exit 1
 }
 
-errorExitMainScript () {
+errorExitMainScript() {
   errorExit "${C_R}Sth. went wrong. Aborting script! $C_E"
 }
 
-yesConfirm () {
+yesConfirm() {
   local ABORT_MSG_DEFAULT="Abort script!"
   local ABORT_MSG=${2:-$ABORT_MSG_DEFAULT}
   read -p "$D_APP$I_A $1" -n 1 -r
@@ -57,7 +57,7 @@ isFile() {
 }
 
 ################################### FNS ###################################
-updateRepos () {
+updateRepos() {
   if isDir ${DOTNAME_FULL} ; then
     cd ${DOTNAME_FULL}
     execGitPull || errorExitMainScript
@@ -71,17 +71,17 @@ updateRepos () {
   # fi
 }
 
-execGitPull () {
+execGitPull() {
   git pull --rebase --stat origin master
 }
 
-showGitLogs () {
+showGitLogs() {
   local git_log_default_format='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc) %cd - %C(auto,reset)%s%C(auto,cyan)% gD% %Creset'
   git --no-pager log --pretty=format:"$git_log_default_format" --abbrev-commit --date=relative -10
   echo ""
 }
 
-updateQyadrUtilScripts () {
+updateQyadrUtilScripts() {
   copyInstallScript || errorExitMainScript
   echoIt "Copied again install script to home directory." "$I_T"
 
@@ -92,17 +92,17 @@ updateQyadrUtilScripts () {
   echoIt "Copied again update script to home directory." "$I_T"
 }
 
-copyInstallScript () {
+copyInstallScript() {
   isFile ${INSTALL_FULL} && \
     cp "${INSTALL_FULL}" "${HOME}/.qyadr-install.sh"
 }
 
-copyPurgeScript () {
+copyPurgeScript() {
   isFile ${CLEANUP_FULL} && \
     cp "${CLEANUP_FULL}" "${HOME}/.qyadr-purge.sh"
 }
 
-copyUpdateScript () {
+copyUpdateScript() {
   isFile ${UPDATE_FULL} && \
     cp "${UPDATE_FULL}" "${HOME}/.qyadr-update.sh"
 }
@@ -119,7 +119,7 @@ readonly INSTALL_FULL="${DOTNAME_FULL}/install.sh"
 readonly UPDATE_FULL="${DOTNAME_FULL}/update.sh"
 
 ################################### MAIN ###################################
-main () {
+main() {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo ${C_G}UPDATE${C_E} Script (QYADR-UPDATE)${C_E}"
   yesConfirm "Ready to roll [y/n]? " 
   updateRepos 

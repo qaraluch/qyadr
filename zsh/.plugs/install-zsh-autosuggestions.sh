@@ -14,7 +14,7 @@ export PLUG_CMD_INSTALLATION_ZSH_AUTOSUGGESTIONS="git clone --depth 1 ${PLUG_GIT
 export PLUG_CMD_SOURCE_ZSH_AUTOSUGGESTIONS="source ${D_PLUG_ZSH_AUTOSUGGESTIONS}/${PLUG_FILE_NAME_ZSH_AUTOSUGGESTIONS}"
 
 # First time installation
-zsh-plug-install-zsh-autosugestions () {
+zsh-plug-install-zsh-autosugestions() {
     if [[ ! -d $D_PLUG_ZSH_AUTOSUGGESTIONS ]]; then
         echoIt "It seemed you have no installed a '${C_Y}${PLUG_NAME_ZSH_AUTOSUGGESTIONS}${C_E}' plugin." "$I_W"
         echoIt "About to install it..."
@@ -28,7 +28,7 @@ if switchY $PLUG_DO_INSTALL_ZSH_AUTOSUGGESTIONS ; then
 fi
 
 # Uninstall
-zsh-plug-uninstall-zsh-autosugestions () {
+zsh-plug-uninstall-zsh-autosugestions() {
     if [[ -d $D_PLUG_ZSH_AUTOSUGGESTIONS ]]; then
         echoIt "About to uninstall a '${C_Y}${PLUG_NAME_ZSH_AUTOSUGGESTIONS}${C_E}' plugin." "$I_W"
         rm -rf $D_PLUG_ZSH_AUTOSUGGESTIONS

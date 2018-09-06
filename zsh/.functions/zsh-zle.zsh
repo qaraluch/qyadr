@@ -3,7 +3,7 @@
 # ???
 
 # zle utils
-function _zle-init-widget () {                # when init widget, save what is typed in command line 
+_zle-init-widget() {                # when init widget, save what is typed in command line 
   if [[ -n $1 ]]; then
     BUFFER="$1 "
     CURSOR=$#BUFFER
@@ -12,7 +12,7 @@ function _zle-init-widget () {                # when init widget, save what is t
 }
 
 # from fzf-widgets
-function _zle-insert () {
+_zle-insert() {
   local -a items
   IFS=$'\n' items=(`cat`)
   if [[ -n $items ]]; then
@@ -32,7 +32,7 @@ function _zle-insert () {
   fi
 }
 
-function _zle-clear () {
+_zle-clear() {
   BUFFER=""
   CURSOR=$#BUFFER
   zle redisplay
@@ -53,7 +53,7 @@ zle -N zle-slash-backward-kill-word
 
 # From .grml.org
 # Useful to add options.
-function zle-jump-after-first-word () {
+zle-jump-after-first-word() {
   local WORDS
   WORDS=(${(z)BUFFER})
   if (( ${#WORDS} <= 1 )) ; then

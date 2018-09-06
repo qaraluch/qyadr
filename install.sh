@@ -19,23 +19,23 @@ readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
 readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
 readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
 
-echoIt () {
+echoIt() {
   local msg=$1 ; local icon=${2:-''} ; echo "$D_APP$icon $msg" 
 }
 
-echoDone () {
+echoDone() {
   echoIt "DONE!" "$I_T"
 }
 
-errorExit () {
+errorExit() {
   echo "$D_APP$I_C $1" 1>&2 ; exit 1
 }
 
-errorExitMainScript () {
+errorExitMainScript() {
   errorExit "${C_R}Sth. went wrong. Aborting script! $C_E"
 }
 
-yesConfirm () {
+yesConfirm() {
   local ABORT_MSG_DEFAULT="Abort script!"
   local ABORT_MSG=${2:-$ABORT_MSG_DEFAULT}
   read -p "$D_APP$I_A $1 " -n 1 -r
@@ -62,11 +62,11 @@ isEmpty() {
 }
 
 ################################### FNS ###################################
-stowErrorMsg () {
+stowErrorMsg() {
   echoIt "Cannot stowed package name: $1 (Is this correct name?)" "$I_C" 
 }
 
-stowAll () {
+stowAll() {
   for PACK in "${PACKS[@]}" ; do
   if isDir "$DOTNAME_FULL/$PACK" ; then
     stow -vd ${DOTNAME_FULL} -S ${PACK} -t ${HOME} || errorExitMainScript
@@ -79,7 +79,7 @@ stowAll () {
   echoIt "${C_Y}Warn: source .zshrc to see changes!${C_E}" "${I_W}"
 }
 
-unstowAll () {
+unstowAll() {
   for PACK in "${PACKS[@]}" ; do
   if isDir "$DOTNAME_FULL/$PACK" ; then
     stow -vd ${DOTNAME_FULL} -D ${PACK} -t ${HOME} || errorExitMainScript
@@ -91,14 +91,14 @@ unstowAll () {
   done
 }
 
-showPackages () {
+showPackages() {
   echoIt "List of packages:"
   for PACK in "${PACKS[@]}" ; do
     echoIt " - ${PACK}"  
   done
 }
 
-showManualCommands () {
+showManualCommands() {
   echoIt "Manual commands:"
   echoIt "stow -vt ~ -d .qyadr <package-name> # installation"
   echoIt "stow -vt ~ -d .qyadr -D <package-name> # remove"
@@ -142,7 +142,7 @@ parseEnvInput() {
   esac
 }
 
-saveEnvToFile () {
+saveEnvToFile() {
   local ENV=$1
   echo $ENV > .qyadr-env
 }
@@ -173,25 +173,25 @@ declare -a MENU_OPTIONS=( \
   "   [ 5 ] Quit" \
 )
 
-showMenuOptions () {
+showMenuOptions() {
   echoIt "  [ Choose one of the options bellow: ] ---------------" "${I_A}"
   for OPTION in "${MENU_OPTIONS[@]}" ; do
     echoIt "${OPTION}"
   done
 }
 
-readMenuOptionInput () {
+readMenuOptionInput() {
   read  -p "                 [ Enter your choice: ${C_B}>${C_E} " -n 1 -r
   echo >&2
   echo ${REPLY}
 }
 
-quitMenu () {
+quitMenu() {
     echoIt "Quitting script!"
     exit 0
 }
 
-execMenuOption () {
+execMenuOption() {
   local CHOSEN=$1
   local CHOSEN_MENU_OPTION_TXT=${MENU_OPTIONS[${CHOSEN}-1]}
   if [[ "$CHOSEN" == 1 ]] ; then
@@ -216,13 +216,13 @@ execMenuOption () {
   fi
 }
 
-launchMenu () {
+launchMenu() {
   showMenuOptions
   local CHOSENOPTION=$(readMenuOptionInput)
   execMenuOption $CHOSENOPTION
 }
 
-runMainInteractive () {
+runMainInteractive() {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo script (QYADR)${C_E}"
   echoIt "Used variables:"
   echoIt "  - home dir:           ${C_Y}$HOME${C_E}"
@@ -232,7 +232,7 @@ runMainInteractive () {
   launchMenu
 }
 
-runMainAuto () {
+runMainAuto() {
   local CHOSEN=$1
   local ENV=$2
   local ENV_PARSED=$(parseEnvInput ${ENV} ${DEFAULT_QYADR_ENV})
@@ -246,7 +246,7 @@ runMainAuto () {
   fi
 }
 
-main () {
+main() {
   local ENV=${2:-$DEFAULT_QYADR_ENV}
   # If args is passed to the script run auto mode
   # otherwise launch interactive one with menu. 

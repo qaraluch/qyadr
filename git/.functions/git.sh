@@ -35,7 +35,7 @@ git-add-update-commit-amend() {  git add -u && git-commit-amend }
 
 # From oh-my-zsh
 # Used also in prompt
-function git-get-current-branch() {
+git-get-current-branch() {
   local ref
   ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
   local ret=$?

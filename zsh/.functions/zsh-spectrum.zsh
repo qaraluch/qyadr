@@ -21,7 +21,7 @@ done
 export C_RESET="%{[00m%}"
 
 # Show all 256 colors with color number
-function zsh-spectrum-ls() {
+zsh-spectrum-ls() {
   local ZSH_SPECTRUM_TEXT=${1:-Make using 256 colors in zsh less painful}
   for code in {000..255}; do
     print -P -- "$code: %{$C_FG[$code]%}$ZSH_SPECTRUM_TEXT%{$C_RESET%}"
@@ -29,7 +29,7 @@ function zsh-spectrum-ls() {
 }
 
 # Show all 256 colors where the background is set to specific color
-function zsh-spectrum-ls-bg() {
+zsh-spectrum-ls-bg() {
   local ZSH_SPECTRUM_TEXT=${1:-Make using 256 colors in zsh less painful}
   for code in {000..255}; do
     print -P -- "$code: %{$C_BG[$code]%}$ZSH_SPECTRUM_TEXT%{$C_RESET%}"

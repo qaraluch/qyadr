@@ -19,19 +19,19 @@ readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
 readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
 readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
 
-echoIt () {
+echoIt() {
   local msg=$1 ; local icon=${2:-''} ; echo "$D_APP$icon $msg" 
 }
 
-errorExit () {
+errorExit() {
   echo "$D_APP$I_C $1" 1>&2 ; exit 1
 }
 
-errorExitMainScript () {
+errorExitMainScript() {
   errorExit "${C_R}Sth. went wrong. Aborting script! $C_E"
 }
 
-yesConfirm () {
+yesConfirm() {
   local ABORT_MSG_DEFAULT="Abort script!"
   local ABORT_MSG=${2:-$ABORT_MSG_DEFAULT}
   read -p "$D_APP$I_A $1" -n 1 -r
@@ -53,7 +53,7 @@ isFile() {
 }
 
 ################################### FNS ###################################
-cleanUps () {
+cleanUps() {
   if isDir ${DOTNAME_FULL} ; then
     rm -rf ${DOTNAME_FULL}
   fi
@@ -62,17 +62,17 @@ cleanUps () {
   fi
 }
 
-cloneQyadr () {
+cloneQyadr() {
   isDir  "$HOME/${DOTNAME}" || \
     git clone --depth 1 https://github.com/qaraluch/qyadr.git ${DOTNAME}
 }
 
-copyInstallScript () {
+copyInstallScript() {
   isFile ${INSTALL_FULL} && \
     cp "${INSTALL_FULL}" "${HOME}/.qyadr-install.sh"
 }
 
-copyPurgeScript () {
+copyPurgeScript() {
   isFile ${CLEANUP_FULL} && \
     cp "${CLEANUP_FULL}" "${HOME}/.qyadr-purge.sh"
 }
@@ -88,7 +88,7 @@ readonly CLEANUP_FULL="${DOTNAME_FULL}/purge.sh"
 readonly INSTALL_FULL="${DOTNAME_FULL}/install.sh"
 
 ################################### MAIN ###################################
-main () {
+main() {
   echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Deploy Script (QYADR-DEPLOY)${C_E}"
   echoIt "Used variables:"
   echoIt "  - home dir:                 ${C_Y}$HOME${C_E}"

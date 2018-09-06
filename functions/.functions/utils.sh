@@ -20,39 +20,39 @@ readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
 
 emptyLine() { echo "" >&2 }
 
-echoIt () {
+echoIt() {
   local MSG=$1 ; local ICON=${2:-''} ; echo "${D_Q}${ICON} $MSG" >&2
 }
 
-echoDone () {
+echoDone() {
   echoIt "DONE!" "$I_T"
 }
 
 # TIMESTAMPS
-getTimeStamp () {
+getTimeStamp() {
   echo $(date +%s)
 }
 
-getTimeStampHuman () { 
+getTimeStampHuman() { 
   echo $(date -d @"$(getTimeStamp)" +'%Y-%m-%d %H:%M:%S')
 }
 
-getTimeStampHumanFile () { 
+getTimeStampHumanFile() { 
   echo $(date -d @"$(getTimeStamp)" +'%Y-%m-%d_%H%M%S')
 }
 
 # SWITCHES
-isEqualY () {
+isEqualY() {
   local STRING=$1
   [[ "$STRING" == "Y" ]]
 }
 
-isEqualN () {
+isEqualN() {
   local STRING=$1
   [[ "$STRING" == "N" ]]
 }
 
-switchY () {
+switchY() {
   local SWITCH=$1
   if isEqualY $SWITCH; then
     return 0
@@ -61,7 +61,7 @@ switchY () {
   fi
 }
 
-switchN () {
+switchN() {
   local SWITCH=$1
   if isEqualN $SWITCH; then
     return 0

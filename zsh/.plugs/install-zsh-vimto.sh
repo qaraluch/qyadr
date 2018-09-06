@@ -14,7 +14,7 @@ export PLUG_CMD_INSTALLATION_ZSH_VIMTO="git clone --depth 1 ${PLUG_GIT_URL_ZSH_V
 export PLUG_CMD_SOURCE_ZSH_VIMTO="source ${D_PLUG_ZSH_VIMTO}/${PLUG_FILE_NAME_ZSH_VIMTO}"
 
 # First time installation
-zsh-plug-install-zsh-vimto () {
+zsh-plug-install-zsh-vimto() {
     if [[ ! -d $D_PLUG_ZSH_VIMTO ]]; then
         echoIt "It seemed you have no installed a '${C_Y}${PLUG_NAME_ZSH_VIMTO}${C_E}' plugin." "$I_W"
         echoIt "About to install it..."
@@ -28,7 +28,7 @@ if switchY $PLUG_DO_INSTALL_ZSH_VIMTO ; then
 fi
 
 # Uninstall
-zsh-plug-uninstall-zsh-vimto () {
+zsh-plug-uninstall-zsh-vimto() {
     if [[ -d $D_PLUG_ZSH_VIMTO ]]; then
         echoIt "About to uninstall a '${C_Y}${PLUG_NAME_ZSH_VIMTO}${C_E}' plugin." "$I_W"
         rm -rf $D_PLUG_ZSH_VIMTO

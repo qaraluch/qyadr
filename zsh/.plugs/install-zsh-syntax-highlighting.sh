@@ -14,7 +14,7 @@ export PLUG_CMD_INSTALLATION_ZSH_SYNTAX_HIGHLIGHTING="git clone --depth 1 ${PLUG
 export PLUG_CMD_SOURCE_ZSH_SYNTAX_HIGHLIGHTING="source ${D_PLUG_ZSH_SYNTAX_HIGHLIGHTING}/${PLUG_FILE_NAME_ZSH_SYNTAX_HIGHLIGHTING}"
 
 # First time installation
-zsh-plug-install-zsh-syntax-highlighting () {
+zsh-plug-install-zsh-syntax-highlighting() {
     if [[ ! -d $D_PLUG_ZSH_SYNTAX_HIGHLIGHTING ]]; then
         echoIt "It seemed you have no installed a '${C_Y}${PLUG_NAME_ZSH_SYNTAX_HIGHLIGHTING}${C_E}' plugin." "$I_W"
         echoIt "About to install it..."
@@ -28,7 +28,7 @@ if switchY $PLUG_DO_INSTALL_ZSH_SYNTAX_HIGHLIGHTING ; then
 fi
 
 # Uninstall
-zsh-plug-uninstall-zsh-syntax-highlighting () {
+zsh-plug-uninstall-zsh-syntax-highlighting() {
     if [[ -d $D_PLUG_ZSH_SYNTAX_HIGHLIGHTING ]]; then
         echoIt "About to uninstall a '${C_Y}${PLUG_NAME_ZSH_SYNTAX_HIGHLIGHTING}${C_E}' plugin." "$I_W"
         rm -rf $D_PLUG_ZSH_SYNTAX_HIGHLIGHTING
