@@ -1,115 +1,113 @@
 #!/usr/bin/env bash
+# Author: qaraluch - 12.2018 - MIT
+# Project: QYADR
 
-################################### UTILS ###################################
-# DELIMITER
-readonly D_APP='[ QYADR-DEPLOY ]'
+set -e
 
-# COLORS
-readonly C_R=$'\033[0;31m'            # Red
-readonly C_G=$'\033[1;32m'            # Green
-readonly C_Y=$'\033[1;33m'            # Yellow
-readonly C_B=$'\033[1;34m'            # Blue
-readonly C_M=$'\033[1;35m'            # Magenta
-readonly C_C=$'\033[1;36m'            # Cyan
-readonly C_E=$'\033[0m'               # End
+# Setup:
+readonly dotfilesRepo='https://github.com/qaraluch/qyadr.git' 
 
-# ICONS
-readonly I_T="[ ${C_G}✔${C_E} ]"      # Tick
-readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
-readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
-readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
+# Utils:
+readonly dotfilesHomeDir='.qyadr'
+readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
+readonly purgeScriptPath="${dotfilesPath}/purge.sh"
+readonly installScriptPath="${dotfilesPath}/install.sh"
+readonly purgeScriptName="${dotfilesHomeDir}-purge.sh"
+readonly installScriptName="${dotfilesHomeDir}-install.sh"
+
+readonly _pDel='[ QYADR-deploy ]'
+
+readonly _cr=$'\033[0;31m'            # color red
+readonly _cg=$'\033[1;32m'            # color green
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cb=$'\033[1;34m'            # color blue
+readonly _cm=$'\033[1;35m'            # color magenta
+readonly _cc=$'\033[1;36m'            # color cyan
+readonly _ce=$'\033[0m'               # color end
+
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
 
 echoIt() {
-  local msg=$1 ; local icon=${2:-''} ; echo "$D_APP$icon $msg" 
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
 }
 
 errorExit() {
-  echo "$D_APP$I_C $1" 1>&2 ; exit 1
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
 }
 
-errorExitMainScript() {
-  errorExit "${C_R}Sth. went wrong. Aborting script! $C_E"
-}
-
-yesConfirm() {
-  local ABORT_MSG_DEFAULT="Abort script!"
-  local ABORT_MSG=${2:-$ABORT_MSG_DEFAULT}
-  read -p "$D_APP$I_A $1" -n 1 -r
+yesConfirmOrAbort() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${fmgmt_del}${_ia} ${msg} [Y/n]?"
   echo >&2
-  if [[ ! $REPLY =~ ^[Yy]$ ]]
-  then
-      errorExit "$ABORT_MSG" 
+  REPLY=${REPLY:-'Y'}
+  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    errorExit_abortScript
   fi
 }
 
 isDir() {
-    local dir=$1
-    [[ -d $dir ]]
+  local dir=$1
+  [[ -d $dir ]]
 }
 
 isFile() {
-    local file=$1
-    [[ -f $file ]]
+  local file=$1
+  [[ -f $file ]]
 }
 
-################################### FNS ###################################
+echoDone() {
+  echoIt "$_pDel" "DONE!" "$_it" ; echo >&2
+}
+
+errorExit_abortScript() {
+  errorExit "$_pDel" "Aborting script!"
+}
+
+# Main:
+main() {
+  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Deployment Script (QYADR-DEPLOY)"
+  echoIt "$_pDel" "Used variables:"
+  echoIt "$_pDel" "  - home dir:                 ${_cy}$HOME${_ce}"
+  echoIt "$_pDel" "  - qyadr deployment dir:     ${_cy}${dotfilesHomeDir}${_ce}"
+  yesConfirmOrAbort "Ready to roll" 
+
+  cleanUps
+  echoIt "$_pDel" "Cleaned up old QYADR source dirs from home directory." "$_it"
+
+  cloneDotfilesGitRepo
+  echoIt "$_pDel" "Cloned QYADR repo." "$_it"
+  
+  copyInstallScript 
+  echoIt "$_pDel" "Copied install script to home directory for further use." "$_it"
+
+  copyPurgeScript 
+  echoIt "$_pDel" "Copied purge script to home directory for further use." "$_it"
+
+  echoDone
+}
+
 cleanUps() {
-  if isDir ${DOTNAME_FULL} ; then
-    rm -rf ${DOTNAME_FULL}
-  fi
-  if isDir ${DOTNAMESEC_FULL} ; then
-    rm -rf ${DOTNAMESEC_FULL}
+  if isDir ${dotfilesPath} ; then
+    rm -rf ${dotfilesPath}
   fi
 }
 
-cloneQyadr() {
-  isDir  "$HOME/${DOTNAME}" || \
-    git clone --depth 1 https://github.com/qaraluch/qyadr.git ${DOTNAME}
+cloneDotfilesGitRepo() {
+  isDir  "$HOME/${dotfilesHomeDir}" || \
+    git clone --depth 1 ${dotfilesRepo} ${dotfilesHomeDir}
 }
 
 copyInstallScript() {
-  isFile ${INSTALL_FULL} && \
-    cp "${INSTALL_FULL}" "${HOME}/.qyadr-install.sh"
+  isFile ${installScriptPath} && \
+    cp "${installScriptPath}" "${HOME}/${installScriptName}"
 }
 
 copyPurgeScript() {
-  isFile ${CLEANUP_FULL} && \
-    cp "${CLEANUP_FULL}" "${HOME}/.qyadr-purge.sh"
+  isFile ${purgeScriptPath} && \
+    cp "${purgeScriptPath}" "${HOME}/${purgeScriptName}"
 }
 
-################################### VARS ###################################
-readonly DOTNAME='.qyadr'
-readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
-
-readonly DOTNAMESEC='.qyadr-secret'
-readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
-
-readonly CLEANUP_FULL="${DOTNAME_FULL}/purge.sh"
-readonly INSTALL_FULL="${DOTNAME_FULL}/install.sh"
-
-################################### MAIN ###################################
-main() {
-  echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Deploy Script (QYADR-DEPLOY)${C_E}"
-  echoIt "Used variables:"
-  echoIt "  - home dir:                 ${C_Y}$HOME${C_E}"
-  echoIt "  - qyadr deployment dir:     ${C_Y}${DOTNAME}${C_E}"
-  echoIt "Check above installation settings." "$I_W"
-  yesConfirm "Ready to roll [y/n]? " 
-
-  cleanUps || errorExitMainScript
-  echoIt "Cleaned up old QYADR source dirs from home directory." "$I_T"
-
-  cloneQyadr || errorExitMainScript
-  echoIt "Cloned QYADR repo." "$I_T"
-  # cloneQyadrSecret || errorExitMainScript
-  
-  copyInstallScript || errorExitMainScript
-  echoIt "Copied install script to home directory for further use." "$I_T"
-
-  copyPurgeScript || errorExitMainScript
-  echoIt "Copied purge script to home directory for further use." "$I_T"
-
-  echoIt "DONE!"
-}
-
-main # run it!
+main 
