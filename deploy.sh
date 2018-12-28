@@ -12,8 +12,10 @@ readonly dotfilesHomeDir='.qyadr'
 readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
 readonly purgeScriptPath="${dotfilesPath}/purge.sh"
 readonly installScriptPath="${dotfilesPath}/install.sh"
+readonly updateScriptPath="${dotfilesPath}/update.sh"
 readonly purgeScriptName="${dotfilesHomeDir}-purge.sh"
 readonly installScriptName="${dotfilesHomeDir}-install.sh"
+readonly updateScriptName="${dotfilesHomeDir}-update.sh"
 
 readonly _pDel='[ QYADR-deploy ]'
 
@@ -86,6 +88,9 @@ main() {
   copyPurgeScript
   echoIt "$_pDel" "Copied purge script to home directory for further use." "$_it"
 
+  copyUpdateScript
+  echoIt "$_pDel" "Copied update script to home directory for further use." "$_it"
+
   echoDone
 }
 
@@ -108,6 +113,11 @@ copyInstallScript() {
 copyPurgeScript() {
   isFile ${purgeScriptPath} && \
     cp "${purgeScriptPath}" "${HOME}/${purgeScriptName}"
+}
+
+copyUpdateScript() {
+  isFile ${updateScriptPath} && \
+    cp "${updateScriptPath}" "${HOME}/${updateScriptName}"
 }
 
 main
