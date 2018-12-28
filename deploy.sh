@@ -40,7 +40,7 @@ errorExit() {
 
 yesConfirmOrAbort() {
   local msg=${1:-'Continue'}
-  read -n 1 -s -r -p "${fmgmt_del}${_ia} ${msg} [Y/n]?"
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
   echo >&2
   REPLY=${REPLY:-'Y'}
   if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
