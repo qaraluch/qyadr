@@ -1,74 +1,89 @@
 #!/usr/bin/env bash
+# Author: qaraluch - 12.2018 - MIT
+# Project: QYADR
 
-################################### UTILS ###################################
-# DELIMITER
-readonly D_APP='[ QYADR-UPDATE ]'
+set -e
 
-# COLORS
-readonly C_R=$'\033[0;31m'            # Red
-readonly C_G=$'\033[1;32m'            # Green
-readonly C_Y=$'\033[1;33m'            # Yellow
-readonly C_B=$'\033[1;34m'            # Blue
-readonly C_M=$'\033[1;35m'            # Magenta
-readonly C_C=$'\033[1;36m'            # Cyan
-readonly C_E=$'\033[0m'               # End
+# Setup:
 
-# ICONS
-readonly I_T="[ ${C_G}✔${C_E} ]"      # Tick
-readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
-readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
-readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
+# Utils:
+readonly dotfilesHomeDir='.qyadr'
+readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
+readonly purgeScriptPath="${dotfilesPath}/purge.sh"
+readonly installScriptPath="${dotfilesPath}/install.sh"
+readonly updateScriptPath="${dotfilesPath}/update.sh"
+readonly purgeScriptName="${dotfilesHomeDir}-purge.sh"
+readonly installScriptName="${dotfilesHomeDir}-install.sh"
+readonly updateScriptName="${dotfilesHomeDir}-update.sh"
+
+readonly _pDel='[ QYADR-update ]'
+
+readonly _cr=$'\033[0;31m'            # color red
+readonly _cg=$'\033[1;32m'            # color green
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cb=$'\033[1;34m'            # color blue
+readonly _cm=$'\033[1;35m'            # color magenta
+readonly _cc=$'\033[1;36m'            # color cyan
+readonly _ce=$'\033[0m'               # color end
+
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
 
 echoIt() {
-  local msg=$1 ; local icon=${2:-''} ; echo "$D_APP$icon $msg" 
-}
-
-echoDone() {
-  echoIt "DONE!" "$I_T"
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
 }
 
 errorExit() {
-  echo "$D_APP$I_C $1" 1>&2 ; exit 1
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
 }
 
-errorExitMainScript() {
-  errorExit "${C_R}Sth. went wrong. Aborting script! $C_E"
-}
-
-yesConfirm() {
-  local ABORT_MSG_DEFAULT="Abort script!"
-  local ABORT_MSG=${2:-$ABORT_MSG_DEFAULT}
-  read -p "$D_APP$I_A $1" -n 1 -r
+yesConfirmOrAbort() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
   echo >&2
-  if [[ ! $REPLY =~ ^[Yy]$ ]]
-  then
-      errorExit "$ABORT_MSG" 
+  REPLY=${REPLY:-'Y'}
+  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    errorExit_abortScript
   fi
 }
 
 isDir() {
-    local dir=$1
-    [[ -d $dir ]]
+  local dir=$1
+  [[ -d $dir ]]
 }
 
 isFile() {
-    local file=$1
-    [[ -f $file ]]
+  local file=$1
+  [[ -f $file ]]
 }
 
-################################### FNS ###################################
+echoDone() {
+  echoIt "$_pDel" "DONE!" "$_it" ; echo >&2
+}
+
+errorExit_abortScript() {
+  errorExit "$_pDel" "Aborting script!"
+}
+
+# Main:
+main() {
+  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - ${_cg}UPDATE${_ce} Script"
+  yesConfirmOrAbort "Ready to roll"
+  updateRepos
+  updateQyadrUtilScripts
+  echoIt "$_pDel" "${_cg}QYADR is up-to-date!${_ce}" "$_it"
+  echoDone
+}
+
 updateRepos() {
-  if isDir ${DOTNAME_FULL} ; then
-    cd ${DOTNAME_FULL}
-    execGitPull || errorExitMainScript
+  if isDir ${dotfilesPath} ; then
+    cd ${dotfilesPath}
+    execGitPull
     showGitLogs
-    echoIt "Updated: ${DOTNAME} repo." "${I_T}"
+    echoIt "$_pDel" "Updated: ${dotfilesHomeDir} repo." "${_it}"
   fi
-  # if isDir ${DOTNAMESEC_FULL} ; then
-  #   cd ${DOTNAMESEC_FULL}
-  #   execGitPull || errorExitMainScript
-  #   echoIt "Updated: ${DOTNAMESEC}" "${I_T}"
-  # fi
 }
 
 execGitPull() {
@@ -78,54 +93,33 @@ execGitPull() {
 showGitLogs() {
   local git_log_default_format='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc) %cd - %C(auto,reset)%s%C(auto,cyan)% gD% %Creset'
   git --no-pager log --pretty=format:"$git_log_default_format" --abbrev-commit --date=relative -10
-  echo ""
+  echoIt
 }
 
 updateQyadrUtilScripts() {
-  copyInstallScript || errorExitMainScript
-  echoIt "Copied again install script to home directory." "$I_T"
+  copyInstallScript
+  echoIt "$_pDel" "Copied again install script to home directory." "$_it"
 
-  copyPurgeScript || errorExitMainScript
-  echoIt "Copied again purge script to home directory." "$I_T"
+  copyPurgeScript
+  echoIt "$_pDel" "Copied again purge script to home directory." "$_it"
 
-  copyUpdateScript || errorExitMainScript
-  echoIt "Copied again update script to home directory." "$I_T"
+  copyUpdateScript
+  echoIt "$_pDel" "Copied again update script to home directory." "$_it"
 }
 
 copyInstallScript() {
-  isFile ${INSTALL_FULL} && \
-    cp "${INSTALL_FULL}" "${HOME}/.qyadr-install.sh"
+  isFile ${installScriptPath} && \
+    cp "${installScriptPath}" "${HOME}/${installScriptName}"
 }
 
 copyPurgeScript() {
-  isFile ${CLEANUP_FULL} && \
-    cp "${CLEANUP_FULL}" "${HOME}/.qyadr-purge.sh"
+  isFile ${purgeScriptPath} && \
+    cp "${purgeScriptPath}" "${HOME}/${purgeScriptName}"
 }
 
 copyUpdateScript() {
-  isFile ${UPDATE_FULL} && \
-    cp "${UPDATE_FULL}" "${HOME}/.qyadr-update.sh"
+  isFile ${updateScriptPath} && \
+    cp "${updateScriptPath}" "${HOME}/${updateScriptName}"
 }
 
-################################### VARS ###################################
-readonly DOTNAME='.qyadr'
-readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
-
-# readonly DOTNAMESEC='.qyadr-secret'
-# readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
-
-readonly CLEANUP_FULL="${DOTNAME_FULL}/purge.sh"
-readonly INSTALL_FULL="${DOTNAME_FULL}/install.sh"
-readonly UPDATE_FULL="${DOTNAME_FULL}/update.sh"
-
-################################### MAIN ###################################
-main() {
-  echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo ${C_G}UPDATE${C_E} Script (QYADR-UPDATE)${C_E}"
-  yesConfirm "Ready to roll [y/n]? " 
-  updateRepos 
-  updateQyadrUtilScripts
-  echoIt "${C_G}QYADR is up-to-date!${C_E}" "$I_T"
-  echoDone
-}
-
-main # run it!
+main
