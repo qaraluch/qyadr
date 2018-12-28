@@ -70,7 +70,7 @@ errorExit_abortScript() {
 
 # Main:
 main() {
-  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Deployment Script (QYADR-DEPLOY)"
+  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Deployment Script"
   echoIt "$_pDel" "Used variables:"
   echoIt "$_pDel" "  - home dir:                 ${_cy}$HOME${_ce}"
   echoIt "$_pDel" "  - qyadr deployment dir:     ${_cy}${dotfilesHomeDir}${_ce}"
@@ -106,13 +106,27 @@ cloneDotfilesGitRepo() {
 }
 
 copyInstallScript() {
-  isFile ${installScriptPath} && \
-    cp "${installScriptPath}" "${HOME}/${installScriptName}"
+  if isFile ${installScriptPath} ; then
+    local finalDest="${HOME}/${installScriptName}"
+    cp "${installScriptPath}" ${finalDest}
+    chmod u+x ${finalDest}
+  fi
 }
 
 copyPurgeScript() {
-  isFile ${purgeScriptPath} && \
-    cp "${purgeScriptPath}" "${HOME}/${purgeScriptName}"
+  if isFile ${purgeScriptPath} ; then
+    local finalDest="${HOME}/${purgeScriptName}"
+    cp "${purgeScriptPath}" ${finalDest}
+    chmod u+x ${finalDest}
+  fi
+}
+
+copyUpdateScript() {
+  if isFile ${updateScriptPath} ; then
+    local finalDest="${HOME}/${updateScriptName}"
+    cp "${updateScriptPath}" ${finalDest}
+    chmod u+x ${finalDest}
+  fi
 }
 
 copyUpdateScript() {

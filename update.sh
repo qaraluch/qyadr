@@ -98,28 +98,37 @@ showGitLogs() {
 
 updateQyadrUtilScripts() {
   copyInstallScript
-  echoIt "Copied again install script to home directory." "$I_T"
+  echoIt "$_pDel" "Copied again install script to home directory." "$_it"
 
   copyPurgeScript
-  echoIt "Copied again purge script to home directory." "$I_T"
+  echoIt "$_pDel" "Copied again purge script to home directory." "$_it"
 
   copyUpdateScript
-  echoIt "Copied again update script to home directory." "$I_T"
+  echoIt "$_pDel" "Copied again update script to home directory." "$_it"
 }
 
 copyInstallScript() {
-  isFile ${installScriptPath} && \
-    cp "${installScriptPath}" "${HOME}/${installScriptName}"
+  if isFile ${installScriptPath} ; then
+    local finalDest="${HOME}/${installScriptName}"
+    cp "${installScriptPath}" ${finalDest}
+    chmod u+x ${finalDest}
+  fi
 }
 
 copyPurgeScript() {
-  isFile ${purgeScriptPath} && \
-    cp "${purgeScriptPath}" "${HOME}/${purgeScriptName}"
+  if isFile ${purgeScriptPath} ; then
+    local finalDest="${HOME}/${purgeScriptName}"
+    cp "${purgeScriptPath}" ${finalDest}
+    chmod u+x ${finalDest}
+  fi
 }
 
 copyUpdateScript() {
-  isFile ${updateScriptPath} && \
-    cp "${updateScriptPath}" "${HOME}/${updateScriptName}"
+  if isFile ${updateScriptPath} ; then
+    local finalDest="${HOME}/${updateScriptName}"
+    cp "${updateScriptPath}" ${finalDest}
+    chmod u+x ${finalDest}
+  fi
 }
 
 main

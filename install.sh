@@ -131,7 +131,7 @@ saveEnvToFile() {
 
 # interactive path
 runMainInteractive() {
-  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} installation script"
+  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Installation script"
   echoIt "$_pDel" "Used variables:"
   echoIt "$_pDel" "  - home dir:           ${_cy}$HOME${_ce}"
   echoIt "$_pDel" "  - dotfiles repo:      ${_cy}$dotfilesPath${_ce}"
@@ -156,7 +156,7 @@ declare -a menuOptions=( \
 )
 
 showMenuOptions() {
-  echoIt "$_pDel" "---[ Choose one of the options bellow: ] ---------------" "${I_A}"
+  echoIt "$_pDel" "---[ Choose one of the options bellow: ] ---------------" "${_ia}"
   for OPTION in "${menuOptions[@]}" ; do
     echoIt "$_pDel" "${OPTION}"
   done
@@ -172,13 +172,13 @@ execMenuOption() {
   local choice=$1
   local menuOptionTxt=${menuOptions[${choice}-1]}
   if [[ "$choice" == 1 ]] ; then
-    yesConfirmOrAbort "Ready to: ${_cy}$menuOptionTxt${_ce}" \
+    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
       && stowAll
     echoIt "$_pDel" "Installed all dotfiles in home directory."
     setupEnvInteractive
     echoDone
   elif [[ "$choice" == 2 ]] ; then
-    yesConfirmOrAbort "Ready to: ${_cy}$menuOptionTxt${_ce}" \
+    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
       && unstowAll
     echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
     echoDone
@@ -214,13 +214,13 @@ showManualCommands() {
 stowAll() {
   for pack in "${packs[@]}" ; do
     if isDir "$dotfilesPath/$pack" ; then
-      stow -vd ${dotfilesPath} -S ${pack} -t ${home}
+      stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
       echoIt "$_pDel" "Stowed package name: ${_cy}${pack}${_ce}" "$_it"
     else
       errorExit_stowError ${pack}
     fi
   done
-  echoIt "$_pDel" "${_cy}Warn: source .zshrc to see changes!${_ce}" "${_iw}"
+  echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
 }
 
 errorExit_stowError() {
