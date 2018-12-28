@@ -83,7 +83,7 @@ main() {
   local env=${2:-$qyadrEnvDefault}
   if isStringEmpty "$@" ; then
     # If args is passed to the script run auto mode
-    # otherwise launch interactive one with menu. 
+    # otherwise launch interactive one with menu.
     runMainInteractive
   else
     runMainAuto $1 $env
@@ -96,10 +96,10 @@ runMainAuto() {
   local env=$2
   local envParsed=$(parseEnvInput ${env} ${qyadrEnvDefault})
   if [[ "$choice" == 1 ]] ; then
-    stowAll 
+    stowAll
     saveEnvToFile $envParsed
   elif [[ "$choice" == 2 ]] ; then
-    unstowAll 
+    unstowAll
   else
     quitMenu
   fi
@@ -113,12 +113,12 @@ parseEnvInput() {
     echo $input
     ;;
     vb)
-    echo $input 
+    echo $input
     ;;
     linux)
-    echo $input 
+    echo $input
     ;;
-    *) 
+    *)
     echo $default
     ;;
   esac
@@ -163,7 +163,7 @@ showMenuOptions() {
 }
 
 readMenuOptionInput() {
-  read  -n 1 -r -p "${_pDel}    Enter your choice: ${_cb}>${_ce} " 
+  read  -n 1 -r -p "${_pDel}    Enter your choice: ${_cb}>${_ce} "
   echo >&2
   echo ${REPLY}
 }
@@ -201,7 +201,7 @@ quitMenu() {
 showPackages() {
   echoIt "$_pDel" "List of packages:"
   for pack in "${packs[@]}" ; do
-    echoIt "$_pDel" " - ${pack}"  
+    echoIt "$_pDel" " - ${pack}"
   done
 }
 
@@ -214,9 +214,9 @@ showManualCommands() {
 stowAll() {
   for pack in "${packs[@]}" ; do
     if isDir "$dotfilesPath/$pack" ; then
-      stow -vd ${dotfilesPath} -S ${pack} -t ${home} 
-      echoIt "$_pDel" "Stowed package name: ${_cy}${pack}${_ce}" "$_it" 
-    else 
+      stow -vd ${dotfilesPath} -S ${pack} -t ${home}
+      echoIt "$_pDel" "Stowed package name: ${_cy}${pack}${_ce}" "$_it"
+    else
       errorExit_stowError ${pack}
     fi
   done
@@ -224,15 +224,15 @@ stowAll() {
 }
 
 errorExit_stowError() {
-  echoIt "${_pDel}" "Cannot stowed package name: $1 (Is this correct name?)" "$_iw" 
+  echoIt "${_pDel}" "Cannot stowed package name: $1 (Is this correct name?)" "$_iw"
   errorExit "$_pDel" "Aborting script!"
 }
 
 unstowAll() {
   for pack in "${packs[@]}" ; do
     if isDir "$dotfilesPath/$pack" ; then
-      stow -vd ${dotfilesPath} -D ${pack} -t ${HOME} 
-      echoIt "Unstowed package name: ${_cy}${pack}${_ce}" "$_it" 
+      stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
+      echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
     fi
   done
 }
@@ -251,7 +251,7 @@ inputWithDefault() {
   read -r -p "${_pDel}${_ia} $msg "
   if  isStringEmpty $REPLY ; then
     echo  $default
-  else 
+  else
     echo $REPLY
   fi
 }

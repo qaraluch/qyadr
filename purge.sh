@@ -1,132 +1,128 @@
 #!/usr/bin/env bash
+# Author: qaraluch - 12.2018 - MIT
+# Project: QYADR
 
-################################### UTILS ###################################
-# DELIMITER
-readonly D_APP='[ QYADR-PURGE ]'
+set -e
 
-# COLORS
-readonly C_R=$'\033[0;31m'            # Red
-readonly C_G=$'\033[1;32m'            # Green
-readonly C_Y=$'\033[1;33m'            # Yellow
-readonly C_B=$'\033[1;34m'            # Blue
-readonly C_M=$'\033[1;35m'            # Magenta
-readonly C_C=$'\033[1;36m'            # Cyan
-readonly C_E=$'\033[0m'               # End
+# Setup:
 
-# ICONS
-readonly I_T="[ ${C_G}✔${C_E} ]"      # Tick
-readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
-readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
-readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
+# Utils:
+readonly dotfilesHomeDir='.qyadr'
+readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
+readonly deployScriptPath="${HOME}/${dotfilesHomeDir}-deploy.sh"
+readonly purgeScriptPath="${HOME}/${dotfilesHomeDir}-purge.sh"
+readonly installScriptPath="${HOME}/${dotfilesHomeDir}-install.sh"
+readonly updateScriptPath="${HOME}/${dotfilesHomeDir}-update.sh"
+readonly envFilePath="${HOME}/${dotfilesHomeDir}-env"
+readonly plugsCacheDirPath="${HOME}/.plugs-cache"
+
+readonly _pDel='[ QYADR-purge ]'
+
+readonly _cr=$'\033[0;31m'            # color red
+readonly _cg=$'\033[1;32m'            # color green
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cb=$'\033[1;34m'            # color blue
+readonly _cm=$'\033[1;35m'            # color magenta
+readonly _cc=$'\033[1;36m'            # color cyan
+readonly _ce=$'\033[0m'               # color end
+
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _iw="[ ${_cy}!${_ce} ]"      # icon warn
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+readonly _ia="[ ${_cy}?${_ce} ]"      # icon ask
 
 echoIt() {
-  local msg=$1 ; local icon=${2:-''} ; echo "$D_APP$icon $msg" 
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
 }
 
 errorExit() {
-  echo "$D_APP$I_C $1" 1>&2 ; exit 1
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
 }
 
-errorExitMainScript() {
-  errorExit "${C_R}Sth. went wrong. Aborting script! $C_E"
-}
-
-yesConfirm() {
-  local ABORT_MSG_DEFAULT="Abort script!"
-  local ABORT_MSG=${2:-$ABORT_MSG_DEFAULT}
-  read -p "$D_APP$I_A $1" -n 1 -r
+yesConfirmOrAbort() {
+  local msg=${1:-'Continue'}
+  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
   echo >&2
-  if [[ ! $REPLY =~ ^[Yy]$ ]]
-  then
-      errorExit "$ABORT_MSG" 
+  REPLY=${REPLY:-'Y'}
+  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    errorExit_abortScript
   fi
 }
 
 isDir() {
-    local dir=$1
-    [[ -d $dir ]]
+  local dir=$1
+  [[ -d $dir ]]
 }
 
 isFile() {
-    local file=$1
-    [[ -f $file ]]
+  local file=$1
+  [[ -f $file ]]
 }
 
-################################### FNS ###################################
+echoDone() {
+  echoIt "$_pDel" "DONE!" "$_it" ; echo >&2
+}
+
+errorExit_abortScript() {
+  errorExit "$_pDel" "Aborting script!"
+}
+
+# Main:
+main() {
+  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce}  - Purge Script"
+  echoIt "$_pDel" "Used variables:"
+  echoIt "$_pDel" "  - home dir:               ${_cy}${HOME}${_ce}"
+  echoIt "$_pDel" "  - qyadr repo:             ${_cy}${dotfilesPath}${_ce}"
+  echoIt "$_pDel" "  - qyadr deploy script:    ${_cy}${deployScriptPath}${_ce}"
+  echoIt "$_pDel" "  - qyadr install script:   ${_cy}${installScriptPath}${_ce}"
+  echoIt "$_pDel" "  - qyadr purge script:     ${_cy}${purgeScriptPath}${_ce}"
+  echoIt "$_pDel" "  - qyadr update script:    ${_cy}${updateScriptPath}${_ce}"
+  echoIt "$_pDel" "  - qyadr environment file: ${_cy}${envFilePath}${_ce}"
+  echoIt "$_pDel" "  - qyadr plugs cache dir:  ${_cy}${plugsCacheDirPath}${_ce}"
+  yesConfirmOrAbort "Ready to roll"
+
+  uninstallPackages
+  echoIt "$_pDel" "Uninstalled all QYADR packages." "$_it"
+
+  purgeRepos
+  echoIt "$_pDel" "Purged QYADR source dirs from home directory." "$_it"
+
+  purgeUtils
+  echoIt "$_pDel" "Purged QYADR util scripts, files and cache dir." "$_it"
+
+  echoDone
+}
+
 uninstallPackages() {
   # auto mode of uninstall script
   isFile ~/.qyadr-install.sh && bash ~/.qyadr-install.sh 2
 }
 
 purgeRepos() {
-  if isDir ${DOTNAME_FULL} ; then
-    rm -rf ${DOTNAME_FULL}
+  if isDir ${dotfilesPath} ; then
+    rm -rf ${dotfilesPath}
   fi
-  # if isDir ${DOTNAMESEC_FULL} ; then
-  #   rm -rf ${DOTNAMESEC_FULL}
-  # fi
 }
 
 purgeUtils() {
-  if isFile ${DEPLOY_FULL} ; then
-    rm -rf ${DEPLOY_FULL}
+  if isFile ${deployScriptPath} ; then
+    rm -rf ${deployScriptPath}
   fi
-  if isFile ${INSTALL_FULL} ; then
-    rm -rf ${INSTALL_FULL}
+  if isFile ${installScriptPath} ; then
+    rm -rf ${installScriptPath}
   fi
-  if isFile ${PURGE_FULL} ; then
-    rm -rf ${PURGE_FULL}
+  if isFile ${purgeScriptPath} ; then
+    rm -rf ${purgeScriptPath}
   fi
-  if isFile ${UPDATE_FULL} ; then
-    rm -rf ${UPDATE_FULL}
+  if isFile ${updateScriptPath} ; then
+    rm -rf ${updateScriptPath}
   fi
-  if isFile ${ENV_FULL} ; then
-    rm -rf ${ENV_FULL}
+  if isFile ${envFilePath} ; then
+    rm -rf ${envFilePath}
   fi
-  if isDir ${PLUGS_CACHE_FULL} ; then
-    rm -rf ${PLUGS_CACHE_FULL}
+  if isDir ${plugsCacheDirPath} ; then
+    rm -rf ${plugsCacheDirPath}
   fi
 }
 
-################################### VARS ###################################
-readonly DOTNAME='.qyadr'
-readonly DOTNAME_FULL="${HOME}/${DOTNAME}"
-
-# readonly DOTNAMESEC='.qyadr-secret'
-# readonly DOTNAMESEC_FULL="${HOME}/${DOTNAMESEC}"
-
-readonly DEPLOY_FULL="${HOME}/.qyadr-deploy.sh"
-readonly PURGE_FULL="${HOME}/.qyadr-purge.sh"
-readonly INSTALL_FULL="${HOME}/.qyadr-install.sh"
-readonly UPDATE_FULL="${HOME}/.qyadr-update.sh"
-readonly ENV_FULL="${HOME}/.qyadr-env"
-readonly PLUGS_CACHE_FULL="${HOME}/.plugs-cache"
-
-################################### MAIN ###################################
-main() {
-  echoIt "Welcome to: ${C_Y}Qaraluch's Yet Another Dotfiles Repo Purge Script (QYADR-PURGE)${C_E}"
-  echoIt "Used variables:"
-  echoIt "  - home dir:              ${C_Y}${HOME}${C_E}"
-  echoIt "  - qyadr repo:            ${C_Y}${DOTNAME_FULL}${C_E}"
-  echoIt "  - qyadr-secret repo:     ${C_Y}${DOTNAMESEC_FULL}${C_E}"
-  echoIt "  - qyadr deploy script:   ${C_Y}${DEPLOY_FULL}${C_E}"
-  echoIt "  - qyadr install script:  ${C_Y}${INSTALL_FULL}${C_E}"
-  echoIt "  - qyadr enviroment file: ${C_Y}${ENV_FULL}${C_E}"
-  echoIt "  - qyadr purge script:    ${C_Y}${PURGE_FULL}${C_E}"
-  echoIt "  - qyadr plugs cache dir: ${C_Y}${PLUGS_CACHE_FULL}${C_E}"
-  echoIt "Check above installation settings." "$I_W"
-  yesConfirm "Ready to roll [y/n]? " 
-
-  uninstallPackages || errorExitMainScript
-  echoIt "Uninstalled all QYADR packages." "$I_T"
-
-  purgeRepos || errorExitMainScript
-  echoIt "Purged QYADR source dirs from home directory." "$I_T"
-
-  purgeUtils || errorExitMainScript
-  echoIt "Purged deploy, install and purge scripts too." "$I_T"
-
-  echoIt "DONE!"
-}
-
-main # run it!
+main

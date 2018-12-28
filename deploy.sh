@@ -5,7 +5,7 @@
 set -e
 
 # Setup:
-readonly dotfilesRepo='https://github.com/qaraluch/qyadr.git' 
+readonly dotfilesRepo='https://github.com/qaraluch/qyadr.git'
 
 # Utils:
 readonly dotfilesHomeDir='.qyadr'
@@ -72,18 +72,18 @@ main() {
   echoIt "$_pDel" "Used variables:"
   echoIt "$_pDel" "  - home dir:                 ${_cy}$HOME${_ce}"
   echoIt "$_pDel" "  - qyadr deployment dir:     ${_cy}${dotfilesHomeDir}${_ce}"
-  yesConfirmOrAbort "Ready to roll" 
+  yesConfirmOrAbort "Ready to roll"
 
   cleanUps
   echoIt "$_pDel" "Cleaned up old QYADR source dirs from home directory." "$_it"
 
   cloneDotfilesGitRepo
   echoIt "$_pDel" "Cloned QYADR repo." "$_it"
-  
-  copyInstallScript 
+
+  copyInstallScript
   echoIt "$_pDel" "Copied install script to home directory for further use." "$_it"
 
-  copyPurgeScript 
+  copyPurgeScript
   echoIt "$_pDel" "Copied purge script to home directory for further use." "$_it"
 
   echoDone
@@ -110,4 +110,4 @@ copyPurgeScript() {
     cp "${purgeScriptPath}" "${HOME}/${purgeScriptName}"
 }
 
-main 
+main
