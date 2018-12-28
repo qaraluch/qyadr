@@ -70,7 +70,7 @@ errorExit_abortScript() {
 
 # Main:
 main() {
-  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Deployment Script (QYADR-DEPLOY)"
+  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Deployment Script"
   echoIt "$_pDel" "Used variables:"
   echoIt "$_pDel" "  - home dir:                 ${_cy}$HOME${_ce}"
   echoIt "$_pDel" "  - qyadr deployment dir:     ${_cy}${dotfilesHomeDir}${_ce}"
