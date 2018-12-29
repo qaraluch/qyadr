@@ -1,86 +1,69 @@
-# Utilities for QYADR functions
+# Utilities for QYADR functions only
 
 # qyadr delimiter
-readonly D_Q='[ QYADR ]'
+readonly _QDel='[ QYADR ]'
 
-# COLORS
-readonly C_R=$'\033[0;31m'            # Red
-readonly C_G=$'\033[1;32m'            # Green
-readonly C_Y=$'\033[1;33m'            # Yellow
-readonly C_B=$'\033[1;34m'            # Blue
-readonly C_M=$'\033[1;35m'            # Magenta
-readonly C_C=$'\033[1;36m'            # Cyan
-readonly C_E=$'\033[0m'               # End
+# colors
+readonly _Qcr=$'\033[0;31m'            # Red
+readonly _Qcg=$'\033[1;32m'            # Green
+readonly _Qcy=$'\033[1;33m'            # Yellow
+readonly _Qcb=$'\033[1;34m'            # Blue
+readonly _Qcm=$'\033[1;35m'            # Magenta
+readonly _Qcc=$'\033[1;36m'            # Cyan
+readonly _Qce=$'\033[0m'               # End
 
-# ICONS
-readonly I_T="[ ${C_G}✔${C_E} ]"      # Tick
-readonly I_W="[ ${C_Y}!${C_E} ]"      # Warn
-readonly I_C="[ ${C_R}✖${C_E} ]"      # Cross
-readonly I_A="[ ${C_Y}?${C_E} ]"      # Ask
+# icons
+readonly _Qit="[ ${_Qcg}✔${_Qce} ]"      # Tick
+readonly _Qiw="[ ${_Qcy}!${_Qce} ]"      # Warn
+readonly _Qic="[ ${_Qcr}✖${_Qce} ]"      # Cross
+readonly _Qia="[ ${_Qcy}?${_Qce} ]"      # Ask
 
-emptyLine() { echo "" >&2 }
-
-echoIt() {
-  local MSG=$1 ; local ICON=${2:-''} ; echo "${D_Q}${ICON} $MSG" >&2
+_echoIt() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
 }
 
-echoDone() {
-  echoIt "DONE!" "$I_T"
+_echoDone() {
+  _echoIt "$_QDel" "DONE!" "$_Qit" ; echo >&2
 }
 
-# TIMESTAMPS
-getTimeStamp() {
+# Timestamps
+_getTimeStamp() {
   echo $(date +%s)
 }
 
-getTimeStampHuman() { 
-  echo $(date -d @"$(getTimeStamp)" +'%Y-%m-%d %H:%M:%S')
+_getTimeStampHuman() {
+  echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d %H:%M:%S')
 }
 
-getTimeStampHumanFile() { 
-  echo $(date -d @"$(getTimeStamp)" +'%Y-%m-%d_%H%M%S')
+_getTimeStampHumanFile() {
+  echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d_%H%M%S')
 }
 
-# SWITCHES
-isEqualY() {
-  local STRING=$1
-  [[ "$STRING" == "Y" ]]
+# switches
+_isStringEqualY() {
+  local string=$1
+  [[ "$string" == "Y" ]]
 }
 
-isEqualN() {
-  local STRING=$1
-  [[ "$STRING" == "N" ]]
-}
-
-switchY() {
-  local SWITCH=$1
-  if isEqualY $SWITCH; then
+_switchY() {
+  local switch=$1
+  if _isStringEqualY $switch; then
     return 0
   else
     return 1
   fi
 }
 
-switchN() {
-  local SWITCH=$1
-  if isEqualN $SWITCH; then
+_isStringEqualN() {
+  local string=$1
+  [[ "$string" == "N" ]]
+}
+
+_switchN() {
+  local switch=$1
+  if _isStringEqualN $switch; then
     return 0
   else
     return 1
-  fi
-}
-
-# PROFILING
-profileFor() {
-  if switchY $ZSH_PROFILE ; then
-    PROFILE_MSG=${1:-Run profile for sth...}
-    _timer=$(($(date +%s%N)/1000000)) 
-  fi
-}
-
-profileStop() {
-  if switchY $ZSH_PROFILE ; then
-    _now=$(($(date +%s%N)/1000000))
-    echo "[!] ---> elapsed: $(($_now-$_timer)) ms for: ${PROFILE_MSG}"
   fi
 }
