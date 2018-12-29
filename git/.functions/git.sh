@@ -1,3 +1,4 @@
+# For aliases
 git-g-alias() {
     if [[  $# -eq 0 ]]; then
       git-status-log-recent
@@ -10,11 +11,11 @@ export GIT_LOG_MY_FORMAT='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc)%cd - %C(
 export GIT_LOG_MY_FORMAT_LONG_DATE='%C(auto,yellow)%h - %C(auto,cyan) %cd %C(auto,reset) - %s%C(auto,cyan)% gD% %C(reset)'
 export GIT_LOG_MY_FORMAT_GRAPH='%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s'
 git-log-recent() {  git --no-pager log --pretty=format:"$GIT_LOG_MY_FORMAT" --abbrev-commit --date=relative "-$1" ; }
-git-log-date() { git --no-pager log --pretty=format:"$GIT_LOG_MY_FORMAT_LONG_DATE" --abbrev-commit --date=format:'%Y-%m-%d %a %H:%M:%S' "-$1" ; } 
+git-log-date() { git --no-pager log --pretty=format:"$GIT_LOG_MY_FORMAT_LONG_DATE" --abbrev-commit --date=format:'%Y-%m-%d %a %H:%M:%S' "-$1" ; }
 git-log-tree() { git log --graph --full-history --all --color --pretty=format:"$GIT_LOG_MY_FORMAT_GRAPH" ; }
 
 git-status() { git status -s ; }
-git-status-log-recent() {git-status ; emptyLine ; git-log-recent 10}
+git-status-log-recent() {git-status ; __echoIt ; git-log-recent 10}
 
 git-push() { git push $* && git-status-log-recent ; }
 
@@ -33,9 +34,10 @@ git-add-update-commit() {  git add -u && git-commit-better $* }
 git-add-update-commit-message() {  git add -u && git-commit-message $* }
 git-add-update-commit-amend() {  git add -u && git-commit-amend }
 
-# From oh-my-zsh
-# Used also in prompt
+# Util functions
 git-get-current-branch() {
+  # From oh-my-zsh
+  # Used also in prompt
   local ref
   ref=$(command git symbolic-ref --quiet HEAD 2> /dev/null)
   local ret=$?
