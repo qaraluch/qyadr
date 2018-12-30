@@ -1,20 +1,24 @@
-# TOPICAL ORDER ------------------------------------------------------------
-# qyadr - dotfiles mgmt 
-alias qyadr-purge='bash ~/.qyadr-purge.sh'
-alias qyadr-purge-repo='rm -rf $D_QYADR/.git'     # env from .zshrc
-alias qyadr-install='bash ~/.qyadr-install.sh'
-alias qyadr-update='bash ~/.qyadr/update.sh'
+# WIDGETS NOT BIND -----------------------------------------------------
+# gmsg  - zle-fzf-git-get-commit-msg          # zsh/.functions/zsh-zle-fzf.zsh
+# ghash - zle-fzf-git-get-hash	              # zsh/.functions/zsh-zle-fzf.zsh
+# gadd  - zle-fzf-git-get-status-item         # zsh/.functions/zsh-zle-fzf.zsh
+
+# IN TOPICAL ORDER -------------------------------------------------------
+# qyadr - dotfiles mgmt
+alias qyadr-purge='~/.qyadr-purge.sh'
+alias qyadr-install='~/.qyadr-install.sh'
+alias qyadr-update='~/.qyadr-update.sh'
 
 # zsh - mgmt
-alias reload='zsh-reload'                      # .functions/zsh-mgmt.sh
-alias time-zsh='zsh-measure-loading-times'     # .functions/zsh-mgmt.sh
+alias reload='zsh-reload'                         # .functions/zsh-mgmt.sh
+alias profile-zsh='zsh-measure-loading-times'     # .functions/zsh-mgmt.sh
 
 # dirs - list contents
 alias ls-default='ls -1FcrtA'         # 1 line, classify, ? , reverse, by time, almost all
 alias ls-long='ls -lAh'               # long, almost all, human
-alias ls-long-size='ls -lahS'         # long, all, human, by size 
-alias ls-long-time='ls -laht'         # long, all, human, by time 
-alias ls-long-no-dotfiles='ls -lh'    # long, all, human, by time 
+alias ls-long-size='ls -lahS'         # long, all, human, by size
+alias ls-long-time='ls -laht'         # long, all, human, by time
+alias ls-long-no-dotfiles='ls -lh'    # long, human
 
 # dirs - movements
 alias cd-grandparent='../..'
@@ -76,7 +80,6 @@ alias h='show-history'
 alias ha='show-history-all'
 alias hs='show-history-screen'
 
-alias man='man-better-command'                          # .functions/better-commands.sh
 alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target
 
@@ -90,3 +93,6 @@ alias ls='ls --color=auto --group-directories-first'
 
 alias rm='rm -Irf'
 alias take='mkdir-and-cd-better-command'
+
+alias spectrum='zsh-spectrum-ls'
+alias spectrumbg='zsh-spectrum-ls-bg'
