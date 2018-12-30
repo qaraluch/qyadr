@@ -1,49 +1,50 @@
+# ZSH-AUTOSUGGESTIONS - install & setup
 # Home URL: [zsh-users/zsh-autosuggestions: Fish-like autosuggestions for zsh](https://github.com/zsh-users/zsh-autosuggestions)
 
 # Switch
-export PLUG_DO_INSTALL_ZSH_AUTOSUGGESTIONS='Y'
+## TODO: move to config
+export PLUG_INSTALL_ZSH_AUTOSUGGESTIONS='Y'
 
-# Vars 
-export PLUG_NAME_ZSH_AUTOSUGGESTIONS='zsh-autosuggestions'
-export PLUG_FILE_NAME_ZSH_AUTOSUGGESTIONS='zsh-autosuggestions.zsh'
-export PLUG_GIT_URL_ZSH_AUTOSUGGESTIONS='https://github.com/zsh-users/zsh-autosuggestions.git'
+# Vars
+readonly plugName='zsh-autosuggestions'
+readonly plugInstallerName='zsh-autosuggestions.zsh'
+readonly plugGitURL='https://github.com/zsh-users/zsh-autosuggestions.git'
 
-# Computed Vars
-export D_PLUG_ZSH_AUTOSUGGESTIONS="${D_PLUGS}-cache/${PLUG_NAME_ZSH_AUTOSUGGESTIONS}" 
-export PLUG_CMD_INSTALLATION_ZSH_AUTOSUGGESTIONS="git clone --depth 1 ${PLUG_GIT_URL_ZSH_AUTOSUGGESTIONS} ${D_PLUG_ZSH_AUTOSUGGESTIONS}"
-export PLUG_CMD_SOURCE_ZSH_AUTOSUGGESTIONS="source ${D_PLUG_ZSH_AUTOSUGGESTIONS}/${PLUG_FILE_NAME_ZSH_AUTOSUGGESTIONS}"
+readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
+readonly plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
-zsh-plug-install-zsh-autosugestions() {
-    if [[ ! -d $D_PLUG_ZSH_AUTOSUGGESTIONS ]]; then
-        echoIt "It seemed you have no installed a '${C_Y}${PLUG_NAME_ZSH_AUTOSUGGESTIONS}${C_E}' plugin." "$I_W"
-        echoIt "About to install it..."
-        eval $PLUG_CMD_INSTALLATION_ZSH_AUTOSUGGESTIONS
-        echoDone
+plug-install-zsh-autosuggestions() {
+    if [[ ! -d $plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${plugName}${_Qce}' plugin." "$_Qiw"
+        _echoIt "$_QDel" "About to install it..."
+        local execPlugCommand=$("${plugCommandDownload[@]}")
+        _echoDone
     fi
 }
 
-if switchY $PLUG_DO_INSTALL_ZSH_AUTOSUGGESTIONS ; then
-    zsh-plug-install-zsh-autosugestions
+if _switchY $PLUG_INSTALL_ZSH_AUTOSUGGESTIONS ; then
+    plug-install-zsh-autosuggestions
 fi
 
 # Uninstall
-zsh-plug-uninstall-zsh-autosugestions() {
-    if [[ -d $D_PLUG_ZSH_AUTOSUGGESTIONS ]]; then
-        echoIt "About to uninstall a '${C_Y}${PLUG_NAME_ZSH_AUTOSUGGESTIONS}${C_E}' plugin." "$I_W"
-        rm -rf $D_PLUG_ZSH_AUTOSUGGESTIONS
-        echoDone
+plug-uninstall-zsh-autosuggestions() {
+    if [[ -d $plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "About to uninstall a '${_Qcy}${plugName}${_Qce}' plugin." "$_Qiw"
+        rm -rf $plugCacheDirPath
+        _echoDone
     fi
 }
 
-if ! switchY $PLUG_DO_INSTALL_ZSH_AUTOSUGGESTIONS ; then
-    zsh-plug-uninstall-zsh-autosugestions
+if _switchN $PLUG_INSTALL_ZSH_AUTOSUGGESTIONS ; then
+    plug-uninstall-zsh-autosuggestions
 fi
-
 
 # Source
-if switchY $PLUG_DO_INSTALL_ZSH_AUTOSUGGESTIONS && [[ -d $D_PLUG_ZSH_AUTOSUGGESTIONS ]]; then
-    eval $PLUG_CMD_SOURCE_ZSH_AUTOSUGGESTIONS
+if _switchY $PLUG_INSTALL_ZSH_AUTOSUGGESTIONS && [[ -d $plugCacheDirPath ]]; then
+    local execPlugCommand=$("${plugCommandInstaller[@]}")
 fi
 
-# Plugin config
+# SETUP part ----------------------------------------------------------------------------------
+# n/n
