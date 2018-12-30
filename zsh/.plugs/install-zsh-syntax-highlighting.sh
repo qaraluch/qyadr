@@ -10,14 +10,14 @@ readonly plugName='zsh-syntax-highlighting'
 readonly plugInstallerName='zsh-syntax-highlighting.zsh'
 readonly plugGitURL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
 
-export plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
-export plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
-export plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
+readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
+readonly plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
 plug-install-zsh-syntax-highlighting() {
     if [[ ! -d $plugCacheDirPath ]]; then
-        _echoIt "$_QDel" "It seemed you have no installed a '${_Qcy}${plugName}${_Qce}' plugin." "$_Qiw"
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${plugName}${_Qce}' plugin." "$_Qiw"
         _echoIt "$_QDel" "About to install it..."
         local execPlugCommand=$("${plugCommandDownload[@]}")
         _echoDone
@@ -40,7 +40,6 @@ plug-uninstall-zsh-syntax-highlighting() {
 if _switchN $PLUG_INSTALL_ZSH_SYNTAX_HIGHLIGHTING ; then
     plug-uninstall-zsh-syntax-highlighting
 fi
-
 
 # Source
 # zsh-syntax-highlighting.zsh must be sourced at the end of the .zshrc file

@@ -1,49 +1,50 @@
+# ZSH-VIMTO - install & setup
 # Home URL: [laurenkt/zsh-vimto: Improved zsh vim mode (bindkey -v) plugin](https://github.com/laurenkt/zsh-vimto)
 
 # Switch
-export PLUG_DO_INSTALL_ZSH_VIMTO='Y'
+## TODO: move to config
+export PLUG_INSTALL_ZSH_VIMTO='Y'
 
-# Vars 
-export PLUG_NAME_ZSH_VIMTO='zsh-vimto'
-export PLUG_FILE_NAME_ZSH_VIMTO='zsh-vimto.zsh'
-export PLUG_GIT_URL_ZSH_VIMTO='https://github.com/laurenkt/zsh-vimto.git'
+# Vars
+readonly plugName='zsh-vimto'
+readonly plugInstallerName='zsh-vimto.zsh'
+readonly plugGitURL='https://github.com/laurenkt/zsh-vimto.git'
 
-# Computed Vars
-export D_PLUG_ZSH_VIMTO="${D_PLUGS}-cache/${PLUG_NAME_ZSH_VIMTO}" 
-export PLUG_CMD_INSTALLATION_ZSH_VIMTO="git clone --depth 1 ${PLUG_GIT_URL_ZSH_VIMTO} ${D_PLUG_ZSH_VIMTO}"
-export PLUG_CMD_SOURCE_ZSH_VIMTO="source ${D_PLUG_ZSH_VIMTO}/${PLUG_FILE_NAME_ZSH_VIMTO}"
+readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
+readonly plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
-zsh-plug-install-zsh-vimto() {
-    if [[ ! -d $D_PLUG_ZSH_VIMTO ]]; then
-        echoIt "It seemed you have no installed a '${C_Y}${PLUG_NAME_ZSH_VIMTO}${C_E}' plugin." "$I_W"
-        echoIt "About to install it..."
-        eval $PLUG_CMD_INSTALLATION_ZSH_VIMTO
-        echoDone
+plug-install-zsh-vimto() {
+    if [[ ! -d $plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${plugName}${_Qce}' plugin." "$_Qiw"
+        _echoIt "$_QDel" "About to install it..."
+        local execPlugCommand=$("${plugCommandDownload[@]}")
+        _echoDone
     fi
 }
 
-if switchY $PLUG_DO_INSTALL_ZSH_VIMTO ; then
-    zsh-plug-install-zsh-vimto
+if _switchY $PLUG_INSTALL_ZSH_VIMTO ; then
+    plug-install-zsh-vimto
 fi
 
 # Uninstall
-zsh-plug-uninstall-zsh-vimto() {
-    if [[ -d $D_PLUG_ZSH_VIMTO ]]; then
-        echoIt "About to uninstall a '${C_Y}${PLUG_NAME_ZSH_VIMTO}${C_E}' plugin." "$I_W"
-        rm -rf $D_PLUG_ZSH_VIMTO
-        echoDone
+plug-uninstall-zsh-vimto() {
+    if [[ -d $plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "About to uninstall a '${_Qcy}${plugName}${_Qce}' plugin." "$_Qiw"
+        rm -rf $plugCacheDirPath
+        _echoDone
     fi
 }
 
-if ! switchY $PLUG_DO_INSTALL_ZSH_VIMTO ; then
-    zsh-plug-uninstall-zsh-vimto
+if _switchN $PLUG_INSTALL_ZSH_VIMTO ; then
+    plug-uninstall-zsh-vimto
 fi
-
 
 # Source
-if switchY $PLUG_DO_INSTALL_ZSH_VIMTO && [[ -d $D_PLUG_ZSH_VIMTO ]]; then
-    eval $PLUG_CMD_SOURCE_ZSH_VIMTO
+if _switchY $PLUG_INSTALL_ZSH_VIMTO && [[ -d $plugCacheDirPath ]]; then
+    local execPlugCommand=$("${plugCommandInstaller[@]}")
 fi
 
-# Plugin config
+# SETUP part ----------------------------------------------------------------------------------
+# n/n
