@@ -1,63 +1,63 @@
-# Home URL: [junegunn/fzf: A command-line fuzzy finder](https://github.com/junegunn/fzf) 
+# FZF - install & setup
+# Home URL: [junegunn/fzf: A command-line fuzzy finder](https://github.com/junegunn/fzf)
 
 # Switch
-export PLUG_DO_INSTALL_FZF='Y'
+## TODO: move to config
+export PLUG_INSTALL_FZF='Y'
 
-# Vars 
-export PLUG_NAME_FZF='fzf'
-export PLUG_FILE_NAME_FZF='install'
-export PLUG_GIT_URL_FZF='https://github.com/junegunn/fzf.git'
+# Vars
+readonly plugName='fzf'
+readonly plugInstallerName='install'
+readonly plugUninstallerName='uninstall'
+readonly plugGitURL='https://github.com/junegunn/fzf.git'
 
-# Computed Vars
-export D_PLUG_FZF="${D_PLUGS}-cache/${PLUG_NAME_FZF}" 
-export PLUG_CMD_INSTALLATION_FZF="git clone --depth 1 ${PLUG_GIT_URL_FZF} ${D_PLUG_FZF}"
+readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
 
 # First time installation
-zsh-plug-install-fzf() {
-    if [[ ! -d $D_PLUG_FZF ]]; then
-        echoIt "It seemed you have no installed a '${C_Y}${PLUG_NAME_FZF}${C_E}'." "$I_W"
-        echoIt "About to install it..."
-        eval $PLUG_CMD_INSTALLATION_FZF
-        echoDone
+plug-install-fzf() {
+    if [[ ! -d $plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${plugName}${_Qce}'." "$_Qiw"
+        _echoIt "$_QDel" "About to install it..."
+        local execPlugCommand=$("${plugCommandDownload[@]}")
+        _echoDone
     fi
 }
 
-if switchY $PLUG_DO_INSTALL_FZF ; then
-    zsh-plug-install-fzf
+if _switchY $PLUG_INSTALL_FZF ; then
+    plug-install-fzf
 fi
 
 # Uninstall
-zsh-plug-uninstall-fzf() {
-    if [[ -d $D_PLUG_FZF ]]; then
-        echoIt "About to uninstall a '${C_Y}${PLUG_NAME_FZF}${C_E}'." "$I_W"
-        rm -rf $D_PLUG_FZF
-        echoDone
+plug-uninstall-fzf() {
+    if [[ -d $plugCacheDirPath ]]; then
+        _echoIt "$_QDel" "About to uninstall a '${_Qcy}${plugName}${_Qce}'." "$_Qiw"
+        bash ${plugCacheDirPath}/${plugUninstallerName}
+        rm -rf $plugCacheDirPath
+        _echoDone
     fi
 }
 
-if ! switchY $PLUG_DO_INSTALL_FZF ; then
-    zsh-plug-uninstall-fzf
+if _switchN $PLUG_INSTALL_FZF ; then
+    plug-uninstall-fzf
 fi
 
 # Fzf installer (one time)
-if switchY $PLUG_DO_INSTALL_FZF && [[ ! -f "${D_PLUG_FZF}/bin/fzf" ]]; then
-  bash ${D_PLUG_FZF}/${PLUG_FILE_NAME_FZF} --no-bash --no-zsh --no-fish --no-update-rc
+if _switchY $PLUG_INSTALL_FZF && [[ ! -f "${plugCacheDirPath}/bin/fzf" ]]; then
+  bash ${plugCacheDirPath}/${plugInstallerName} --no-bash --no-zsh --no-fish --no-update-rc
 fi
 
-# Setup fzf
-# ---------
+# SETUP part ----------------------------------------------------------------------------------
 if [[ ! "$PATH" == */fzf/bin* ]]; then
-  export PATH="$PATH:${D_PLUG_FZF}/bin"
+  export PATH="$PATH:${plugCacheDirPath}/bin"
 fi
 
 # Auto-completion
-# ---------------
 # if interactive shell add completion
-[[ $- == *i* ]] && source "${D_PLUG_FZF}/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "${plugCacheDirPath}/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
-# ------------
-source "${D_PLUG_FZF}/shell/key-bindings.zsh"
+source "${plugCacheDirPath}/shell/key-bindings.zsh"
 
 export FZF_DEFAULT_OPTS='
     --color fg:252,bg:233,hl:67,fg+:252,bg+:235,hl+:81
