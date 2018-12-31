@@ -1,8 +1,9 @@
-profileZSH='N'
-
 # Profiling fns
-profileFor() { if [[ "$profileZSH" == "Y" ]] ; then profileMsg=${1:-Run profile for sth...} ; _timer=$(($(date +%s%N)/1000000)) ; fi ; }
-profileStop() { if [[ "$profileZSH" == "Y" ]] ; then _now=$(($(date +%s%N)/1000000)) ; echo "[!] ---> elapsed: $(($_now-$_timer)) ms for: ${profileMsg}" ; fi ; }
+profileFor() { if [[ "$QYADR_PROFILE_ZSH" == "Y" ]] ; then profileMsg=${1:-Run profile for sth...} ; _timer=$(($(date +%s%N)/1000000)) ; fi ; }
+profileStop() { if [[ "$QYADR_PROFILE_ZSH" == "Y" ]] ; then _now=$(($(date +%s%N)/1000000)) ; echo "[!] ---> elapsed: $(($_now-$_timer)) ms for: ${profileMsg}" ; fi ; }
+
+# Qyadr config
+[ -f ~/.qyadr-config ] && source ~/.qyadr-config
 
 # Vars
 export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles path, used in aliases

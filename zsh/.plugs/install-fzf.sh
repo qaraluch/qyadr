@@ -1,10 +1,6 @@
 # FZF - install & setup
 # Home URL: [junegunn/fzf: A command-line fuzzy finder](https://github.com/junegunn/fzf)
 
-# Switch
-## TODO: move to config
-export PLUG_INSTALL_FZF='Y'
-
 # Vars
 readonly plugName='fzf'
 readonly plugInstallerName='install'

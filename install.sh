@@ -6,6 +6,7 @@ set -e
 
 # Setup:
 declare -a packs=( \
+  qyadr \
   zsh \
   functions \
   aliases \

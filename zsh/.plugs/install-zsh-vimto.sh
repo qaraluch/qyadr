@@ -1,10 +1,6 @@
 # ZSH-VIMTO - install & setup
 # Home URL: [laurenkt/zsh-vimto: Improved zsh vim mode (bindkey -v) plugin](https://github.com/laurenkt/zsh-vimto)
 
-# Switch
-## TODO: move to config
-export PLUG_INSTALL_ZSH_VIMTO='Y'
-
 # Vars
 readonly plugName='zsh-vimto'
 readonly plugInstallerName='zsh-vimto.zsh'

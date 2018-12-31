@@ -1,10 +1,6 @@
 # ZSH-AUTOSUGGESTIONS - install & setup
 # Home URL: [zsh-users/zsh-autosuggestions: Fish-like autosuggestions for zsh](https://github.com/zsh-users/zsh-autosuggestions)
 
-# Switch
-## TODO: move to config
-export PLUG_INSTALL_ZSH_AUTOSUGGESTIONS='Y'
-
 # Vars
 readonly plugName='zsh-autosuggestions'
 readonly plugInstallerName='zsh-autosuggestions.zsh'

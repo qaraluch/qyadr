@@ -1,10 +1,6 @@
 # ZSH SYNTAX HIGHLIGHTING - install & setup
 # Home URL: [zsh-users/zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh.](https://github.com/zsh-users/zsh-syntax-highlighting)
 
-# Switch
-## TODO: move to config
-export PLUG_INSTALL_ZSH_SYNTAX_HIGHLIGHTING='Y'
-
 # Vars
 readonly plugName='zsh-syntax-highlighting'
 readonly plugInstallerName='zsh-syntax-highlighting.zsh'
