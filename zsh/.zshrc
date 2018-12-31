@@ -11,9 +11,6 @@ export QYADR_PLUGS_ROOT="${HOME}/.plugs"
 # Path
 export PATH=$HOME/.scripts:$PATH
 
-# Env
-[ -f ~/.qyadr-env ] && export QYADR_ENV=$(cat ~/.qyadr-env)
-
 # Sources
 profileFor 'all fns'
 for file ($HOME/.functions/*.{sh,zsh}) source $file

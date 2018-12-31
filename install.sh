@@ -14,11 +14,8 @@ declare -a packs=( \
   _wsl \
 )
 
-readonly qyadrEnvDefault='wsl'
-
 # Utils:
 readonly dotfilesHomeDir='.qyadr'
-readonly qyadrEnvFile='.qyadr-env'
 
 readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
 
@@ -80,53 +77,25 @@ errorExit_abortScript() {
 
 # Main:
 main() {
-  local env=${2:-$qyadrEnvDefault}
   if isStringEmpty "$@" ; then
     # If args is passed to the script run auto mode
     # otherwise launch interactive one with menu.
     runMainInteractive
   else
-    runMainAuto $1 $env
+    runMainAuto $1
   fi
 }
 
 # auto path
 runMainAuto() {
   local choice=$1
-  local env=$2
-  local envParsed=$(parseEnvInput ${env} ${qyadrEnvDefault})
   if [[ "$choice" == 1 ]] ; then
     stowAll
-    saveEnvToFile $envParsed
   elif [[ "$choice" == 2 ]] ; then
     unstowAll
   else
     quitMenu
   fi
-}
-
-parseEnvInput() {
-  local input=$1
-  local default=$2
-  case $input in
-    wsl)
-    echo $input
-    ;;
-    vb)
-    echo $input
-    ;;
-    linux)
-    echo $input
-    ;;
-    *)
-    echo $default
-    ;;
-  esac
-}
-
-saveEnvToFile() {
-  local env=$1
-  echo $env > "${qyadrEnvFile}"
 }
 
 # interactive path
@@ -175,7 +144,6 @@ execMenuOption() {
     yesConfirmOrAbort "Ready to: $menuOptionTxt" \
       && stowAll
     echoIt "$_pDel" "Installed all dotfiles in home directory."
-    setupEnvInteractive
     echoDone
   elif [[ "$choice" == 2 ]] ; then
     yesConfirmOrAbort "Ready to: $menuOptionTxt" \
@@ -235,25 +203,6 @@ unstowAll() {
       echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
     fi
   done
-}
-
-setupEnvInteractive() {
-  local msg="Choose for witch environment install qyadr: ${_cy}${qyadrEnvDefault}${_ce} [enter] or ${_cy}vb${_ce} or ${_cy}linux${_ce} ?"
-  local choice=$(inputWithDefault "${msg}" ${qyadrEnvDefault})
-  local parsed=$(parseEnvInput ${choice} ${qyadrEnvDefault})
-  saveEnvToFile $parsed
-  echoIt "$_pDel" "Saved environment variable: ${_cy}${parsed}${_ce}, to the file: ${qyadrEnvFile}"
-}
-
-inputWithDefault() {
-  local msg=$1
-  local default=$2
-  read -r -p "${_pDel}${_ia} $msg "
-  if  isStringEmpty $REPLY ; then
-    echo  $default
-  else
-    echo $REPLY
-  fi
 }
 
 main "$@"
