@@ -16,6 +16,10 @@ plug-install-fzf() {
         _echoIt "$_QDel" "It seems you have no installed a '${_Qcy}${plugName}${_Qce}'." "$_Qiw"
         _echoIt "$_QDel" "About to install it..."
         local execPlugCommand=$("${plugCommandDownload[@]}")
+        if _switchY $PLUG_INSTALL_FZF && [[ ! -f "${plugCacheDirPath}/bin/fzf" ]]; then
+            _echoIt "$_QDel" "About to uninstall a '${_Qcy}${plugName}${_Qce}'." "$_Qiw"
+            bash ${plugCacheDirPath}/${plugInstallerName} --no-bash --no-zsh --no-fish --no-update-rc
+        fi
         _echoDone
     fi
 }
@@ -36,11 +40,6 @@ plug-uninstall-fzf() {
 
 if _switchN $PLUG_INSTALL_FZF ; then
     plug-uninstall-fzf
-fi
-
-# Fzf installer (one time)
-if _switchY $PLUG_INSTALL_FZF && [[ ! -f "${plugCacheDirPath}/bin/fzf" ]]; then
-  bash ${plugCacheDirPath}/${plugInstallerName} --no-bash --no-zsh --no-fish --no-update-rc
 fi
 
 # SETUP part ----------------------------------------------------------------------------------

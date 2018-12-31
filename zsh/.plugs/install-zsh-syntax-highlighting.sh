@@ -8,7 +8,6 @@ plugGitURL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
 
 plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
 plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
-plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
 plug-install-zsh-syntax-highlighting() {
@@ -40,7 +39,7 @@ fi
 # Source
 # zsh-syntax-highlighting.zsh must be sourced at the end of the .zshrc file
 if _switchY $PLUG_INSTALL_ZSH_SYNTAX_HIGHLIGHTING && [[ -d $plugCacheDirPath ]]; then
-    local execPlugCommand=$("${plugCommandInstaller[@]}")
+    source "${plugCacheDirPath}/${plugInstallerName}"
 fi
 
 # SETUP part ----------------------------------------------------------------------------------

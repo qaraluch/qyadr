@@ -8,7 +8,6 @@ plugGitURL='https://github.com/laurenkt/zsh-vimto.git'
 
 plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
 plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
-plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
 plug-install-zsh-vimto() {
@@ -39,7 +38,7 @@ fi
 
 # Source
 if _switchY $PLUG_INSTALL_ZSH_VIMTO && [[ -d $plugCacheDirPath ]]; then
-    local execPlugCommand=$("${plugCommandInstaller[@]}")
+    source "${plugCacheDirPath}/${plugInstallerName}"
 fi
 
 # SETUP part ----------------------------------------------------------------------------------
