@@ -2,13 +2,13 @@
 # Home URL: [junegunn/fzf: A command-line fuzzy finder](https://github.com/junegunn/fzf)
 
 # Vars
-readonly plugName='fzf'
-readonly plugInstallerName='install'
-readonly plugUninstallerName='uninstall'
-readonly plugGitURL='https://github.com/junegunn/fzf.git'
+plugName='fzf'
+plugInstallerName='install'
+plugUninstallerName='uninstall'
+plugGitURL='https://github.com/junegunn/fzf.git'
 
-readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
-readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
+plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
 
 # First time installation
 plug-install-fzf() {

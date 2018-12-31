@@ -2,13 +2,13 @@
 # Home URL: [zsh-users/zsh-autosuggestions: Fish-like autosuggestions for zsh](https://github.com/zsh-users/zsh-autosuggestions)
 
 # Vars
-readonly plugName='zsh-autosuggestions'
-readonly plugInstallerName='zsh-autosuggestions.zsh'
-readonly plugGitURL='https://github.com/zsh-users/zsh-autosuggestions.git'
+plugName='zsh-autosuggestions'
+plugInstallerName='zsh-autosuggestions.zsh'
+plugGitURL='https://github.com/zsh-users/zsh-autosuggestions.git'
 
-readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
-readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
-readonly plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
+plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
+plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
 plug-install-zsh-autosuggestions() {

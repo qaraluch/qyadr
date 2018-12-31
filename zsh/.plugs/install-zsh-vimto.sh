@@ -2,13 +2,13 @@
 # Home URL: [laurenkt/zsh-vimto: Improved zsh vim mode (bindkey -v) plugin](https://github.com/laurenkt/zsh-vimto)
 
 # Vars
-readonly plugName='zsh-vimto'
-readonly plugInstallerName='zsh-vimto.zsh'
-readonly plugGitURL='https://github.com/laurenkt/zsh-vimto.git'
+plugName='zsh-vimto'
+plugInstallerName='zsh-vimto.zsh'
+plugGitURL='https://github.com/laurenkt/zsh-vimto.git'
 
-readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
-readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
-readonly plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
+plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
+plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
 plug-install-zsh-vimto() {

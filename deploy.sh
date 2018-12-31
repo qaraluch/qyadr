@@ -129,9 +129,4 @@ copyUpdateScript() {
   fi
 }
 
-copyUpdateScript() {
-  isFile ${updateScriptPath} && \
-    cp "${updateScriptPath}" "${HOME}/${updateScriptName}"
-}
-
 main

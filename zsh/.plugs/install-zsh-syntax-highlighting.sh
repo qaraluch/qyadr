@@ -2,13 +2,13 @@
 # Home URL: [zsh-users/zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh.](https://github.com/zsh-users/zsh-syntax-highlighting)
 
 # Vars
-readonly plugName='zsh-syntax-highlighting'
-readonly plugInstallerName='zsh-syntax-highlighting.zsh'
-readonly plugGitURL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
+plugName='zsh-syntax-highlighting'
+plugInstallerName='zsh-syntax-highlighting.zsh'
+plugGitURL='https://github.com/zsh-users/zsh-syntax-highlighting.git'
 
-readonly plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
-readonly plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
-readonly plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
+plugCacheDirPath="${QYADR_PLUGS_ROOT}-cache/${plugName}"
+plugCommandDownload=( git clone --depth 1 "${plugGitURL}" "${plugCacheDirPath}" )
+plugCommandInstaller=( source "${plugCacheDirPath}/${plugInstallerName}" )
 
 # First time installation
 plug-install-zsh-syntax-highlighting() {
