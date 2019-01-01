@@ -41,5 +41,19 @@ setopt interactivecomments	           # enable comments on the command-line
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-autoload -U edit-command-line         # edit command in editro (in vim)
+autoload -U edit-command-line         # edit command in editor (in vim)
 zle -N edit-command-line
+
+# History config
+[ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh-history"
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+
+setopt hist_find_no_dups	    # when searching history, show no duplicates
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_all_dups   # remove older duplicate entries from history
+setopt hist_save_no_dups      # means that whatever options are set for the current session, the shell is not to save duplicated lines more than once
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt hist_reduce_blanks     # tide up command from extra blank chars
+setopt inc_append_history     # add commands to HISTFILE in order of execution
