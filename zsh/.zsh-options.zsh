@@ -26,8 +26,8 @@ export GREP_COLOR="1;32"                # better grep color from Arch Wiki
 # Dirs fn options
 setopt auto_pushd
 setopt pushd_ignore_dups
-setopt pushdminus
-setopt autocd
+setopt pushd_minus
+setopt auto_cd
 
 # Partial line symbol show setup
 PROMPT_EOL_MARK='.'

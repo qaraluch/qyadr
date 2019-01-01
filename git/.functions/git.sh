@@ -15,7 +15,7 @@ git-log-date() { git --no-pager log --pretty=format:"$GIT_LOG_MY_FORMAT_LONG_DAT
 git-log-tree() { git log --graph --full-history --all --color --pretty=format:"$GIT_LOG_MY_FORMAT_GRAPH" ; }
 
 git-status() { git status -s ; }
-git-status-log-recent() {git-status ; __echoIt ; git-log-recent 10}
+git-status-log-recent() {git-status ; _echoIt ; git-log-recent 10}
 
 git-push() { git push $* && git-status-log-recent ; }
 
