@@ -79,6 +79,7 @@ alias gpforce='git-push --force'
 alias h='show-history'
 alias ha='show-history-all'
 alias hs='show-history-screen'
+alias hedit='edit-zsh-history-in-editor'                # functions/.functions/better-commands.sh
 
 alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target
