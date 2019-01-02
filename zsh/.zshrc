@@ -41,6 +41,10 @@ profileFor 'plugin - fzf'
 source $QYADR_PLUGS_ROOT/install-fzf.sh
 profileStop
 
+profileFor 'plugin - fzf-marks'
+source $QYADR_PLUGS_ROOT/install-fzf-marks.sh
+profileStop
+
 # Env - wsl
 ##TODO: dokonczyc
 if [[ "$QYADR_ENV" == "wsl" ]] ; then
