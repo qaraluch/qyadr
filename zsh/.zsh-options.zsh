@@ -36,6 +36,7 @@ PROMPT_EOL_MARK='.'
 setopt extendedglob                    # globling see zsh.md
 setopt no_beep                         # no beep on error
 setopt interactivecomments	           # enable comments on the command-line
+setopt correct_all	                   # auto correction of commands
 
 # Editor
 export VISUAL=vim
