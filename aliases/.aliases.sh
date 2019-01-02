@@ -81,6 +81,8 @@ alias ha='show-history-all'
 alias hs='show-history-screen'
 alias hedit='edit-zsh-history-in-editor'                # functions/.functions/better-commands.sh
 
+alias jm='jump'                                         # jump mark - see: fzf-mark plugin (the same as keybinding C+G)
+
 alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target
 
