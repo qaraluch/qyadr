@@ -45,14 +45,6 @@ zle-insert-last-typed-word() {
 
 zle -N zle-insert-last-typed-word;
 
-# From zsh-pony
-zle-slash-backward-kill-word() {
-  local wordChars="${wordChars:s@/@}"
-  zle backward-kill-word
-}
-
-zle -N zle-slash-backward-kill-word
-
 # From .grml.org
 # Useful to add options.
 zle-jump-after-first-word() {
