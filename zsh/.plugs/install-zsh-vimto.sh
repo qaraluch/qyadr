@@ -42,4 +42,5 @@ if _switchY $PLUG_INSTALL_ZSH_VIMTO && [[ -d $plugCacheDirPath ]]; then
 fi
 
 # SETUP part ----------------------------------------------------------------------------------
-# n/n
+# custom timeout
+export KEYTIMEOUT=20
