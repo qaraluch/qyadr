@@ -3,8 +3,13 @@
 # - .functions/utils.sh
 
 zsh-reload() {
-  source ~/.zshrc
-  _echoIt "$_QDel" "Reloaded ${_Qcy}ZSH${_Qce} shell config." "${_Qit}"
+  if [[ "$1" == "s" ]] ; then   # s like source or soft
+    source ~/.zshrc
+    _echoIt "$_QDel" "Reloaded ${_Qcy}ZSH${_Qce} shell config." "${_Qit}"
+  else
+    _echoIt "$_QDel" "About to reloaded ${_Qcy}ZSH${_Qce} shell itself..." "${_Qiw}"
+    exec ${SHELL}
+  fi
 }
 
 zsh-measure-loading-times() {

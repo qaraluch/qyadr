@@ -20,7 +20,6 @@ profileStop
 profileFor 'zsh options'
 [ -f ~/.zsh-options.zsh ] && source ~/.zsh-options.zsh
 [ -f ~/.zsh-prompt.zsh ] && source ~/.zsh-prompt.zsh
-[ -f ~/.aliases.sh ] && source ~/.aliases.sh
 [ -f ~/.zsh-completion.zsh ] && source ~/.zsh-completion.zsh
 profileStop
 
@@ -59,4 +58,7 @@ if [[ "$QYADR_ENV" == "wsl" ]] ; then
 fi
 
 # Bindkeys
-source ~/.zsh-bindkeys.zsh
+[ -f ~/.zsh-bindkeys.zsh ] && source ~/.zsh-bindkeys.zsh
+
+# Aliases
+[ -f ~/.aliases.sh ] && source ~/.aliases.sh
