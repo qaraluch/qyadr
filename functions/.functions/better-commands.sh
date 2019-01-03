@@ -17,3 +17,14 @@ tree-better() {
 tree-better-dirs() {
   tree -dC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
+
+pogoda() {
+  local city="$1"
+  local cityDefault='Gliwice'
+  local apiUrl='http://wttr.in/'
+  if [ -z "$city" ]; then
+      city="${cityDefault}"
+  fi
+  local results=$(curl -s "${apiUrl}${city}")
+  echo $results
+}
