@@ -35,6 +35,10 @@ _getTimeStampHuman() {
   echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d %H:%M:%S')
 }
 
+_getTimeStampDate() {
+  echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d')
+}
+
 _getTimeStampHumanFile() {
   echo $(date -d @"$(_getTimeStamp)" +'%Y-%m-%d_%H%M%S')
 }

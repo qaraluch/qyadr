@@ -15,6 +15,8 @@ abbrev-alias -g T2="| tail -40"
 abbrev-alias -g G="| egrep"
 abbrev-alias -g FF="find . -type f"
 abbrev-alias -g FD="find . -type d"
+abbrev-alias -f TS="_getTimeStampDate"              # like Time Stamp
+abbrev-alias -f TSF="_getTimeStampHumanFile"        # like Time Stamp File
 
 # IN TOPICAL ORDER -------------------------------------------------------
 # qyadr - dotfiles mgmt
