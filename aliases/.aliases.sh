@@ -3,6 +3,18 @@
 # ghash - zle-fzf-git-get-hash	              # zsh/.functions/zsh-zle-fzf.zsh
 # gadd  - zle-fzf-git-get-status-item         # zsh/.functions/zsh-zle-fzf.zsh
 
+# GLOBAL ALIASES ---------------------------------------------------------
+alias -g ...='cd-grandparent'
+alias -g ....='cd-great-grandparent'
+alias -g WC='| wc -l'
+alias -g DN='> /dev/null 2>&1'
+alias -g L="| less"
+alias -g T="| tail"
+alias -g T2="| tail -40"
+alias -g G="| egrep"
+alias -g FF="find . -type f"
+alias -g FD="find . -type d"
+
 # IN TOPICAL ORDER -------------------------------------------------------
 # qyadr - dotfiles mgmt
 alias qyadr-purge='~/.qyadr-purge.sh'
@@ -31,9 +43,6 @@ alias show-history-screen='history -60'
 alias show-history-all='history 1'
 
 # ALPHABETICALLY ACRONYMS --------------------------------------------------
-alias -g ...='cd-grandparent'
-alias -g ....='cd-great-grandparent'
-
 alias -- -='cd -'
 alias -- ~='cd ~'
 alias 1='cd -'
