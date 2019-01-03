@@ -22,4 +22,4 @@ zsh-run-loading-time() {
 }
 
 # Prompt hook function to add empty line before prompt redraw
-precmd() { print "" }
+# precmd() { print "" }

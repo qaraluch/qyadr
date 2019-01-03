@@ -17,9 +17,12 @@ profileFor 'all fns'
 for file ($HOME/.functions/*.{sh,zsh}) source $file
 profileStop
 
+profileFor 'zsh options'
 [ -f ~/.zsh-options.zsh ] && source ~/.zsh-options.zsh
 [ -f ~/.zsh-prompt.zsh ] && source ~/.zsh-prompt.zsh
 [ -f ~/.aliases.sh ] && source ~/.aliases.sh
+[ -f ~/.zsh-completion.zsh ] && source ~/.zsh-completion.zsh
+profileStop
 
 # Plugs
 # Create cache dir for plugins if not exists

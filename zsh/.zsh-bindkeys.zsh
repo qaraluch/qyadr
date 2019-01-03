@@ -28,8 +28,10 @@ bindkey -M vicmd "j" down-line-or-beginning-search
 bindkey '^[[1;5C' forward-word                        # ctrl-> - move forward one word
 bindkey '^[[1;5D' backward-word                       # ctrl-< - move backward one word
 
-# for auto-complete
-bindkey "^[[Z" reverse-menu-complete     # shift-tab - move through the completion menu backwards
+# completion
+bindkey "^[[Z" reverse-menu-complete                        # shift-tab - move through the completion menu backwards
+bindkey -M menuselect '^n' accept-and-infer-next-history    # completion - accept and try next mach i.e subdirectory
+bindkey "^X^X" hist-complete                                # history completion
 
 # TODO:
 # bindkey '\eo' '_my_zle_widget_myfzf_locate_file'        # A+o - locate file
