@@ -1,4 +1,5 @@
 # WIDGETS NOT BIND -----------------------------------------------------
+# usage: <esc> to vicmd mode, hit : and type:
 # gmsg  - zle-fzf-git-get-commit-msg          # zsh/.functions/zsh-zle-fzf.zsh
 # ghash - zle-fzf-git-get-hash	              # zsh/.functions/zsh-zle-fzf.zsh
 # gadd  - zle-fzf-git-get-status-item         # zsh/.functions/zsh-zle-fzf.zsh
@@ -105,6 +106,15 @@ alias ls='ls --color=auto --group-directories-first'
 
 alias rm='rm -Irf'
 alias take='mkdir-and-cd-better-command'
+
+alias tre='tree-better'                             # functions/.functions/better-commands.sh
+alias tre1='tree-better -L 1'
+alias tre2='tree-better -L 2'
+alias tre3='tree-better -L 3'
+alias tred='tree-better-dirs'
+alias tred1='tree-better-dirs -L 1'
+alias tred2='tree-better-dirs -L 2'
+alias tred3='tree-better-dirs -L 3'
 
 alias spectrum='zsh-spectrum-ls'
 alias spectrumbg='zsh-spectrum-ls-bg'
