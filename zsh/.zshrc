@@ -23,6 +23,14 @@ profileFor 'zsh options'
 [ -f ~/.zsh-completion.zsh ] && source ~/.zsh-completion.zsh
 profileStop
 
+# Env
+profileFor 'env'
+if _isStringNotEmpty "$QYADR_ENV" ; then
+  readonly envEntryPointPath="${HOME}/.zshrc-${QYADR_ENV}"
+  [ -f $envEntryPointPath ] && source $envEntryPointPath
+fi
+profileStop
+
 # Plugs
 # Create cache dir for plugins if not exists
 if [[ ! -d "${QYADR_PLUGS_ROOT}-cache" ]]; then mkdir "${QYADR_PLUGS_ROOT}-cache" ; fi
@@ -50,12 +58,6 @@ profileStop
 profileFor 'plugin - zsh-abbrev-alias'
 source $QYADR_PLUGS_ROOT/install-zsh-abbrev-alias.sh
 profileStop
-
-# Env - wsl
-##TODO: dokonczyc
-if [[ "$QYADR_ENV" == "wsl" ]] ; then
-  [ -f ~/.wsl_test ] && source ~/.wsl_test
-fi
 
 # Bindkeys
 [ -f ~/.zsh-bindkeys.zsh ] && source ~/.zsh-bindkeys.zsh

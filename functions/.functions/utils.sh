@@ -71,3 +71,9 @@ _switchN() {
     return 1
   fi
 }
+
+# Conditional
+_isStringNotEmpty() {
+  local var=$1
+  [[ -n $var ]]
+}
