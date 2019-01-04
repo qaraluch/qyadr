@@ -7,6 +7,18 @@ edit-zsh-history-in-editor() {
   $EDITOR $HISTFILE
 }
 
+sort-zsh-history() {
+  _echoIt "$_QDel" "Let's sort .zsh-history"
+  fc -W # write history to file
+  cp $HISTFILE "${HISTFILE}-backup"
+  cat $HISTFILE | sort -u > "$HISTFILE-sorted"
+  cp "$HISTFILE-sorted" $HISTFILE
+  fc -R # read i.e load history form file
+  if [[ "$1" == "-e" ]] ; then   # -e like edit
+    edit-zsh-history-in-editor
+  fi
+}
+
 # `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is

@@ -3,7 +3,7 @@
 # - .functions/utils.sh
 
 zsh-reload() {
-  if [[ "$1" == "s" ]] ; then   # s like source or soft
+  if [[ "$1" == "-s" ]] ; then   # -s like source or soft
     source ~/.zshrc
     _echoIt "$_QDel" "Reloaded ${_Qcy}ZSH${_Qce} shell config." "${_Qit}"
   else
