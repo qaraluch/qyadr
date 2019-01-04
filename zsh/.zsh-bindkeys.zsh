@@ -8,6 +8,9 @@ bindkey -M viins 'jj' vi-cmd-mode                 # escape remap
 # - alt-c - fzf - cd dir
 # - ctrl-r - fzf - history
 
+# zsh-abbrev-alias
+# - space - expand global alias
+
 # My custom zle function Bindkeys
 bindkey '\C-x\C-e' edit-command-line              # ctrl-x ctrl-e - edit command in editor (in vim)
 bindkey '\C-x\C-l' zle-insert-last-typed-word     # ctrl-x ctrl-l - insert last typed word, see: .functions/zsh-zle.zsh

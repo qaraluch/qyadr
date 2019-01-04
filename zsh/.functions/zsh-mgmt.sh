@@ -18,6 +18,7 @@ zsh-measure-loading-times() {
   _echoIt "$_QDel" "About to measure ZSH loading time..."
   echo "\n ---------- ${timeStamp} --------------------------------------------" >> $outputPath
   for i in {1..3}; do (zsh-run-loading-time >/dev/null ) 2>> $outputPath 2>&1; done
+  sleep 0.5
   _echoIt "$_QDel" "  --> See historical data in file: $outputPath"
   _echoDone
 }
