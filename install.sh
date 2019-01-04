@@ -11,14 +11,15 @@ declare -a packs=( \
   functions \
   aliases \
   scripts \
-  git \
-  _wsl \
+  git
 )
 
 # Utils:
 readonly dotfilesHomeDir='.qyadr'
 
 readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
+readonly defaultEnvValue=$(cat "${HOME}/${dotfilesHomeDir}/qyadr/.qyadr-config" | gawk 'match($0, /.*QYADR_ENV=(.*?)/,a) {print a[1];}' | sed "s/['\"]//g")
+readonly envPackagesList=( $(find "${HOME}/${dotfilesHomeDir}/" -mindepth 1 -maxdepth 1 -type d -name '_*' -printf "%P\n" | sed "s/_//g") )
 
 readonly _pDel='[ QYADR ]'
 
@@ -101,15 +102,20 @@ runMainAuto() {
 
 # interactive path
 runMainInteractive() {
+  launchWelcomeMsg
+  yesConfirmOrAbort
+  launchInstalator_packages
+}
+
+launchWelcomeMsg() {
   echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Installation script"
   echoIt "$_pDel" "Used variables:"
   echoIt "$_pDel" "  - home dir:           ${_cy}$HOME${_ce}"
   echoIt "$_pDel" "  - dotfiles repo:      ${_cy}$dotfilesPath${_ce}"
-  yesConfirmOrAbort
-  launchMenu
+  echoIt "$_pDel" "  - default env value:  ${_cy}$defaultEnvValue${_ce}"
 }
 
-launchMenu() {
+launchInstalator_packages() {
   echoIt
   showMenuOptions
   local chosenOption=$(readMenuOptionInput)
@@ -120,9 +126,10 @@ launchMenu() {
 declare -a menuOptions=( \
   "   [ ${_cy}1${_ce} ] Install all configs" \
   "   [ ${_cy}2${_ce} ] Delete all the configs installed" \
-  "   [ ${_cy}3${_ce} ] View all QYADR's packages" \
-  "   [ ${_cy}4${_ce} ] Show manual install/uninstall commands" \
-  "   [ ${_cy}5${_ce} ] Quit" \
+  "   [ ${_cy}3${_ce} ] Skip packages installation and change only environment value." \
+  "   [ ${_cy}4${_ce} ] View all QYADR's packages" \
+  "   [ ${_cy}5${_ce} ] Show manual install/uninstall commands" \
+  "   [ ${_cy}6${_ce} ] Quit" \
 )
 
 showMenuOptions() {
@@ -146,15 +153,19 @@ execMenuOption() {
       && stowAll
     echoIt "$_pDel" "Installed all dotfiles in home directory."
     echoDone
+    launchInstalator_envPackage
   elif [[ "$choice" == 2 ]] ; then
     yesConfirmOrAbort "Ready to: $menuOptionTxt" \
       && unstowAll
     echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
     echoDone
   elif [[ "$choice" == 3 ]] ; then
-    showPackages
-    launchMenu
+    launchInstalator_envPackage
   elif [[ "$choice" == 4 ]] ; then
+    showPackages
+    showEnvPackages
+    launchInstalator_packages
+  elif [[ "$choice" == 5 ]] ; then
     showManualCommands
     quitMenu
   else
@@ -204,6 +215,76 @@ unstowAll() {
       echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
     fi
   done
+  # TODO: unstow env packages
+}
+
+# env installation
+launchInstalator_envPackage() {
+  echoIt
+  launchEnvWelcome
+  showMenuOptionsEnv
+  local chosenOption=$(readMenuOptionInput)
+  execMenuOptionEnv $chosenOption
+}
+
+launchEnvWelcome() {
+  echoIt "$_pDel" "It's time to install packages for specific linux environmen..."
+  echoIt "$_pDel" "   ... default environment is:  ${_cy}$defaultEnvValue${_ce}"
+}
+
+# menu:
+declare -a menuOptionsEnv=( \
+  "   [ ${_cy}1${_ce} ] Yep! Proceed." \
+  "   [ ${_cy}2${_ce} ] Change it." \
+  "   [ ${_cy}3${_ce} ] View all QYADR's environment packages" \
+  "   [ ${_cy}4${_ce} ] No. Skip it!" \
+)
+
+showMenuOptionsEnv() {
+  echoIt "$_pDel" "---[ Choose one of the options bellow: ] ---------------" "${_ia}"
+  for OPTION in "${menuOptionsEnv[@]}" ; do
+    echoIt "$_pDel" "${OPTION}"
+  done
+}
+
+execMenuOptionEnv() {
+  local choice=$1
+  local menuOptionTxt=${menuOptionsEnv[${choice}-1]}
+  if [[ "$choice" == 1 ]] ; then
+    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
+      && stowEnv # default environment
+    echoDone
+  elif [[ "$choice" == 2 ]] ; then
+    # yesConfirmOrAbort "Ready to: $menuOptionTxt" \
+    #   # && unstowAll
+    # echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
+    # echoDone
+  elif [[ "$choice" == 3 ]] ; then
+    showEnvPackages
+    launchInstalator_envPackage
+  else
+    echoDone
+  fi
+}
+
+showEnvPackages() {
+  echoIt "$_pDel" "List of environment packages:"
+  for pack in "${envPackagesList[@]}" ; do
+    echoIt "$_pDel" " - ${pack}"
+  done
+}
+
+stowEnv() {
+  local envPackName="${1:-"$defaultEnvValue"}"
+  local envPackDirName="_${envPackName}"
+  local envDir="${dotfilesPath}/${envPackDirName}"
+  if isDir "$envDir" ; then
+    stow -vd ${dotfilesPath} -S ${envPackDirName} -t ${HOME}
+    echoIt "$_pDel" "Stowed package name: ${_cy}${envPackDirName}${_ce}" "$_it"
+  else
+    errorExit_stowError ${envPackDirName}
+  fi
+  echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
 }
 
 main "$@"
