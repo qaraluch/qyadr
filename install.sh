@@ -124,7 +124,7 @@ launchInstalator_packages() {
 
 # menu:
 declare -a menuOptions=( \
-  "   [ ${_cy}1${_ce} ] Install all configs" \
+  "   [ ${_cy}1${_ce} ] Install all configs [enter]" \
   "   [ ${_cy}2${_ce} ] Delete all the configs installed" \
   "   [ ${_cy}3${_ce} ] Skip packages installation and change only environment value." \
   "   [ ${_cy}4${_ce} ] View all QYADR's packages" \
@@ -142,7 +142,7 @@ showMenuOptions() {
 readMenuOptionInput() {
   read  -n 1 -r -p "${_pDel}    Enter your choice: ${_cb}>${_ce} "
   echo >&2
-  echo ${REPLY}
+  echo ${REPLY:-1}
 }
 
 execMenuOption() {
@@ -209,13 +209,28 @@ errorExit_stowError() {
 }
 
 unstowAll() {
+  unstowPackages
+  unstowEnvsAll
+}
+
+unstowPackages() {
   for pack in "${packs[@]}" ; do
     if isDir "$dotfilesPath/$pack" ; then
       stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
       echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
     fi
   done
-  # TODO: unstow env packages
+}
+
+unstowEnvsAll() {
+  for env in "${envPackagesList[@]}" ; do
+    local envDir="_${env}"
+    local envDirPath="${dotfilesPath}/${envDir}"
+    if isDir "$envDirPath" ; then
+      stow -vd ${dotfilesPath} -D ${envDir} -t ${HOME}
+      echoIt "$_pDel" "Unstowed env package name: ${_cy}${envDir}${_ce}" "$_it"
+    fi
+  done
 }
 
 # env installation
@@ -234,7 +249,7 @@ launchEnvWelcome() {
 
 # menu:
 declare -a menuOptionsEnv=( \
-  "   [ ${_cy}1${_ce} ] Yep! Proceed." \
+  "   [ ${_cy}1${_ce} ] Yep! Proceed. [enter]" \
   "   [ ${_cy}2${_ce} ] Change it." \
   "   [ ${_cy}3${_ce} ] View all QYADR's environment packages" \
   "   [ ${_cy}4${_ce} ] No. Skip it!" \
@@ -255,10 +270,10 @@ execMenuOptionEnv() {
       && stowEnv # default environment
     echoDone
   elif [[ "$choice" == 2 ]] ; then
-    # yesConfirmOrAbort "Ready to: $menuOptionTxt" \
-    #   # && unstowAll
-    # echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
-    # echoDone
+    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
+      && unstowAll
+    echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
+    echoDone
   elif [[ "$choice" == 3 ]] ; then
     showEnvPackages
     launchInstalator_envPackage
