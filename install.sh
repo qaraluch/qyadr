@@ -84,17 +84,23 @@ main() {
     # otherwise launch interactive one with menu.
     runMainInteractive
   else
-    runMainAuto $1
+    runMainAuto $1 $2
   fi
 }
 
 # auto path
 runMainAuto() {
   local choice=$1
+  local envName=$2
   if [[ "$choice" == 1 ]] ; then
     stowAll
+    stowEnv # default environment
   elif [[ "$choice" == 2 ]] ; then
     unstowAll
+  elif [[ "$choice" == 3 ]] ; then
+    unstowEnvsAll
+    stowEnv $envName
+    changeEnvValueInConfig $envName
   else
     quitMenu
   fi
@@ -327,12 +333,13 @@ execChangeEnv() {
   yesConfirmOrAbort "Ready to change environment to: ${_cy}${choice}${_ce} ?"
   unstowEnvsAll
   stowEnv $choiceName
-  changeEnvValueInConfig
+  changeEnvValueInConfig $choiceName
   echoDone
 }
 
 changeEnvValueInConfig() {
-  sed -i --follow-symlinks "s/${defaultEnvValue}/${choiceName}/g" "${HOME}/.qyadr-config"
+  local changedValue=$1
+  sed -i --follow-symlinks "s/${defaultEnvValue}/${changedValue}/g" "${HOME}/.qyadr-config"
 }
 
 main "$@"
