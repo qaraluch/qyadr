@@ -133,7 +133,7 @@ declare -a menuOptions=( \
 )
 
 showMenuOptions() {
-  echoIt "$_pDel" "---[ Choose one of the options bellow: ] ---------------" "${_ia}"
+  echoIt "$_pDel" "- [ Choose one of the options bellow: ] ---------------" "${_ia}"
   for OPTION in "${menuOptions[@]}" ; do
     echoIt "$_pDel" "${OPTION}"
   done
@@ -256,7 +256,7 @@ declare -a menuOptionsEnv=( \
 )
 
 showMenuOptionsEnv() {
-  echoIt "$_pDel" "---[ Choose one of the options bellow: ] ---------------" "${_ia}"
+  echoIt "$_pDel" "- [ Choose one of the options bellow: ] ---------------" "${_ia}"
   for OPTION in "${menuOptionsEnv[@]}" ; do
     echoIt "$_pDel" "${OPTION}"
   done
@@ -270,10 +270,7 @@ execMenuOptionEnv() {
       && stowEnv # default environment
     echoDone
   elif [[ "$choice" == 2 ]] ; then
-    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
-      && unstowAll
-    echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
-    echoDone
+    launchChange_envPackage
   elif [[ "$choice" == 3 ]] ; then
     showEnvPackages
     launchInstalator_envPackage
@@ -300,6 +297,42 @@ stowEnv() {
     errorExit_stowError ${envPackDirName}
   fi
   echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
+}
+
+# env change
+launchChange_envPackage() {
+  echoIt
+  launchChangeEnvWelcome
+  showMenuOptionsEnvChange
+  local chosenOption=$(readMenuOptionInput)
+  execChangeEnv $chosenOption
+}
+
+launchChangeEnvWelcome() {
+  echoIt "$_pDel" "Changing environment package..."
+}
+
+showMenuOptionsEnvChange() {
+  echoIt "$_pDel" "- [ Choose one of the options bellow: ] ---------------" "${_ia}"
+  for idx in "${!envPackagesList[@]}" ; do
+    local nbr="[ ${_cy}$((idx + 1))${_ce} ]"
+    echoIt "$_pDel" "   ${nbr} - ${envPackagesList[$idx]}"
+  done
+}
+
+execChangeEnv() {
+  local choice=$1
+  local choiceCorrect=$((choice - 1))
+  local choiceName="${envPackagesList[choiceCorrect]}"
+  yesConfirmOrAbort "Ready to change environment to: ${_cy}${choice}${_ce} ?"
+  unstowEnvsAll
+  stowEnv $choiceName
+  changeEnvValueInConfig
+  echoDone
+}
+
+changeEnvValueInConfig() {
+  sed -i --follow-symlinks "s/${defaultEnvValue}/${choiceName}/g" "${HOME}/.qyadr-config"
 }
 
 main "$@"
