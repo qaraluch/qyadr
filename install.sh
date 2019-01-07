@@ -18,8 +18,8 @@ declare -a packs=( \
 readonly dotfilesHomeDir='.qyadr'
 
 readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
-readonly defaultEnvValue=$(cat "${HOME}/${dotfilesHomeDir}/qyadr/.qyadr-config" | gawk 'match($0, /.*QYADR_ENV=(.*?)/,a) {print a[1];}' | sed "s/['\"]//g")
-readonly envPackagesList=( $(find "${HOME}/${dotfilesHomeDir}/" -mindepth 1 -maxdepth 1 -type d -name '_*' -printf "%P\n" | sed "s/_//g") )
+readonly defaultEnvValue=$(cat "${dotfilesPath}/qyadr/.qyadr-config.example" | gawk 'match($0, /.*QYADR_ENV=(.*?)/,a) {print a[1];}' | sed "s/['\"]//g")
+readonly envPackagesList=( $(find "${dotfilesPath}/" -mindepth 1 -maxdepth 1 -type d -name '_*' -printf "%P\n" | sed "s/_//g") )
 
 readonly _pDel='[ QYADR ]'
 
@@ -118,7 +118,6 @@ launchWelcomeMsg() {
   echoIt "$_pDel" "Used variables:"
   echoIt "$_pDel" "  - home dir:           ${_cy}$HOME${_ce}"
   echoIt "$_pDel" "  - dotfiles repo:      ${_cy}$dotfilesPath${_ce}"
-  echoIt "$_pDel" "  - default env value:  ${_cy}$defaultEnvValue${_ce}"
 }
 
 launchInstalator_packages() {
@@ -135,7 +134,7 @@ declare -a menuOptions=( \
   "   [ ${_cy}3${_ce} ] Skip packages installation and change only environment value." \
   "   [ ${_cy}4${_ce} ] View all QYADR's packages" \
   "   [ ${_cy}5${_ce} ] Show manual install/uninstall commands" \
-  "   [ ${_cy}6${_ce} ] Quit" \
+  "   [ ${_cy}6${_ce} ] Quit"
 )
 
 showMenuOptions() {
@@ -155,11 +154,13 @@ execMenuOption() {
   local choice=$1
   local menuOptionTxt=${menuOptions[${choice}-1]}
   if [[ "$choice" == 1 ]] ; then
-    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
-      && stowAll
+    yesConfirmOrAbort "Ready to: $menuOptionTxt"
+    stowAll
+    copyExamples
     echoIt "$_pDel" "Installed all dotfiles in home directory."
     echoDone
     launchInstalator_envPackage
+    reloadMsgAfterStowAll
   elif [[ "$choice" == 2 ]] ; then
     yesConfirmOrAbort "Ready to: $menuOptionTxt" \
       && unstowAll
@@ -206,6 +207,29 @@ stowAll() {
       errorExit_stowError ${pack}
     fi
   done
+}
+
+copyExamples(){
+  echoIt "$_pDel" "About to copy example files..."
+  copyExample_config
+}
+
+copyExample_config() {
+  local filePath="${HOME}/.qyadr-config.example"
+  local destPath=${filePath%%.example}
+  if isFile ${filePath} ; then
+    cp -f $filePath $destPath
+    echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
+  else
+    warnNotFound $filePath
+  fi
+}
+
+warnNotFound() {
+  echoIt "$_pDel" "${_cy}Warn:${_ce} file found file: ${1} ! Maybe not stowed?" "${_iw}"
+}
+
+reloadMsgAfterStowAll() {
   echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
 }
 
@@ -241,7 +265,6 @@ unstowEnvsAll() {
 
 # env installation
 launchInstalator_envPackage() {
-  echoIt
   launchEnvWelcome
   showMenuOptionsEnv
   local chosenOption=$(readMenuOptionInput)
@@ -302,7 +325,6 @@ stowEnv() {
   else
     errorExit_stowError ${envPackDirName}
   fi
-  echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
 }
 
 # env change
@@ -339,7 +361,7 @@ execChangeEnv() {
 
 changeEnvValueInConfig() {
   local changedValue=$1
-  sed -i --follow-symlinks "s/${defaultEnvValue}/${changedValue}/g" "${HOME}/.qyadr-config"
+  sed -i "s/\(^.*QYADR_ENV=\).*/\1'${changedValue}'/" "${HOME}/.qyadr-config"
 }
 
 main "$@"
