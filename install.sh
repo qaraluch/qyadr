@@ -69,6 +69,10 @@ isStringEmpty() {
   [[ -z $var ]]
 }
 
+isStringEqual(){
+  [[ "$1" == "$2" ]]
+}
+
 echoDone() {
   echoIt "$_pDel" "DONE!" "$_it" ; echo >&2
 }
@@ -102,6 +106,7 @@ runMainAuto() {
   elif [[ "$choice" == 2 ]] ; then
     unstowAll
   elif [[ "$choice" == 3 ]] ; then
+    renameBashrc
     unstowEnvsAll
     stowEnv $envName
     changeEnvValueInConfig $envName
@@ -243,6 +248,7 @@ errorExit_stowError() {
 }
 
 unstowAll() {
+  renameBashrc
   unstowPackages
   unstowEnvsAll
 }
@@ -324,6 +330,7 @@ stowEnv() {
   local envPackDirName="_${envPackName}"
   local envDir="${dotfilesPath}/${envPackDirName}"
   if isDir "$envDir" ; then
+    renameBashrc
     stow -vd ${dotfilesPath} -S ${envPackDirName} -t ${HOME}
     echoIt "$_pDel" "Stowed package name: ${_cy}${envPackDirName}${_ce}" "$_it"
   else
@@ -357,6 +364,7 @@ execChangeEnv() {
   local choiceCorrect=$((choice - 1))
   local choiceName="${envPackagesList[choiceCorrect]}"
   yesConfirmOrAbort "Ready to change environment to: ${_cy}${choice}${_ce} ?"
+  renameBashrc
   unstowEnvsAll
   stowEnv $choiceName
   changeEnvValueInConfig $choiceName
@@ -366,6 +374,13 @@ execChangeEnv() {
 changeEnvValueInConfig() {
   local changedValue=$1
   sed -i "s/\(^.*QYADR_ENV=\).*/\1'${changedValue}'/" "${HOME}/.qyadr-config"
+}
+
+renameBashrc() {
+  # Avoid stow conflict
+  if isFile "${HOME}/.bashrc" ; then
+    mv .bashrc{,.back}
+  fi
 }
 
 main "$@"
