@@ -94,7 +94,11 @@ runMainAuto() {
   local envName=$2
   if [[ "$choice" == 1 ]] ; then
     stowAll
-    stowEnv # default environment
+    if isStringEmpty $2 ; then
+      stowEnv # default environment
+    else
+      stowEnv $2
+    fi
   elif [[ "$choice" == 2 ]] ; then
     unstowAll
   elif [[ "$choice" == 3 ]] ; then
