@@ -97,7 +97,9 @@ runMainAuto() {
   local choice=$1
   local envName=$2
   if [[ "$choice" == 1 ]] ; then
+    renameDefaultFiles
     stowAll
+    copyExamples
     if isStringEmpty $2 ; then
       stowEnv # default environment
     else
