@@ -45,6 +45,10 @@ alias show-history='history -20'
 alias show-history-screen='history -60'
 alias show-history-all='history 1'
 
+# locate
+alias udb='locate-update-dbs'           # _wsl/.functions/locate-wsl.sh or _arch/...
+alias rdb='locate-remove-dbs'
+
 # ALPHABETICALLY ACRONYMS --------------------------------------------------
 alias -- -='cd -'
 alias -- ~='cd ~'

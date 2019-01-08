@@ -3,8 +3,10 @@
 #  - fzf
 #  - git
 
+# GIT
 fzf-choose-git-msg() {
  echo "\"$( git-get-logs | fzf --layout=reverse --border | cut -d " " -f2-)\""                                    # see: git/.functions/git.sh
+      # ^- add quotations to git msg
 }
 
 zle-fzf-git-get-commit-msg() {
@@ -56,3 +58,29 @@ zle-fzf-git-get-status-item() {
 }
 
 zle -N gadd zle-fzf-git-get-status-item
+
+# LOCATE
+# fix-this !!!
+fzf-choose-locate-item() {
+  echo "$( locate-get-data | \
+    fzf --height 40% --layout=reverse --border -m
+  )"
+}
+
+zle-fzf-locate-item() {
+  _zle-init-widget                                        # see: zsh/.functions/zsh-zle.zsh
+  fzf-choose-locate-item | \
+  _zle-insert
+}
+
+zle -N zle-fzf-locate-item
+
+# fzf-locate-widget() {
+#   local selected
+#   if selected=$(locate -d "/home/qyadr/.locate-dbs/home.db" / | fzf -q "$LBUFFER"); then
+#     LBUFFER=$selected
+#   fi
+#   zle redisplay
+# }
+# zle     -N    fzf-locate-widget
+# bindkey '\ei' fzf-locate-widget

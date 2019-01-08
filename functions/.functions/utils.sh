@@ -77,3 +77,13 @@ _isStringNotEmpty() {
   local var=$1
   [[ -n $var ]]
 }
+
+_isNotDir() {
+  local dir=$1
+  [[ ! -d $dir ]]
+}
+
+_isDir() {
+  local dir=$1
+  [[ -d $dir ]]
+}

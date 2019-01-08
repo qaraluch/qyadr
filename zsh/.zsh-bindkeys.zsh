@@ -36,5 +36,5 @@ bindkey "^[[Z" reverse-menu-complete                        # shift-tab - move t
 bindkey -M menuselect '^n' accept-and-infer-next-history    # completion - accept and try next mach i.e subdirectory
 bindkey "^X^X" hist-complete                                # history completion
 
-# TODO:
-# bindkey '\eo' '_my_zle_widget_myfzf_locate_file'        # A+o - locate file
+# locate
+bindkey '\eo' 'zle-fzf-locate-item'                   # alt+o - locate file / dir
