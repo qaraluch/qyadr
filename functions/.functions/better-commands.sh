@@ -40,3 +40,7 @@ pogoda() {
   local results=$(curl -s "${apiUrl}${city}")
   echo $results
 }
+
+rm-symlink() {
+  [ -L "$1" ] && cp --remove-destination "$(readlink "$1")" "$1"
+}
