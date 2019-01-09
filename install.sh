@@ -5,7 +5,7 @@
 set -e
 
 # Setup:
-declare -a packs=( \
+declare -a packages=( \
   qyadr \
   zsh \
   functions \
@@ -96,7 +96,7 @@ main() {
 # auto path
 runMainAuto() {
   local choice=$1
-  local envName=$2
+  local packageName=$2
   if [[ "$choice" == 1 ]] ; then
     renameDefaultFiles
     stowAll
@@ -112,8 +112,11 @@ runMainAuto() {
   elif [[ "$choice" == 3 ]] ; then
     renameDefaultFiles
     unstowEnvsAll
-    stowEnv $envName
-    changeEnvValueInConfig $envName
+    stowEnv $packageName
+    changeEnvValueInConfig $packageName
+  elif [[ "$choice" == 4 ]] ; then
+    unstowPackage $packageName
+    stowPackage $packageName
   else
     quitMenu
   fi
@@ -145,13 +148,14 @@ declare -a menuOptions=( \
   "   [ ${_cy}1${_ce} ] Install all configs [enter]" \
   "   [ ${_cy}2${_ce} ] Delete all the configs installed" \
   "   [ ${_cy}3${_ce} ] Skip packages installation and change only environment value." \
-  "   [ ${_cy}4${_ce} ] View all QYADR's packages" \
-  "   [ ${_cy}5${_ce} ] Show manual install/uninstall commands" \
-  "   [ ${_cy}6${_ce} ] Quit"
+  "   [ ${_cy}4${_ce} ] Reload QYADR's package" \
+  "   [ ${_cy}5${_ce} ] View all QYADR's packages" \
+  "   [ ${_cy}6${_ce} ] Show manual install/uninstall commands" \
+  "   [ ${_cy}7${_ce} ] Quit"
 )
 
 showMenuOptions() {
-  echoIt "$_pDel" "- [ Choose one of the options bellow: ] ---------------" "${_ia}"
+  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
   for OPTION in "${menuOptions[@]}" ; do
     echoIt "$_pDel" "${OPTION}"
   done
@@ -183,10 +187,12 @@ execMenuOption() {
   elif [[ "$choice" == 3 ]] ; then
     launchInstalator_envPackage
   elif [[ "$choice" == 4 ]] ; then
+    launchReloadPackage
+  elif [[ "$choice" == 5 ]] ; then
     showPackages
     showEnvPackages
     launchInstalator_packages
-  elif [[ "$choice" == 5 ]] ; then
+  elif [[ "$choice" == 6 ]] ; then
     showManualCommands
     quitMenu
   else
@@ -201,7 +207,7 @@ quitMenu() {
 
 showPackages() {
   echoIt "$_pDel" "List of packages:"
-  for pack in "${packs[@]}" ; do
+  for pack in "${packages[@]}" ; do
     echoIt "$_pDel" " - ${pack}"
   done
 }
@@ -213,14 +219,19 @@ showManualCommands() {
 }
 
 stowAll() {
-  for pack in "${packs[@]}" ; do
+  for pack in "${packages[@]}" ; do
+    stowPackage $pack
+  done
+}
+
+stowPackage() {
+    local pack=$1
     if isDir "$dotfilesPath/$pack" ; then
       stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
       echoIt "$_pDel" "Stowed package name: ${_cy}${pack}${_ce}" "$_it"
     else
       errorExit_stowError ${pack}
     fi
-  done
 }
 
 copyExamples(){
@@ -272,12 +283,17 @@ unstowAll() {
 }
 
 unstowPackages() {
-  for pack in "${packs[@]}" ; do
-    if isDir "$dotfilesPath/$pack" ; then
-      stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
-      echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
-    fi
+  for pack in "${packages[@]}" ; do
+    unstowPackage $pack
   done
+}
+
+unstowPackage() {
+  local pack=$1
+  if isDir "$dotfilesPath/$pack" ; then
+    stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
+    echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
+  fi
 }
 
 unstowEnvsAll() {
@@ -313,7 +329,7 @@ declare -a menuOptionsEnv=( \
 )
 
 showMenuOptionsEnv() {
-  echoIt "$_pDel" "- [ Choose one of the options bellow: ] ---------------" "${_ia}"
+  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
   for OPTION in "${menuOptionsEnv[@]}" ; do
     echoIt "$_pDel" "${OPTION}"
   done
@@ -370,7 +386,7 @@ launchChangeEnvWelcome() {
 }
 
 showMenuOptionsEnvChange() {
-  echoIt "$_pDel" "- [ Choose one of the options bellow: ] ---------------" "${_ia}"
+  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
   for idx in "${!envPackagesList[@]}" ; do
     local nbr="[ ${_cy}$((idx + 1))${_ce} ]"
     echoIt "$_pDel" "   ${nbr} - ${envPackagesList[$idx]}"
@@ -381,7 +397,7 @@ execChangeEnv() {
   local choice=$1
   local choiceCorrect=$((choice - 1))
   local choiceName="${envPackagesList[choiceCorrect]}"
-  yesConfirmOrAbort "Ready to change environment to: ${_cy}${choice}${_ce} ?"
+  yesConfirmOrAbort "Ready to change environment to: ${_cy}${choiceName}${_ce} ?"
   renameDefaultFiles
   unstowEnvsAll
   stowEnv $choiceName
@@ -405,5 +421,36 @@ rename_bashrc() {
     mv ${HOME}/.bashrc{,.back}
   fi
 }
+
+# reload package
+launchReloadPackage() {
+  reloadWelcomeMsg
+  showMenuToReloadPackages
+  local chosenOption=$(readMenuOptionInput)
+  execReloadPackage $chosenOption
+}
+
+reloadWelcomeMsg() {
+  echoIt "$_pDel" "Reload package name..."
+}
+
+showMenuToReloadPackages() {
+  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
+  for idx in "${!packages[@]}" ; do
+    local nbr="[ ${_cy}$((idx + 1))${_ce} ]"
+    echoIt "$_pDel" "   ${nbr} - ${packages[$idx]}"
+  done
+}
+
+execReloadPackage() {
+  local choice=$1
+  local choiceCorrect=$((choice - 1))
+  local choiceName="${packages[choiceCorrect]}"
+  yesConfirmOrAbort "Ready to reload package to: ${_cy}${choiceName}${_ce} ?"
+  unstowPackage $choiceName
+  stowPackage $choiceName
+  echoDone
+}
+
 
 main "$@"
