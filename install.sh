@@ -11,7 +11,8 @@ declare -a packs=( \
   functions \
   aliases \
   scripts \
-  git
+  git \
+  npm
 )
 
 # Utils:
@@ -100,6 +101,7 @@ runMainAuto() {
     renameDefaultFiles
     stowAll
     copyExamples
+    copySec
     if isStringEmpty $2 ; then
       stowEnv # default environment
     else
@@ -168,6 +170,7 @@ execMenuOption() {
     yesConfirmOrAbort "Ready to: $menuOptionTxt"
     stowAll
     copyExamples
+    copySec
     echoIt "$_pDel" "Installed all dotfiles in home directory."
     echoDone
     launchInstalator_envPackage
@@ -221,7 +224,7 @@ stowAll() {
 }
 
 copyExamples(){
-  echoIt "$_pDel" "About to copy example files..."
+  echoIt "$_pDel" "About to copy qyadr example files..."
   copyExample_config
 }
 
@@ -236,12 +239,25 @@ copyExample_config() {
   fi
 }
 
+copySec(){
+  echoIt "$_pDel" "About to copy qyadr sec file..."
+  local filePath="${HOME}/.qyadr-sec.sec"
+  local destPath=${filePath%%.sec}
+  if isFile ${filePath} ; then
+    cp -f $filePath $destPath
+    [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
+  else
+    warnNotFound $filePath
+  fi
+}
+
 warnNotFound() {
   echoIt "$_pDel" "${_cy}Warn:${_ce} file found file: ${1} ! Maybe not stowed?" "${_iw}"
 }
 
 reloadMsgAfterStowAll() {
   echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
+  echoIt "$_pDel" "${_cy}Warn:${_ce} Fill up data in ${_cy}.qyadr-sec${_ce} file!" "${_iw}"
 }
 
 errorExit_stowError() {

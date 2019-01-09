@@ -1,1 +1,2 @@
-echo "Sourced for wsl env"
+# WSL Paths
+[ -f ~/.wsl-paths.sh ] && source ~/.wsl-paths.sh

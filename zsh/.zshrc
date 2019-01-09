@@ -25,6 +25,14 @@ profileStop
 
 # Env
 profileFor 'env'
+# Sec env
+readonly qyadrSecFile="${HOME}/.qyadr-sec"
+if [[ -f ${qyadrSecFile} ]] ; then
+  source ~/.qyadr-sec
+else
+  _echoIt "${_QDel}" "[ ${_cy}WARN${_ce} ] Not found file: ${_cy}${qyadrSecFile}${_ce} to source!" "${_iw}"
+fi
+# Environment env
 if _isStringNotEmpty "$QYADR_ENV" ; then
   readonly envEntryPointPath="${HOME}/.zshrc-${QYADR_ENV}"
   [ -f $envEntryPointPath ] && source $envEntryPointPath
