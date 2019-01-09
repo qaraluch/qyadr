@@ -386,7 +386,7 @@ renameDefaultFiles() {
 
 rename_bashrc() {
   if isFile "${HOME}/.bashrc" ; then
-    mv .bashrc{,.back}
+    mv ${HOME}/.bashrc{,.back}
   fi
 }
 

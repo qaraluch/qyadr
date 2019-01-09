@@ -60,7 +60,6 @@ zle-fzf-git-get-status-item() {
 zle -N gadd zle-fzf-git-get-status-item
 
 # LOCATE
-# fix-this !!!
 fzf-choose-locate-item() {
   echo "$( locate-get-data | \
     fzf --height 40% --layout=reverse --border -m
@@ -74,13 +73,3 @@ zle-fzf-locate-item() {
 }
 
 zle -N zle-fzf-locate-item
-
-# fzf-locate-widget() {
-#   local selected
-#   if selected=$(locate -d "/home/qyadr/.locate-dbs/home.db" / | fzf -q "$LBUFFER"); then
-#     LBUFFER=$selected
-#   fi
-#   zle redisplay
-# }
-# zle     -N    fzf-locate-widget
-# bindkey '\ei' fzf-locate-widget
