@@ -7,8 +7,8 @@ git-g-alias() {
     fi
 }
 
-export GIT_LOG_MY_FORMAT='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc)%cd - %C(reset)%s%C(auto,cyan)% gD% %C(reset)'
-export GIT_LOG_MY_FORMAT_LONG_DATE='%C(auto,yellow)%h - %C(auto,cyan) %cd %C(auto,reset) - %s%C(auto,cyan)% gD% %C(reset)'
+export GIT_LOG_MY_FORMAT='%C(auto,yellow)%h - %C(auto,blue)%>(14,trunc)%cd - %C(reset)%s%C(auto,cyan)% gD% D %C(reset)'
+export GIT_LOG_MY_FORMAT_LONG_DATE='%C(auto,yellow)%h - %C(auto,cyan) %cd %C(auto,reset) - %s%C(auto,cyan)% gD% D %C(reset)'
 export GIT_LOG_MY_FORMAT_GRAPH='%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s'
 git-log-recent() {  git --no-pager log --pretty=format:"$GIT_LOG_MY_FORMAT" --abbrev-commit --date=relative "-$1" ; }
 git-log-date() { git --no-pager log --pretty=format:"$GIT_LOG_MY_FORMAT_LONG_DATE" --abbrev-commit --date=format:'%Y-%m-%d %a %H:%M:%S' "-$1" ; }
