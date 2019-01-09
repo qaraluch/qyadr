@@ -107,6 +107,7 @@ runMainAuto() {
     else
       stowEnv $2
     fi
+    reloadMsgAfterStowAll
   elif [[ "$choice" == 2 ]] ; then
     unstowAll
   elif [[ "$choice" == 3 ]] ; then
@@ -172,6 +173,7 @@ execMenuOption() {
   local menuOptionTxt=${menuOptions[${choice}-1]}
   if [[ "$choice" == 1 ]] ; then
     yesConfirmOrAbort "Ready to: $menuOptionTxt"
+    renameDefaultFiles
     stowAll
     copyExamples
     copySec
@@ -363,7 +365,6 @@ stowEnv() {
   local envPackName="${1:-"$defaultEnvValue"}"
   local envPackDirName="_${envPackName}"
   local envDir="${dotfilesPath}/${envPackDirName}"
-  renameDefaultFiles
   if isDir "$envDir" ; then
     stow -vd ${dotfilesPath} -S ${envPackDirName} -t ${HOME}
     echoIt "$_pDel" "Stowed package name: ${_cy}${envPackDirName}${_ce}" "$_it"
@@ -417,7 +418,7 @@ renameDefaultFiles() {
 }
 
 rename_bashrc() {
-  if isFile "${HOME}/.bashrc" ; then
+  if ( isFile "${HOME}/.bashrc" && [[ ! -L "${HOME}/.bashrc"  ]] ) ; then
     mv ${HOME}/.bashrc{,.back}
   fi
 }
