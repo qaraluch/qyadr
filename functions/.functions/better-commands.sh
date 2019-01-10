@@ -27,7 +27,8 @@ tree-better() {
   tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 tree-better-dirs() {
-  tree -dC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+  tree -dC -I -a '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+    # -a show hidden dirs
 }
 
 pogoda() {
