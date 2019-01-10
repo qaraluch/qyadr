@@ -108,7 +108,7 @@ cloneDotfilesGitRepo() {
 copyInstallScript() {
   if isFile ${installScriptPath} ; then
     local finalDest="${HOME}/${installScriptName}"
-    cp "${installScriptPath}" ${finalDest}
+    ln -s "${installScriptPath}" ${finalDest}
     chmod u+x ${finalDest}
   fi
 }
@@ -116,7 +116,7 @@ copyInstallScript() {
 copyPurgeScript() {
   if isFile ${purgeScriptPath} ; then
     local finalDest="${HOME}/${purgeScriptName}"
-    cp "${purgeScriptPath}" ${finalDest}
+    ln -s "${purgeScriptPath}" ${finalDest}
     chmod u+x ${finalDest}
   fi
 }
@@ -124,7 +124,7 @@ copyPurgeScript() {
 copyUpdateScript() {
   if isFile ${updateScriptPath} ; then
     local finalDest="${HOME}/${updateScriptName}"
-    cp "${updateScriptPath}" ${finalDest}
+    ln -s "${updateScriptPath}" ${finalDest}
     chmod u+x ${finalDest}
   fi
 }
