@@ -1,2 +1,10 @@
 # WSL Paths
 [ -f ~/.wsl-paths.sh ] && source ~/.wsl-paths.sh
+
+# qnb
+alias myqnb='cd ${WSL_QNB}'
+[ -f ${WSL_QNB}/.sh/qnb-source-this.sh ] && source ${WSL_QNB}/.sh/qnb-source-this.sh
+
+# f-mgmt v2
+alias myfmgmt='cd ${WSL_F_MGMT}'
+alias load-fmgmt='source ${WSL_F_MGMT}/.sh/f-mgmt-source-this.sh'
