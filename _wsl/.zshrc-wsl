@@ -8,3 +8,6 @@ alias myqnb='cd ${WSL_QNB}'
 # f-mgmt v2
 alias myfmgmt='cd ${WSL_F_MGMT}'
 alias load-fmgmt='source ${WSL_F_MGMT}/.sh/f-mgmt-source-this.sh'
+
+# alt+o workaround
+alias ao='fzf-choose-locate-item | clip.exe'
