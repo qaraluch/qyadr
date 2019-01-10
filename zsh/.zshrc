@@ -10,7 +10,7 @@ export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles 
 export QYADR_PLUGS_ROOT="${HOME}/.plugs"
 
 # Path
-export PATH=$HOME/.scripts:$PATH
+[[ ":$PATH:" != *":${HOME}/.scripts:"* ]] && PATH=$HOME/.scripts:$PATH
 
 # Sources
 profileFor 'all fns'
