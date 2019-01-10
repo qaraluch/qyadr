@@ -44,3 +44,7 @@ pogoda() {
 rm-symlink() {
   [ -L "$1" ] && cp --remove-destination "$(readlink "$1")" "$1"
 }
+
+print-path() {
+  echo -e ${PATH//:/\\n}
+}
