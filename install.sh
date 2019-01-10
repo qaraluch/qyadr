@@ -12,6 +12,7 @@ declare -a packages=( \
   aliases \
   scripts \
   git \
+  vim \
   npm
 )
 
