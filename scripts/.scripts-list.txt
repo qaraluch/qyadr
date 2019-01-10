@@ -1,1 +1,2 @@
-multiexec, Execute multiple commands from file. 
+all,multiexec,Execute multiple commands from file.
+wsl,wslpath,Utility tool for translating unix paths to WSL and the oposite (i.e. /mnt/c/sth/ <-> C:\sth\)

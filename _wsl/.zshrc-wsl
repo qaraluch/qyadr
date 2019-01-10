@@ -11,3 +11,6 @@ alias load-fmgmt='source ${WSL_F_MGMT}/.sh/f-mgmt-source-this.sh'
 
 # alt+o workaround
 alias ao='fzf-choose-locate-item | clip.exe'
+
+# Etc...
+alias vsc='vscode-open'                             # _wsl/.functions/better-commands-wsl.sh
