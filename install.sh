@@ -417,9 +417,10 @@ renameDefaultFiles() {
   # to avoid stow conflict.
   rename_bashrc
   rename_i3config
+  rename_xinitrc
 }
 
-# Refactor DRY
+# TODO: Refactor DRY
 rename_bashrc() {
   if ( isFile "${HOME}/.bashrc" && [[ ! -L "${HOME}/.bashrc"  ]] ) ; then
     mv ${HOME}/.bashrc{,.back}
@@ -431,6 +432,13 @@ rename_i3config() {
     mv ${HOME}/.config/i3/config{,.back}
   fi
 }
+
+rename_xinitrc() {
+  if ( isFile "${HOME}/.xinitrc" && [[ ! -L "${HOME}/.xinitrc" ]] ) ; then
+    mv ${HOME}/.xinitrc{,.back}
+  fi
+}
+
 
 # reload package
 launchReloadPackage() {
