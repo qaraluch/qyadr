@@ -13,7 +13,6 @@ readonly deployScriptPath="${HOME}/${dotfilesHomeDir}-deploy.sh"
 readonly purgeScriptPath="${HOME}/${dotfilesHomeDir}-purge.sh"
 readonly installScriptPath="${HOME}/${dotfilesHomeDir}-install.sh"
 readonly updateScriptPath="${HOME}/${dotfilesHomeDir}-update.sh"
-readonly envFilePath="${HOME}/${dotfilesHomeDir}-env"
 readonly plugsCacheDirPath="${HOME}/.plugs-cache"
 readonly configPath="${HOME}/.qyadr-config"
 
@@ -60,6 +59,11 @@ isFile() {
   [[ -f $file ]]
 }
 
+isSymlink() {
+  local file=$1
+  [[ -L $file ]]
+}
+
 echoDone() {
   echoIt "$_pDel" "DONE!" "$_it" ; echo >&2
 }
@@ -78,7 +82,6 @@ main() {
   echoIt "$_pDel" "  - qyadr install script:   ${_cy}${installScriptPath}${_ce}"
   echoIt "$_pDel" "  - qyadr purge script:     ${_cy}${purgeScriptPath}${_ce}"
   echoIt "$_pDel" "  - qyadr update script:    ${_cy}${updateScriptPath}${_ce}"
-  echoIt "$_pDel" "  - qyadr environment file: ${_cy}${envFilePath}${_ce}"
   echoIt "$_pDel" "  - qyadr plugs cache dir:  ${_cy}${plugsCacheDirPath}${_ce}"
   yesConfirmOrAbort "Ready to roll"
 
@@ -112,17 +115,14 @@ purgeUtils() {
   if isFile ${deployScriptPath} ; then
     rm -rf ${deployScriptPath}
   fi
-  if isFile ${installScriptPath} ; then
+  if isSymlink ${installScriptPath} ; then
     rm -rf ${installScriptPath}
   fi
-  if isFile ${purgeScriptPath} ; then
+  if isSymlink ${purgeScriptPath} ; then
     rm -rf ${purgeScriptPath}
   fi
-  if isFile ${updateScriptPath} ; then
+  if isSymlink ${updateScriptPath} ; then
     rm -rf ${updateScriptPath}
-  fi
-  if isFile ${envFilePath} ; then
-    rm -rf ${envFilePath}
   fi
   if isDir ${plugsCacheDirPath} ; then
     rm -rf ${plugsCacheDirPath}
