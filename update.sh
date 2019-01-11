@@ -110,7 +110,7 @@ updateQyadrUtilScripts() {
 copyInstallScript() {
   if isFile ${installScriptPath} ; then
     local finalDest="${HOME}/${installScriptName}"
-    cp "${installScriptPath}" ${finalDest}
+    ln -sf "${installScriptPath}" ${finalDest}
     chmod u+x ${finalDest}
   fi
 }
@@ -118,7 +118,7 @@ copyInstallScript() {
 copyPurgeScript() {
   if isFile ${purgeScriptPath} ; then
     local finalDest="${HOME}/${purgeScriptName}"
-    cp "${purgeScriptPath}" ${finalDest}
+    ln -sf "${purgeScriptPath}" ${finalDest}
     chmod u+x ${finalDest}
   fi
 }
@@ -126,7 +126,7 @@ copyPurgeScript() {
 copyUpdateScript() {
   if isFile ${updateScriptPath} ; then
     local finalDest="${HOME}/${updateScriptName}"
-    cp "${updateScriptPath}" ${finalDest}
+    ln -sf "${updateScriptPath}" ${finalDest}
     chmod u+x ${finalDest}
   fi
 }
