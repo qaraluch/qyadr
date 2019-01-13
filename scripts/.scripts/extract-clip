@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 07.2018 - MIT
+
+readonly _pName=$(basename $0)
+readonly _args="$@"
+
+printUsage() {
+  cat <<EOL
+${_pName} - Simple wrapper for ffmpeg to extract media clips.
+
+Usage:
+  1. Default mode: extract video clip:
+        Example:
+            $ ffmpeg -i input-video.mp4 -ss 00:01:30 -t 00:00:10 -c copy -map_metadata 0 output-video.mp4
+            ${_pName} <input>         <start-time> <how-long> <output>
+            ${_pName} input-video.mp4 1:30         10   output-video.mp4
+        or:
+            With -to parameter (end-time).
+        Exmaple:
+            $ ffmpeg -i input-video.mp4 -ss 00:01:30 -to 00:02:00 -c copy -map_metadata 0 output-video.mp4
+            ${_pName} <input>         <start-time> <end-time> <output>
+            ${_pName} input-video.mp4 1:30         -to 2:00   output-video.mp4
+EOL
+  exit $1
+}
+
+parseOptions(){
+    while [[ $# -gt 0 ]]
+    do
+    key="$1"
+
+    case $key in
+        -t)
+        to="-t" # uses longiness
+        shift
+        ;;
+        -to)
+        to="-to" # use ffmpeg -to flag i.e. specific end time
+        shift
+        ;;
+        -h|--help)
+        printUsage 1
+        ;;
+        --default)
+        default=Y
+        shift
+        ;;
+        *)                  # unknown option
+        _positional+=("$1")
+        shift
+        ;;
+    esac
+    done
+}
+
+isEmpty() {
+    local var=$1
+    [[ -z $var ]]
+}
+
+ifNoArgsPrintUsage(){
+  isEmpty $1 \
+      && printUsage 1
+}
+
+main() {
+    local default=Y
+    local to="-t"
+    local _positional=()
+    ifNoArgsPrintUsage $_args
+    parseOptions $_args
+    set -- "${_positional[@]}"
+
+    # default - example 1
+    if [[ $default == "Y" ]] ; then
+    local input=$1
+    local start=$2
+    local end=$3
+    local output=$4
+    ffmpeg -i ${input} -ss ${start} ${to} ${end} -c copy -map_metadata 0 ${output}
+    fi
+}
+
+main $_args
+

@@ -1,2 +1,3 @@
 all,multiexec,Execute multiple commands from file.
-wsl,wslpath,Utility tool for translating unix paths to WSL and the oposite (i.e. /mnt/c/sth/ <-> C:\sth\)
+all,extract-clip,Simple wrapper for ffmpeg to extract media clips.
+wsl,wslpath,Utility tool for translating unix paths to WSL and the oposite (i.e. /mnt/c/sth/ <-> C:\sth\).
