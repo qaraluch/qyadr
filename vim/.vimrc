@@ -55,9 +55,9 @@ noremap <leader>d "_d
 """""""""""""""""""""""""""""""""""""""""""""""" SETTINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" tabs
 filetype plugin indent on
-set tabstop=2                                    "" show existing tab with 2 spaces width
-set shiftwidth=2                                 "" when indenting with '>', use 2 spaces width
-set expandtab                                    "" On pressing tab, insert 2 spaces
+set tabstop=2                                    " show existing tab with 2 spaces width
+set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
+set expandtab                                    " On pressing tab, insert 2 spaces
 
 "" line numbers
 set relativenumber
@@ -70,11 +70,13 @@ let &t_EI = "\<Esc>[2 q"
 
 "" etc...
 set ff=unix
-syntax on                                        "" syntax highlights
-set directory^=$HOME/.vim/temp//                 "" swap files dir
-set nrformats=                                   "" number format for numbers like 007
+syntax on                                        " syntax highlights
+set directory^=$HOME/.vim/temp//                 " swap files dir
+set nrformats=                                   " number format for numbers like 007
 ""set notimeout
 ""set ttimeout
+set splitbelow splitright	                       " Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
+autocmd BufWritePre * %s/\s\+$//e                " Automatically deletes all trailing whitespace on save.
 
 """""""""""""""""""""""""""""""""""""""""""""""" PLUGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" auto-install Plug
@@ -87,4 +89,6 @@ endif
 "" init plugins
 call plug#begin('~/.vim/plugged')
 Plug 'plasticboy/vim-markdown'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
 call plug#end()
