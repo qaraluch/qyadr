@@ -183,8 +183,8 @@ execMenuOption() {
     launchInstalator_envPackage
     reloadMsgAfterStowAll
   elif [[ "$choice" == 2 ]] ; then
-    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
-      && unstowAll
+    yesConfirmOrAbort "Ready to: $menuOptionTxt"
+    unstowAll
     echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
     echoDone
   elif [[ "$choice" == 3 ]] ; then
@@ -342,8 +342,8 @@ execMenuOptionEnv() {
   local choice=$1
   local menuOptionTxt=${menuOptionsEnv[${choice}-1]}
   if [[ "$choice" == 1 ]] ; then
-    yesConfirmOrAbort "Ready to: $menuOptionTxt" \
-      && stowEnv # default environment
+    yesConfirmOrAbort "Ready to: $menuOptionTxt"
+    stowEnv # default environment
     echoDone
   elif [[ "$choice" == 2 ]] ; then
     launchChange_envPackage
@@ -439,7 +439,6 @@ rename_xinitrc() {
   fi
 }
 
-
 # reload package
 launchReloadPackage() {
   reloadWelcomeMsg
@@ -469,6 +468,5 @@ execReloadPackage() {
   stowPackage $choiceName
   echoDone
 }
-
 
 main "$@"
