@@ -416,13 +416,29 @@ renameDefaultFiles() {
   # Rename default system config files
   # to avoid stow conflict.
   rename_bashrc
+  rename_i3config
+  rename_xinitrc
 }
 
+# TODO: Refactor DRY
 rename_bashrc() {
   if ( isFile "${HOME}/.bashrc" && [[ ! -L "${HOME}/.bashrc"  ]] ) ; then
     mv ${HOME}/.bashrc{,.back}
   fi
 }
+
+rename_i3config() {
+  if ( isFile "${HOME}/.config/i3/config" && [[ ! -L "${HOME}/.config/i3/config" ]] ) ; then
+    mv ${HOME}/.config/i3/config{,.back}
+  fi
+}
+
+rename_xinitrc() {
+  if ( isFile "${HOME}/.xinitrc" && [[ ! -L "${HOME}/.xinitrc" ]] ) ; then
+    mv ${HOME}/.xinitrc{,.back}
+  fi
+}
+
 
 # reload package
 launchReloadPackage() {

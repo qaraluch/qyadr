@@ -1,0 +1,4 @@
+[click]
+full_text=Click me!
+command=echo "Cliked with button $button"
+color=#F79494
