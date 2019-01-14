@@ -4,3 +4,4 @@ all,extract-clip,Simple wrapper for ffmpeg to extract media clips.
 all,git-init,Set up new git repo.
 all,github-init,Set up new GitHub repo in git directory.
 wsl,wslpath,Utility tool for translating unix paths to WSL and the oposite (i.e. /mnt/c/sth/ <-> C:\sth\).
+arch,wallpaper-set, X utility for changing wallpaper.
