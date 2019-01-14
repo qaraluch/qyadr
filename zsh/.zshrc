@@ -9,9 +9,6 @@ profileStop() { if [[ "$QYADR_PROFILE_ZSH" == "Y" ]] ; then _now=$(($(date +%s%N
 export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles path, used in aliases
 export QYADR_PLUGS_ROOT="${HOME}/.plugs"
 
-# Path
-[[ ":$PATH:" != *":${HOME}/.scripts:"* ]] && PATH=$HOME/.scripts:$PATH
-
 # Sources
 profileFor 'all fns'
 for file ($HOME/.functions/*.{sh,zsh}) source $file

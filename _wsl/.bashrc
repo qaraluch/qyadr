@@ -6,5 +6,5 @@ esac
 
 # launch zsh
 if [ -t 1 ]; then
-  exec zsh
+  exec zsh --login
 fi

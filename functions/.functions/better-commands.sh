@@ -46,6 +46,6 @@ rm-symlink() {
   [ -L "$1" ] && cp --remove-destination "$(readlink "$1")" "$1"
 }
 
-print-path() {
+path-print() {
   echo -e ${PATH//:/\\n}
 }
