@@ -2,29 +2,16 @@
 # Author: qaraluch - 12.2018 - MIT
 # Project: QYADR
 
-set -e
+# Settings:
+# readonly installListDefaultPath="${HOME}/.qyadr-install-list.csv"
+readonly installListDefaultPath="install-list.csv.example" # !!!!!!!!!!
 
-# Setup:
-declare -a packages=( \
-  qyadr \
-  zsh \
-  functions \
-  aliases \
-  scripts \
-  git \
-  vim \
-  npm
-)
+# Auto generated utility variables
+readonly _pArgs="$@"
+readonly _pDel='[ QYADR ]'
+readonly _pName=$(basename $0)
 
 # Utils:
-readonly dotfilesHomeDir='.qyadr'
-
-readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
-readonly defaultEnvValue=$(cat "${dotfilesPath}/qyadr/.qyadr-config.example" | gawk 'match($0, /.*QYADR_ENV=(.*?)/,a) {print a[1];}' | sed "s/['\"]//g")
-readonly envPackagesList=( $(find "${dotfilesPath}/" -mindepth 1 -maxdepth 1 -type d -name '_*' -printf "%P\n" | sed "s/_//g") )
-
-readonly _pDel='[ QYADR ]'
-
 readonly _cr=$'\033[0;31m'            # color red
 readonly _cg=$'\033[1;32m'            # color green
 readonly _cy=$'\033[1;33m'            # color yellow
@@ -66,6 +53,11 @@ isFile() {
   [[ -f $file ]]
 }
 
+isNotFile() {
+  local file=$1
+  [[ ! -f $file ]]
+}
+
 isStringEmpty() {
   local var=$1
   [[ -z $var ]]
@@ -79,394 +71,124 @@ echoDone() {
   echoIt "$_pDel" "DONE!" "$_it" ; echo >&2
 }
 
+# Errors:
 errorExit_abortScript() {
   errorExit "$_pDel" "Aborting script!"
 }
 
+errorExit_noInstallListFound() {
+  errorExit "$_pDel" "Not found installation list: $1"
+}
+
+# CLI:
+printUsage() {
+  cat <<EOL
+
+  Help:
+  ---------
+  ${_cy}${_pName}${_ce} - install (stow) qyadr packages.
+
+  Usage:
+    ${_pName} ${_cy}ls${_ce}                - show list all packages (except of env ones).
+    ${_pName} ${_cy}ls${_ce} [env]          - show only environment packages.
+
+
+EOL
+  exit $1
+}
+
+ifNoArgsPrintUsage(){
+  isStringEmpty $1 \
+    && printUsage 1
+}
+
+parseOptions(){
+  while [[ $# -gt 0 ]] ; do
+    itm="$1"
+    case $itm in
+      ls)
+      cmd="$itm"
+      shift
+      ;;
+      -h|--help)
+      printUsage 1
+      ;;
+      *)
+      positional+=("$1")
+      shift
+      ;;
+    esac
+  done
+}
+
 # Main:
 main() {
-  if isStringEmpty "$@" ; then
-    # If args is passed to the script run auto mode
-    # otherwise launch interactive one with menu.
-    runMainInteractive
+  ifNoArgsPrintUsage $_pArgs
+  checkIfListExists
+  # cli
+  local flag
+  local cmd
+  local positional=()
+  # lists
+  declare -a envsList
+  declare -a pkgsList_Min
+  declare -a pkgsList_Arch
+  declare -a pkgsList_WSL
+  declare -a pkgsList_Proto
+  readInstalList
+  declare -a pkgsList_All
+  pkgsList_All+=( \
+    "${pkgsList_Min[@]}" \
+    "${pkgsList_Arch[@]}" \
+    "${pkgsList_WSL[@]}" \
+    "${pkgsList_Proto[@]}" )
+  parseOptions $_pArgs
+  set -- "${positional[@]}"
+  echo  "${positional[@]}"
+  if [[ $cmd == "ls" ]] ; then
+    local subCmd="$1"
+    lsPackages "$subCmd"
+  fi
+}
+
+# Fns - main:
+checkIfListExists() {
+  if isNotFile $installListDefaultPath ; then
+    errorExit_noInstallListFound $installListDefaultPath
+  fi
+}
+
+readInstalList() {
+  while IFS=, read -r entity env name; do
+    n=$((n+1)) # not title row
+    case "$entity" in
+      "env") envsList+=( "$name" );;
+    esac
+    case "$env" in
+      "min") pkgsList_Min+=( "$name" );;
+      "arch") pkgsList_Arch+=( "$name" );;
+      "wsl") pkgsList_WSL+=( "$name" );;
+      "proto") pkgsList_Proto+=( "$name" );;
+    esac
+  done < "${installListDefaultPath}"
+}
+
+# Command ls:
+
+lsPackages() {
+  local kind="$1"
+  if isStringEqual "$kind" 'env' ; then
+    echoIt "$_pDel" "List of ${_cy}environmental${_ce} packages:"
+    for pack in "${envsList[@]}" ; do
+      echoIt "$_pDel" " - ${pack}"
+    done
   else
-    runMainAuto $1 $2
+    echoIt "$_pDel" "List of ${_cy}all${_ce} packages:"
+    for pack in "${pkgsList_All[@]}" ; do
+      echoIt "$_pDel" " - ${pack}"
+    done
   fi
 }
 
-# auto path
-runMainAuto() {
-  local choice=$1
-  local packageName=$2
-  if [[ "$choice" == 1 ]] ; then
-    renameDefaultFiles
-    stowAll
-    copyExamples
-    copySec
-    if isStringEmpty $2 ; then
-      stowEnv # default environment
-    else
-      stowEnv $2
-    fi
-    reloadMsgAfterStowAll
-  elif [[ "$choice" == 2 ]] ; then
-    unstowAll
-  elif [[ "$choice" == 3 ]] ; then
-    renameDefaultFiles
-    unstowEnvsAll
-    stowEnv $packageName
-    changeEnvValueInConfig $packageName
-  elif [[ "$choice" == 4 ]] ; then
-    unstowPackage $packageName
-    stowPackage $packageName
-  else
-    quitMenu
-  fi
-}
-
-# interactive path
-runMainInteractive() {
-  launchWelcomeMsg
-  yesConfirmOrAbort
-  launchInstalator_packages
-}
-
-launchWelcomeMsg() {
-  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Installation script"
-  echoIt "$_pDel" "Used variables:"
-  echoIt "$_pDel" "  - home dir:           ${_cy}$HOME${_ce}"
-  echoIt "$_pDel" "  - dotfiles repo:      ${_cy}$dotfilesPath${_ce}"
-}
-
-launchInstalator_packages() {
-  echoIt
-  showMenuOptions
-  local chosenOption=$(readMenuOptionInput)
-  execMenuOption $chosenOption
-}
-
-# menu:
-declare -a menuOptions=( \
-  "   [ ${_cy}1${_ce} ] Install all configs [enter]" \
-  "   [ ${_cy}2${_ce} ] Delete all the configs installed" \
-  "   [ ${_cy}3${_ce} ] Skip packages installation and change only environment value." \
-  "   [ ${_cy}4${_ce} ] Reload QYADR's package" \
-  "   [ ${_cy}5${_ce} ] View all QYADR's packages" \
-  "   [ ${_cy}6${_ce} ] Show manual install/uninstall commands" \
-  "   [ ${_cy}7${_ce} ] Quit"
-)
-
-showMenuOptions() {
-  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
-  for OPTION in "${menuOptions[@]}" ; do
-    echoIt "$_pDel" "${OPTION}"
-  done
-}
-
-readMenuOptionInput() {
-  read  -n 1 -r -p "${_pDel}    Enter your choice: ${_cb}>${_ce} "
-  echo >&2
-  echo ${REPLY:-1}
-}
-
-execMenuOption() {
-  local choice=$1
-  local menuOptionTxt=${menuOptions[${choice}-1]}
-  if [[ "$choice" == 1 ]] ; then
-    yesConfirmOrAbort "Ready to: $menuOptionTxt"
-    renameDefaultFiles
-    stowAll
-    copyExamples
-    copySec
-    echoIt "$_pDel" "Installed all dotfiles in home directory."
-    echoDone
-    launchInstalator_envPackage
-    reloadMsgAfterStowAll
-  elif [[ "$choice" == 2 ]] ; then
-    yesConfirmOrAbort "Ready to: $menuOptionTxt"
-    unstowAll
-    echoIt "$_pDel" "Uninstalled all dotfiles in home directory."
-    echoDone
-  elif [[ "$choice" == 3 ]] ; then
-    launchInstalator_envPackage
-  elif [[ "$choice" == 4 ]] ; then
-    launchReloadPackage
-  elif [[ "$choice" == 5 ]] ; then
-    showPackages
-    showEnvPackages
-    launchInstalator_packages
-  elif [[ "$choice" == 6 ]] ; then
-    showManualCommands
-    quitMenu
-  else
-    quitMenu
-  fi
-}
-
-quitMenu() {
-    echoIt "$_pDel" "Quitting script!" "${_ic}"
-    exit 0
-}
-
-showPackages() {
-  echoIt "$_pDel" "List of packages:"
-  for pack in "${packages[@]}" ; do
-    echoIt "$_pDel" " - ${pack}"
-  done
-}
-
-showManualCommands() {
-  echoIt "$_pDel" "Manual commands:"
-  echoIt "$_pDel" "stow -vt ~ -d .qyadr <package-name> # installation"
-  echoIt "$_pDel" "stow -vt ~ -d .qyadr -D <package-name> # remove"
-}
-
-stowAll() {
-  for pack in "${packages[@]}" ; do
-    stowPackage $pack
-  done
-}
-
-stowPackage() {
-    local pack=$1
-    if isDir "$dotfilesPath/$pack" ; then
-      stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
-      echoIt "$_pDel" "Stowed package name: ${_cy}${pack}${_ce}" "$_it"
-    else
-      errorExit_stowError ${pack}
-    fi
-}
-
-copyExamples(){
-  echoIt "$_pDel" "About to copy qyadr example files..."
-  copyExample_config
-}
-
-copyExample_config() {
-  local filePath="${HOME}/.qyadr-config.example"
-  local destPath=${filePath%%.example}
-  if isFile ${filePath} ; then
-    cp -f $filePath $destPath
-    echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
-  else
-    warnNotFound $filePath
-  fi
-}
-
-copySec(){
-  echoIt "$_pDel" "About to copy qyadr sec file..."
-  local filePath="${HOME}/.qyadr-sec.sec"
-  local destPath=${filePath%%.sec}
-  if isFile ${filePath} ; then
-    cp -f $filePath $destPath
-    [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
-  else
-    warnNotFound $filePath
-  fi
-}
-
-warnNotFound() {
-  echoIt "$_pDel" "${_cy}Warn:${_ce} file found file: ${1} ! Maybe not stowed?" "${_iw}"
-}
-
-reloadMsgAfterStowAll() {
-  echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
-  echoIt "$_pDel" "${_cy}Warn:${_ce} Fill up data in ${_cy}.qyadr-sec${_ce} file!" "${_iw}"
-}
-
-errorExit_stowError() {
-  echoIt "${_pDel}" "Cannot stowed package name: $1 (Is this correct name?)" "$_iw"
-  errorExit "$_pDel" "Aborting script!"
-}
-
-unstowAll() {
-  renameDefaultFiles
-  unstowPackages
-  unstowEnvsAll
-}
-
-unstowPackages() {
-  for pack in "${packages[@]}" ; do
-    unstowPackage $pack
-  done
-}
-
-unstowPackage() {
-  local pack=$1
-  if isDir "$dotfilesPath/$pack" ; then
-    stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
-    echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
-  fi
-}
-
-unstowEnvsAll() {
-  for env in "${envPackagesList[@]}" ; do
-    local envDir="_${env}"
-    local envDirPath="${dotfilesPath}/${envDir}"
-    if isDir "$envDirPath" ; then
-      stow -vd ${dotfilesPath} -D ${envDir} -t ${HOME}
-      echoIt "$_pDel" "Unstowed env package name: ${_cy}${envDir}${_ce}" "$_it"
-    fi
-  done
-}
-
-# env installation
-launchInstalator_envPackage() {
-  launchEnvWelcome
-  showMenuOptionsEnv
-  local chosenOption=$(readMenuOptionInput)
-  execMenuOptionEnv $chosenOption
-}
-
-launchEnvWelcome() {
-  echoIt "$_pDel" "It's time to install packages for specific linux environmen..."
-  echoIt "$_pDel" "   ... default environment is:  ${_cy}$defaultEnvValue${_ce}"
-}
-
-# menu:
-declare -a menuOptionsEnv=( \
-  "   [ ${_cy}1${_ce} ] Yep! Proceed. [enter]" \
-  "   [ ${_cy}2${_ce} ] Change it." \
-  "   [ ${_cy}3${_ce} ] View all QYADR's environment packages" \
-  "   [ ${_cy}4${_ce} ] No. Skip it!" \
-)
-
-showMenuOptionsEnv() {
-  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
-  for OPTION in "${menuOptionsEnv[@]}" ; do
-    echoIt "$_pDel" "${OPTION}"
-  done
-}
-
-execMenuOptionEnv() {
-  local choice=$1
-  local menuOptionTxt=${menuOptionsEnv[${choice}-1]}
-  if [[ "$choice" == 1 ]] ; then
-    yesConfirmOrAbort "Ready to: $menuOptionTxt"
-    stowEnv # default environment
-    echoDone
-  elif [[ "$choice" == 2 ]] ; then
-    launchChange_envPackage
-  elif [[ "$choice" == 3 ]] ; then
-    showEnvPackages
-    launchInstalator_envPackage
-  else
-    echoDone
-  fi
-}
-
-showEnvPackages() {
-  echoIt "$_pDel" "List of environment packages:"
-  for pack in "${envPackagesList[@]}" ; do
-    echoIt "$_pDel" " - ${pack}"
-  done
-}
-
-stowEnv() {
-  local envPackName="${1:-"$defaultEnvValue"}"
-  local envPackDirName="_${envPackName}"
-  local envDir="${dotfilesPath}/${envPackDirName}"
-  if isDir "$envDir" ; then
-    stow -vd ${dotfilesPath} -S ${envPackDirName} -t ${HOME}
-    echoIt "$_pDel" "Stowed package name: ${_cy}${envPackDirName}${_ce}" "$_it"
-  else
-    errorExit_stowError ${envPackDirName}
-  fi
-}
-
-# env change
-launchChange_envPackage() {
-  echoIt
-  launchChangeEnvWelcome
-  showMenuOptionsEnvChange
-  local chosenOption=$(readMenuOptionInput)
-  execChangeEnv $chosenOption
-}
-
-launchChangeEnvWelcome() {
-  echoIt "$_pDel" "Changing environment package..."
-}
-
-showMenuOptionsEnvChange() {
-  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
-  for idx in "${!envPackagesList[@]}" ; do
-    local nbr="[ ${_cy}$((idx + 1))${_ce} ]"
-    echoIt "$_pDel" "   ${nbr} - ${envPackagesList[$idx]}"
-  done
-}
-
-execChangeEnv() {
-  local choice=$1
-  local choiceCorrect=$((choice - 1))
-  local choiceName="${envPackagesList[choiceCorrect]}"
-  yesConfirmOrAbort "Ready to change environment to: ${_cy}${choiceName}${_ce} ?"
-  renameDefaultFiles
-  unstowEnvsAll
-  stowEnv $choiceName
-  changeEnvValueInConfig $choiceName
-  echoDone
-}
-
-changeEnvValueInConfig() {
-  local changedValue=$1
-  sed -i "s/\(^.*QYADR_ENV=\).*/\1'${changedValue}'/" "${HOME}/.qyadr-config"
-}
-
-renameDefaultFiles() {
-  # Rename default system config files
-  # to avoid stow conflict.
-  rename_bashrc
-  rename_i3config
-  rename_xinitrc
-}
-
-# TODO: Refactor DRY
-rename_bashrc() {
-  if ( isFile "${HOME}/.bashrc" && [[ ! -L "${HOME}/.bashrc"  ]] ) ; then
-    mv ${HOME}/.bashrc{,.back}
-  fi
-}
-
-rename_i3config() {
-  if ( isFile "${HOME}/.config/i3/config" && [[ ! -L "${HOME}/.config/i3/config" ]] ) ; then
-    mv ${HOME}/.config/i3/config{,.back}
-  fi
-}
-
-rename_xinitrc() {
-  if ( isFile "${HOME}/.xinitrc" && [[ ! -L "${HOME}/.xinitrc" ]] ) ; then
-    mv ${HOME}/.xinitrc{,.back}
-  fi
-}
-
-# reload package
-launchReloadPackage() {
-  reloadWelcomeMsg
-  showMenuToReloadPackages
-  local chosenOption=$(readMenuOptionInput)
-  execReloadPackage $chosenOption
-}
-
-reloadWelcomeMsg() {
-  echoIt "$_pDel" "Reload package name..."
-}
-
-showMenuToReloadPackages() {
-  echoIt "$_pDel" "- [ Choose one from bellow: ] ---------------" "${_ia}"
-  for idx in "${!packages[@]}" ; do
-    local nbr="[ ${_cy}$((idx + 1))${_ce} ]"
-    echoIt "$_pDel" "   ${nbr} - ${packages[$idx]}"
-  done
-}
-
-execReloadPackage() {
-  local choice=$1
-  local choiceCorrect=$((choice - 1))
-  local choiceName="${packages[choiceCorrect]}"
-  yesConfirmOrAbort "Ready to reload package to: ${_cy}${choiceName}${_ce} ?"
-  unstowPackage $choiceName
-  stowPackage $choiceName
-  echoDone
-}
-
-main "$@"
+# Main exec
+main
