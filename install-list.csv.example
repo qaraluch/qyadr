@@ -1,0 +1,13 @@
+ENTITY,ENV,NAME
+env,-,wsl
+env,-,arch
+pkg,all,qyadr
+pkg,all,zsh
+pkg,all,functions
+pkg,all,aliases
+pkg,all,scripts
+pkg,all,git
+pkg,all,vim
+pkg,all,npm
+pkg,arch,i3
+pkg,proto,proto

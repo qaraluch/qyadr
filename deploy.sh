@@ -13,9 +13,12 @@ readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
 readonly purgeScriptPath="${dotfilesPath}/purge.sh"
 readonly installScriptPath="${dotfilesPath}/install.sh"
 readonly updateScriptPath="${dotfilesPath}/update.sh"
+readonly installListPath="${dotfilesPath}/install-list.csv.example"
 readonly purgeScriptName="${dotfilesHomeDir}-purge.sh"
 readonly installScriptName="${dotfilesHomeDir}-install.sh"
 readonly updateScriptName="${dotfilesHomeDir}-update.sh"
+readonly installListName="${dotfilesHomeDir}-install-list.csv"
+readonly installListNameExample="${dotfilesHomeDir}-install-list.csv.example"
 
 readonly _pDel='[ QYADR-deploy ]'
 
@@ -83,13 +86,16 @@ main() {
   echoIt "$_pDel" "Cloned QYADR repo." "$_it"
 
   copyInstallScript
-  echoIt "$_pDel" "Copied install script to home directory for further use." "$_it"
+  echoIt "$_pDel" "Copied install script to the home directory for further use." "$_it"
 
   copyPurgeScript
-  echoIt "$_pDel" "Copied purge script to home directory for further use." "$_it"
+  echoIt "$_pDel" "Copied purge script to the home directory for further use." "$_it"
 
   copyUpdateScript
-  echoIt "$_pDel" "Copied update script to home directory for further use." "$_it"
+  echoIt "$_pDel" "Copied update script to the home directory for further use." "$_it"
+
+  copyInstallList
+  echoIt "$_pDel" "Copied install list to the home directory for further use." "$_it"
 
   echoDone
 }
@@ -126,6 +132,13 @@ copyUpdateScript() {
     local finalDest="${HOME}/${updateScriptName}"
     ln -s "${updateScriptPath}" ${finalDest}
     chmod u+x ${finalDest}
+  fi
+}
+
+copyInstallList() {
+  if isFile ${installListPath} ; then
+    cp -f "${installListPath}" "${installListNameExample}"
+    cp "${installListPath}" "${installListName}"
   fi
 }
 

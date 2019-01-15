@@ -15,6 +15,7 @@ readonly installScriptPath="${HOME}/${dotfilesHomeDir}-install.sh"
 readonly updateScriptPath="${HOME}/${dotfilesHomeDir}-update.sh"
 readonly plugsCacheDirPath="${HOME}/.plugs-cache"
 readonly configPath="${HOME}/.qyadr-config"
+readonly installListPath="${HOME}/.qyadr-install-list.csv.example"
 
 readonly _pDel='[ QYADR-purge ]'
 
@@ -97,6 +98,9 @@ main() {
   purgeConfig
   echoIt "$_pDel" "Purged QYADR config." "$_it"
 
+  purgeInstallList
+  echoIt "$_pDel" "Purged QYADR install list." "$_it"
+
   echoDone
 }
 
@@ -132,6 +136,12 @@ purgeUtils() {
 purgeConfig() {
   if isFile ${configPath} ; then
     rm -f ${configPath}
+  fi
+}
+
+purgeInstallList() {
+  if isFile ${installListPath} ; then
+    rm -f ${installListPath}
   fi
 }
 
