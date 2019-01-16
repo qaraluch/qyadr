@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
-# Author: qaraluch - 12.2018 - MIT
+# Author: qaraluch - 01.2019 - MIT
 # Project: QYADR
 
 # Settings:
 # readonly installListDefaultPath="${HOME}/.qyadr-install-list.csv"
 readonly installListDefaultPath="install-list.csv.example" # !!!!!!!!!!
+readonly dotfilesHomeDir='.qyadr'
+
+# Calculated vars:
+readonly dotfilesPath="${HOME}/${dotfilesHomeDir}"
+readonly defaultEnvValue=$(cat "${dotfilesPath}/qyadr/.qyadr-config.example" | gawk 'match($0, /.*QYADR_ENV=(.*?)/,a) {print a[1];}' | sed "s/['\"]//g")
 
 # Auto generated utility variables
 readonly _pArgs="$@"
@@ -71,13 +76,46 @@ echoDone() {
   echoIt "$_pDel" "DONE!" "$_it" ; echo >&2
 }
 
-# Errors:
+isStringEqualY() {
+  local string=$1
+  [[ "$string" == "Y" ]]
+}
+
+switchY() {
+  local switch=$1
+  if isStringEqualY $switch; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# Errors and warns:
 errorExit_abortScript() {
   errorExit "$_pDel" "Aborting script!"
 }
 
 errorExit_noInstallListFound() {
   errorExit "$_pDel" "Not found installation list: $1"
+}
+
+errorExit_stowError() {
+  echoIt "${_pDel}" "Cannot un/stowed package name: $1 (Is this correct name?)" "$_iw"
+  errorExit_abortScript
+}
+
+# warnNotFound() {
+#   echoIt "$_pDel" "${_cy}Warn:${_ce} file not found file: ${1} ! Maybe not stowed?" "${_iw}"
+# }
+
+warnAlreadyExists() {
+  echoIt "$_pDel" "${_cy}Warn:${_ce} file already exists: ${1} ?!" "${_iw}"
+}
+
+# Msgs:
+msg_reloadAndEdit() {
+  echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
+  echoIt "$_pDel" "${_cy}Warn:${_ce} Fill up data in ${_cy}.qyadr-sec${_ce} file!" "${_iw}"
 }
 
 # CLI:
@@ -89,9 +127,22 @@ printUsage() {
   ${_cy}${_pName}${_ce} - install (stow) qyadr packages.
 
   Usage:
-    ${_pName} ${_cy}ls${_ce}                - show list all packages (except of env ones).
-    ${_pName} ${_cy}ls${_ce} [env]          - show only environment packages.
+    ${_pName} ${_cy}ls${_ce}                               - show list all packages (except of env ones).
+    ${_pName} ${_cy}ls${_ce} [env]                         - show only environment packages.
 
+    ${_pName} ${_cy}install${_ce}                          - install default environment and its packages.
+                                                  Packages are installed according to 'install-list.csv'.
+    ${_pName} ${_cy}install${_ce} -e wsl                   - install 'wsl' environment and its packages.
+    ${_pName} ${_cy}install${_ce} -env wsl
+    ${_pName} ${_cy}install${_ce} pkg <package-name>       - install particular package.
+    ${_pName} ${_cy}install${_ce} env <env-name>           - install particular environment.
+    ${_pName} ${_cy}install${_ce} -u                       - uninstall flag:
+    ${_pName} ${_cy}install${_ce} --uninstall
+                                                             example: install -u pkg zsh
+
+  Manual stow commands:
+    stow -vt ~ -d .qyadr <package-name> # installation
+    stow -vt ~ -d .qyadr -D <package-name> # remove
 
 EOL
   exit $1
@@ -106,6 +157,20 @@ parseOptions(){
   while [[ $# -gt 0 ]] ; do
     itm="$1"
     case $itm in
+      -u|--uninstall)
+      flagUninstall="Y"
+      shift
+      ;;
+      -e|--env)
+      flagEnv='Y'
+      flagEnvName="$2"
+      shift
+      shift
+      ;;
+      install)
+      cmd="$itm"
+      shift
+      ;;
       ls)
       cmd="$itm"
       shift
@@ -126,9 +191,11 @@ main() {
   ifNoArgsPrintUsage $_pArgs
   checkIfListExists
   # cli
-  local flag
   local cmd
   local positional=()
+  local flagEnv='N'
+  local flagEnvName
+  local flagUninstall='N'
   # lists
   declare -a envsList
   declare -a pkgsList_Min
@@ -144,7 +211,11 @@ main() {
     "${pkgsList_Proto[@]}" )
   parseOptions $_pArgs
   set -- "${positional[@]}"
-  echo  "${positional[@]}"
+  if [[ $cmd == "install" ]] ; then
+    local subCmd="$1"
+    local subCmdArg="$2"
+    execCmd_install
+  fi
   if [[ $cmd == "ls" ]] ; then
     local subCmd="$1"
     lsPackages "$subCmd"
@@ -174,7 +245,6 @@ readInstalList() {
 }
 
 # Command ls:
-
 lsPackages() {
   local kind="$1"
   if isStringEqual "$kind" 'env' ; then
@@ -187,6 +257,228 @@ lsPackages() {
     for pack in "${pkgsList_All[@]}" ; do
       echoIt "$_pDel" " - ${pack}"
     done
+  fi
+}
+
+# Command install:
+execCmd_install() {
+  # Pre-installation shielding actions
+  renameDefaultFiles
+  if switchY $flagUninstall ; then
+    execSubCmd_uninstall
+  else
+    execSubCmd_install
+  fi
+  # Post-installation actions
+  copyExamples
+  copySec
+  msg_reloadAndEdit
+}
+
+execSubCmd_install() {
+  if isStringEqual "$subCmd" 'pkg' ; then
+    stowPkg "$subCmdArg"
+  elif isStringEqual "$subCmd" 'env' ; then
+    stowEnv "$subCmdArg"
+  else
+    if switchY "$flagEnv" ; then
+      stowAll "$flagEnvName"
+    else
+      stowAllDefault
+    fi
+  fi
+}
+
+execSubCmd_uninstall() {
+  if isStringEqual "$subCmd" 'pkg' ; then
+    unstowPkg "$subCmdArg"
+  elif isStringEqual "$subCmd" 'env' ; then
+    unstowEnv "$subCmdArg"
+  else
+    unstowAll
+  fi
+}
+
+#Stow commands:
+cmd_stow(){
+  stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
+}
+
+cmd_unstow(){
+  stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
+}
+
+stowPkg() {
+    local pack=$1
+    if isDir "$dotfilesPath/$pack" ; then
+      cmd_stow
+      echoIt "$_pDel" "Stowed package name: ${_cy}${pack}${_ce}" "$_it"
+    else
+      errorExit_stowError ${pack}
+    fi
+}
+
+unstowPkg() {
+  local pack=$1
+  if isDir "$dotfilesPath/$pack" ; then
+    cmd_unstow
+    echoIt "$_pDel" "Unstowed package name: ${_cy}${pack}${_ce}" "$_it"
+  else
+    errorExit_stowError
+  fi
+}
+
+stowEnv() {
+  local envPackName="${1:-"$defaultEnvValue"}"
+  local pack="_${envPackName}"
+  local envDir="${dotfilesPath}/${pack}"
+  if isDir "$envDir" ; then
+    cmd_stow
+    echoIt "$_pDel" "Stowed environment package name: ${_cy}${pack}${_ce}" "$_it"
+  else
+    errorExit_stowError ${pack}
+  fi
+  changeEnvValueInConfig "$envPackName"
+}
+
+changeEnvValueInConfig() {
+  local changedValue=$1
+  local config="${HOME}/.qyadr-config"
+  if isFile $config; then
+    sed -i "s/\(^.*QYADR_ENV=\).*/\1'${changedValue}'/" "$config"
+  fi
+}
+
+unstowEnv() {
+  local envPackName="${1:-"$defaultEnvValue"}"
+  local pack="_${envPackName}"
+  local envDir="${dotfilesPath}/${pack}"
+  if isDir "$envDir" ; then
+    cmd_unstow
+    echoIt "$_pDel" "Unstowed environment package name: ${_cy}${pack}${_ce}" "$_it"
+  else
+    errorExit_stowError ${pack}
+  fi
+}
+
+unstowAll() {
+  bulkUnstowEnv
+  bulkUnstowPkg
+}
+
+bulkUnstowPkg() {
+  for pack in "${pkgsList_All[@]}" ; do
+    unstowPkg $pack
+  done
+}
+
+bulkUnstowEnv() {
+  for env in "${envsList[@]}" ; do
+    unstowEnv $env
+  done
+}
+
+stowAllDefault(){
+  stowEnv #default env specified in .qyadr-config
+  stowPkgsMin
+  stowPkgsEnvDependant #default like above
+  stowPkgsProto
+}
+
+stowAll(){
+  local env="$1"
+  stowEnv "$env"
+  stowPkgsMin
+  stowPkgsEnvDependant "$env"
+  stowPkgsProto
+}
+
+stowPkgsMin() {
+  for pack in "${pkgsList_Min[@]}" ; do
+    stowPkg $pack
+  done
+}
+
+stowPkgsProto() {
+  for pack in "${pkgsList_Proto[@]}" ; do
+    stowPkg $pack
+  done
+}
+
+stowPkgsEnvDependant() {
+  # only arch for now (no wsl dependant pkgs)
+  local env="${1:-'arch'}"
+  if isStringEqual $env 'arch' ; then
+    for pack in "${pkgsList_Arch[@]}" ; do
+      stowPkg $pack
+    done
+  fi
+}
+
+# Shielding actions:
+renameDefaultFiles() {
+  # Rename default system config files
+  # to avoid stow conflict.
+  rename_bashrc
+  rename_i3config
+  rename_xinitrc
+}
+
+rename_bashrc() {
+  local file="${HOME}/.bashrc"
+  if ( isFile "${file}" && [[ ! -L "${file}" ]] ) ; then
+    mv "${file}"{,.back}
+  fi
+}
+
+rename_i3config() {
+  local file="${HOME}/.config/i3/config"
+  if ( isFile "${file}" && [[ ! -L "${file}" ]] ) ; then
+    mv "${file}"{,.back}
+  fi
+}
+
+rename_xinitrc() {
+  local file="${HOME}/.xinitrc"
+  if ( isFile "${file}" && [[ ! -L "${file}" ]] ) ; then
+    mv "${file}"{,.back}
+  fi
+}
+
+# Post-installation actions:
+copyExamples(){
+  echoIt "$_pDel" "About to copy qyadr ${_cy}example${_ce} files..."
+  copyExample_config
+}
+
+copyExample_config() {
+  local filePath="${HOME}/.qyadr-config.example"
+  local destPath=${filePath%%.example}
+  if isFile ${filePath} ; then
+    if isFile ${destPath} ; then
+      warnAlreadyExists ${destPath}
+    else
+      cp -f $filePath $destPath
+      [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
+    fi
+  fi
+}
+
+copySec(){
+  echoIt "$_pDel" "About to copy qyadr ${_cy}sec${_ce} files..."
+  copySec_qyadr
+}
+
+copySec_qyadr() {
+  local filePath="${HOME}/.qyadr-sec.sec"
+  local destPath=${filePath%%.sec}
+  if isFile ${filePath} ; then
+    if isFile ${destPath} ; then
+      warnAlreadyExists ${destPath}
+    else
+      cp -f $filePath $destPath
+      [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
+    fi
   fi
 }
 
