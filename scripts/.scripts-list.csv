@@ -1,4 +1,5 @@
 ENV SCOPE,NAME,DESCRIPTION
+all,pogoda,Display current weather forecast in shell.
 all,proto,Script boilerplate for rapid prototyping.
 arch,wallpaper-set,[X utility] for changing wallpaper.
 all,multiexec,Execute multiple commands from file.

@@ -31,17 +31,6 @@ tree-better-dirs() {
     # -a show hidden dirs
 }
 
-pogoda() {
-  local city="$1"
-  local cityDefault='Gliwice'
-  local apiUrl='http://wttr.in/'
-  if [ -z "$city" ]; then
-      city="${cityDefault}"
-  fi
-  local results=$(curl -s "${apiUrl}${city}")
-  echo $results
-}
-
 rm-symlink() {
   [ -L "$1" ] && cp --remove-destination "$(readlink "$1")" "$1"
 }
