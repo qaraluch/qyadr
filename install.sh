@@ -520,7 +520,7 @@ copyExample_config() {
       warnAlreadyExists ${destPath}
     else
       cp -f $filePath $destPath
-      [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
+      [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ${_cy}${destPath}${_ce}"
     fi
   fi
 }
@@ -538,7 +538,7 @@ copySec_qyadr() {
       warnAlreadyExists ${destPath}
     else
       cp -f $filePath $destPath
-      [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
+      [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ${_cy}${destPath}${_ce}"
     fi
   fi
 }
