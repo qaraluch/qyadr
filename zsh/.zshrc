@@ -8,6 +8,7 @@ profileStop() { if [[ "$QYADR_PROFILE_ZSH" == "Y" ]] ; then _now=$(($(date +%s%N
 # Vars
 export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles path, used in aliases
 export QYADR_PLUGS_ROOT="${HOME}/.plugs"
+export BROWSER="chromium"
 
 # Sources
 profileFor 'all fns'
@@ -69,3 +70,4 @@ profileStop
 
 # Aliases
 [ -f ~/.aliases.sh ] && source ~/.aliases.sh
+

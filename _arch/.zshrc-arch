@@ -1,1 +1,2 @@
-echo "Sourced for arch env"
+alias b='browser-open'
+

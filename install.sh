@@ -510,10 +510,24 @@ rename_xinitrc() {
 copyExamples(){
   echoIt "$_pDel" "About to copy qyadr ${_cy}example${_ce} files..."
   copyExample_config
+  copyExample_wallpaper
 }
 
 copyExample_config() {
   local filePath="${HOME}/.qyadr-config.example"
+  local destPath=${filePath%%.example}
+  if isFile ${filePath} ; then
+    if isFile ${destPath} ; then
+      warnAlreadyExists ${destPath}
+    else
+      cp -f $filePath $destPath
+      [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ${_cy}${destPath}${_ce}"
+    fi
+  fi
+}
+
+copyExample_wallpaper() {
+  local filePath="${HOME}/.wallpaper.example"
   local destPath=${filePath%%.example}
   if isFile ${filePath} ; then
     if isFile ${destPath} ; then

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Copy file to wallpaper placeholder and set
+[ ! -z "$1" ] && cp "$1" "${HOME}/.wallpaper
+feh --bg-scale "${HOME}/.wallpaper"
+# maybe use: xwallpaper --center "${HOME}/.wallpaper" ?
+
