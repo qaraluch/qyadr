@@ -84,6 +84,7 @@ main() {
   echoIt "$_pDel" "  - qyadr purge script:     ${_cy}${purgeScriptPath}${_ce}"
   echoIt "$_pDel" "  - qyadr update script:    ${_cy}${updateScriptPath}${_ce}"
   echoIt "$_pDel" "  - qyadr plugs cache dir:  ${_cy}${plugsCacheDirPath}${_ce}"
+  echoIt "$_pDel" "  - qyadr install list:     ${_cy}${installListPath}${_ce}"
   yesConfirmOrAbort "Ready to roll"
 
   uninstallPackages
@@ -106,7 +107,7 @@ main() {
 
 uninstallPackages() {
   # auto mode of uninstall script
-  isFile ~/.qyadr-install.sh && bash ~/.qyadr-install.sh 2
+  isFile ~/.qyadr-install.sh && bash ~/.qyadr-install.sh install -u
 }
 
 purgeRepos() {

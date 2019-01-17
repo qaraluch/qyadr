@@ -169,14 +169,14 @@ printUsage() {
     ${_pName} ${_cy}ls${_ce} [env]                         - show only environment packages.
 
     ${_pName} ${_cy}install${_ce}                          - install default environment and its packages.
-                                                  Packages are installed according to 'install-list.csv'.
+                                                         Packages are installed according to 'install-list.csv'.
     ${_pName} ${_cy}install${_ce} -e wsl                   - install 'wsl' environment and its packages.
     ${_pName} ${_cy}install${_ce} -env wsl
     ${_pName} ${_cy}install${_ce} pkg <package-name>       - install particular package.
     ${_pName} ${_cy}install${_ce} env <env-name>           - install particular environment (not its dependant packages).
     ${_pName} ${_cy}install${_ce} -u                       - uninstall flag:
     ${_pName} ${_cy}install${_ce} --uninstall
-                                                  example: install -u pkg zsh
+                                                            example: install -u pkg zsh
 
     ${_pName} ${_cy}reload${_ce} <package-name>            - reload particular package (not environment).
 
