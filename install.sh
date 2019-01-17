@@ -38,15 +38,15 @@ errorExit() {
   local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
 }
 
-yesConfirmOrAbort() {
-  local msg=${1:-'Continue'}
-  read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
-  echo >&2
-  REPLY=${REPLY:-'Y'}
-  if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
-    errorExit_abortScript
-  fi
-}
+# yesConfirmOrAbort() {
+#   local msg=${1:-'Continue'}
+#   read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
+#   echo >&2
+#   REPLY=${REPLY:-'Y'}
+#   if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+#     errorExit_abortScript
+#   fi
+# }
 
 isDir() {
   local dir=$1
@@ -90,6 +90,11 @@ switchY() {
   fi
 }
 
+echoDone() {
+  echoIt "$_pDel" "DONE!" "$_it"
+  echo >&2
+}
+
 # Errors and warns:
 errorExit_abortScript() {
   errorExit "$_pDel" "Aborting script!"
@@ -109,13 +114,51 @@ errorExit_stowError() {
 # }
 
 warnAlreadyExists() {
-  echoIt "$_pDel" "${_cy}Warn:${_ce} file already exists: ${1} ?!" "${_iw}"
+  echoIt "$_pDel" "   ... file already exists: ${1} ?! No action taken!"
 }
 
 # Msgs:
 msg_reloadAndEdit() {
   echoIt "$_pDel" "${_cy}Warn: login again to apply changes!${_ce}" "${_iw}"
   echoIt "$_pDel" "${_cy}Warn:${_ce} Fill up data in ${_cy}.qyadr-sec${_ce} file!" "${_iw}"
+}
+
+msg_installWelcome() {
+  echoIt
+  echoIt "$_pDel" "Welcome to: ${_cy}Qaraluch's Yet Another Dotfiles Repo${_ce} - Installation script"
+}
+
+msg_startInstallation() {
+  local installationType="$1"
+  echoIt "$_pDel" "About to [ ${_cg}${installationType}${_ce} ] ..."
+  echoIt "$_pDel" "         - in home dir:             ${_cy}$HOME${_ce}"
+  echoIt "$_pDel" "         - from dotfiles repo:      ${_cy}$dotfilesPath${_ce}"
+}
+
+msg_aPkg(){
+  local pkgName="$1"
+  echoIt "$_pDel" "   ... a package named:"
+  echoIt "$_pDel" "         [ ${_cg}${pkgName}${_ce} ]"
+  echoIt
+}
+
+msg_aEnv(){
+  local envName="$1"
+  echoIt "$_pDel" "   ... a environment package named:"
+  echoIt "$_pDel" "         [ ${_cg}${envName}${_ce} ]"
+  echoIt
+}
+
+msg_aListOfPackages(){
+  local envName="$1"
+  echoIt "$_pDel" "   ... all listed packages for environment:"
+  echoIt "$_pDel" "         [ ${_cg}${envName}${_ce} ]"
+  echoIt
+}
+
+msg_unstowAll(){
+  echoIt "$_pDel" "   ... all packages whatsoever (!)"
+  echoIt
 }
 
 # CLI:
@@ -135,10 +178,10 @@ printUsage() {
     ${_pName} ${_cy}install${_ce} -e wsl                   - install 'wsl' environment and its packages.
     ${_pName} ${_cy}install${_ce} -env wsl
     ${_pName} ${_cy}install${_ce} pkg <package-name>       - install particular package.
-    ${_pName} ${_cy}install${_ce} env <env-name>           - install particular environment.
+    ${_pName} ${_cy}install${_ce} env <env-name>           - install particular environment (not its dependant packages).
     ${_pName} ${_cy}install${_ce} -u                       - uninstall flag:
     ${_pName} ${_cy}install${_ce} --uninstall
-                                                             example: install -u pkg zsh
+                                                  example: install -u pkg zsh
 
   Manual stow commands:
     stow -vt ~ -d .qyadr <package-name> # installation
@@ -211,6 +254,7 @@ main() {
     "${pkgsList_Proto[@]}" )
   parseOptions $_pArgs
   set -- "${positional[@]}"
+  msg_installWelcome
   if [[ $cmd == "install" ]] ; then
     local subCmd="$1"
     local subCmdArg="$2"
@@ -265,25 +309,32 @@ execCmd_install() {
   # Pre-installation shielding actions
   renameDefaultFiles
   if switchY $flagUninstall ; then
+    msg_startInstallation 'uninstall'
     execSubCmd_uninstall
   else
+    msg_startInstallation 'install'
     execSubCmd_install
   fi
   # Post-installation actions
   copyExamples
   copySec
   msg_reloadAndEdit
+  echoDone
 }
 
 execSubCmd_install() {
   if isStringEqual "$subCmd" 'pkg' ; then
+    msg_aPkg "$subCmdArg"
     stowPkg "$subCmdArg"
   elif isStringEqual "$subCmd" 'env' ; then
+    msg_aEnv "$subCmdArg"
     stowEnv "$subCmdArg"
   else
     if switchY "$flagEnv" ; then
+      msg_aListOfPackages "$flagEnvName"
       stowAll "$flagEnvName"
     else
+      msg_aListOfPackages "$defaultEnvValue"
       stowAllDefault
     fi
   fi
@@ -291,21 +342,26 @@ execSubCmd_install() {
 
 execSubCmd_uninstall() {
   if isStringEqual "$subCmd" 'pkg' ; then
+    msg_aPkg "$subCmdArg"
     unstowPkg "$subCmdArg"
   elif isStringEqual "$subCmd" 'env' ; then
+    msg_aEnv "$subCmdArg"
     unstowEnv "$subCmdArg"
   else
+    msg_unstowAll
     unstowAll
   fi
 }
 
 #Stow commands:
 cmd_stow(){
-  stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
+  # stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
+  echo "${_cr} --------------------------- stow ------------------------ ${_ce}"
 }
 
 cmd_unstow(){
-  stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
+  # stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
+  echo "${_cr} --------------------------- unstow ------------------------ ${_ce}"
 }
 
 stowPkg() {
@@ -334,7 +390,7 @@ stowEnv() {
   local envDir="${dotfilesPath}/${pack}"
   if isDir "$envDir" ; then
     cmd_stow
-    echoIt "$_pDel" "Stowed environment package name: ${_cy}${pack}${_ce}" "$_it"
+    echoIt "$_pDel" "Stowed environment package name: ${_cy}${envPackName}${_ce}" "$_it"
   else
     errorExit_stowError ${pack}
   fi
@@ -346,6 +402,7 @@ changeEnvValueInConfig() {
   local config="${HOME}/.qyadr-config"
   if isFile $config; then
     sed -i "s/\(^.*QYADR_ENV=\).*/\1'${changedValue}'/" "$config"
+    [[ $? ]] && echoIt "$_pDel" "     ... changed QYADR_ENV value in: ${config}"
   fi
 }
 
@@ -407,8 +464,8 @@ stowPkgsProto() {
 
 stowPkgsEnvDependant() {
   # only arch for now (no wsl dependant pkgs)
-  local env="${1:-'arch'}"
-  if isStringEqual $env 'arch' ; then
+  local whatEnv="${1:-"arch"}"
+  if isStringEqual "$whatEnv" "arch" ; then
     for pack in "${pkgsList_Arch[@]}" ; do
       stowPkg $pack
     done
