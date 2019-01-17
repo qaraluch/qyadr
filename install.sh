@@ -3,8 +3,7 @@
 # Project: QYADR
 
 # Settings:
-# readonly installListDefaultPath="${HOME}/.qyadr-install-list.csv"
-readonly installListDefaultPath="install-list.csv.example" # !!!!!!!!!!
+readonly installListDefaultPath="${HOME}/.qyadr-install-list.csv"
 readonly dotfilesHomeDir='.qyadr'
 
 # Calculated vars:
@@ -37,16 +36,6 @@ echoIt() {
 errorExit() {
   local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
 }
-
-# yesConfirmOrAbort() {
-#   local msg=${1:-'Continue'}
-#   read -n 1 -s -r -p "${_pDel}${_ia} ${msg} [Y/n]?"
-#   echo >&2
-#   REPLY=${REPLY:-'Y'}
-#   if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
-#     errorExit_abortScript
-#   fi
-# }
 
 isDir() {
   local dir=$1
@@ -104,14 +93,14 @@ errorExit_noInstallListFound() {
   errorExit "$_pDel" "Not found installation list: $1"
 }
 
+errorExit_passPkgName() {
+  errorExit "$_pDel" "Pass package name!"
+}
+
 errorExit_stowError() {
   echoIt "${_pDel}" "Cannot un/stowed package name: $1 (Is this correct name?)" "$_iw"
   errorExit_abortScript
 }
-
-# warnNotFound() {
-#   echoIt "$_pDel" "${_cy}Warn:${_ce} file not found file: ${1} ! Maybe not stowed?" "${_iw}"
-# }
 
 warnAlreadyExists() {
   echoIt "$_pDel" "   ... file already exists: ${1} ?! No action taken!"
@@ -131,6 +120,12 @@ msg_installWelcome() {
 msg_startInstallation() {
   local installationType="$1"
   echoIt "$_pDel" "About to [ ${_cg}${installationType}${_ce} ] ..."
+  echoIt "$_pDel" "         - in home dir:             ${_cy}$HOME${_ce}"
+  echoIt "$_pDel" "         - from dotfiles repo:      ${_cy}$dotfilesPath${_ce}"
+}
+
+msg_startReload() {
+  echoIt "$_pDel" "About to [ ${_cg}reload${_ce} ] ..."
   echoIt "$_pDel" "         - in home dir:             ${_cy}$HOME${_ce}"
   echoIt "$_pDel" "         - from dotfiles repo:      ${_cy}$dotfilesPath${_ce}"
 }
@@ -183,6 +178,8 @@ printUsage() {
     ${_pName} ${_cy}install${_ce} --uninstall
                                                   example: install -u pkg zsh
 
+    ${_pName} ${_cy}reload${_ce} <package-name>            - reload particular package (not environment).
+
   Manual stow commands:
     stow -vt ~ -d .qyadr <package-name> # installation
     stow -vt ~ -d .qyadr -D <package-name> # remove
@@ -208,6 +205,10 @@ parseOptions(){
       flagEnv='Y'
       flagEnvName="$2"
       shift
+      shift
+      ;;
+      reload)
+      cmd="$itm"
       shift
       ;;
       install)
@@ -255,6 +256,11 @@ main() {
   parseOptions $_pArgs
   set -- "${positional[@]}"
   msg_installWelcome
+  if [[ $cmd == "reload" ]] ; then
+    local pkgName="$1"
+    isStringEmpty "$pkgName" && errorExit_passPkgName
+    execCmd_reload
+  fi
   if [[ $cmd == "install" ]] ; then
     local subCmd="$1"
     local subCmdArg="$2"
@@ -355,13 +361,11 @@ execSubCmd_uninstall() {
 
 #Stow commands:
 cmd_stow(){
-  # stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
-  echo "${_cr} --------------------------- stow ------------------------ ${_ce}"
+  stow -vd ${dotfilesPath} -S ${pack} -t ${HOME}
 }
 
 cmd_unstow(){
-  # stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
-  echo "${_cr} --------------------------- unstow ------------------------ ${_ce}"
+  stow -vd ${dotfilesPath} -D ${pack} -t ${HOME}
 }
 
 stowPkg() {
@@ -537,6 +541,15 @@ copySec_qyadr() {
       [[ $? ]] && echoIt "$_pDel" "   ...  ${filePath} -> ~/${_cy}${destPath}${_ce}"
     fi
   fi
+}
+
+# Command reload:
+execCmd_reload() {
+  msg_startReload
+  msg_aPkg "$pkgName"
+  unstowPkg "$pkgName"
+  stowPkg "$pkgName"
+  echoDone
 }
 
 # Main exec
