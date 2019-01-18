@@ -9,5 +9,6 @@ pkg,min,scripts
 pkg,min,git
 pkg,min,vim
 pkg,min,npm
+pkg,min,tmux
 pkg,arch,i3
 pkg,proto,proto
