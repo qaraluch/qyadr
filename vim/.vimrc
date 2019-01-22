@@ -1,3 +1,19 @@
+"""""""""""""""""""""""""""""""""""""""""""""""" PLUGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" auto-install Plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+"" init plugins
+call plug#begin('~/.vim/plugged')
+Plug 'plasticboy/vim-markdown'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
+Plug 'ayu-theme/ayu-vim'
+call plug#end()
+
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" disable arrows
 inoremap  <Up>     <NOP>
@@ -68,6 +84,14 @@ let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
+"" colors & themes
+set bg=light
+set termguicolors     " enable true colors support
+let ayucolor="mirage" " for mirage version of theme
+" let ayucolor="dark"   " for dark version of theme
+" let ayucolor="light"  " for light version of theme
+colorscheme ayu
+
 "" etc...
 set ff=unix
 syntax on                                        " syntax highlights
@@ -77,18 +101,4 @@ set nrformats=                                   " number format for numbers lik
 ""set ttimeout
 set splitbelow splitright	                       " Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
 autocmd BufWritePre * %s/\s\+$//e                " Automatically deletes all trailing whitespace on save.
-
-"""""""""""""""""""""""""""""""""""""""""""""""" PLUGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" auto-install Plug
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-"" init plugins
-call plug#begin('~/.vim/plugged')
-Plug 'plasticboy/vim-markdown'
-Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-surround'
-call plug#end()
+set encoding=utf-8
