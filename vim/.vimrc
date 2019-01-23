@@ -92,6 +92,10 @@ let ayucolor="mirage" " for mirage version of theme
 " let ayucolor="light"  " for light version of theme
 colorscheme ayu
 
+"" save views and folds
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
 "" etc...
 set ff=unix
 syntax on                                        " syntax highlights
