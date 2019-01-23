@@ -125,3 +125,5 @@ alias tred3='tree-better-dirs -L 3'
 
 alias spectrum='zsh-spectrum-ls'
 alias spectrumbg='zsh-spectrum-ls-bg'
+
+alias v='nvim'

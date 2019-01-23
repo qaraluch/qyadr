@@ -1,3 +1,12 @@
+# Vars
+export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles path, used in aliases
+export QYADR_PLUGS_ROOT="${HOME}/.plugs"
+export BROWSER="chromium"
+
+# Editor
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+
 # Colors setups
 export LS_COLORS="ow=01;36;40"          # better ls dir colors
 
@@ -38,10 +47,6 @@ setopt no_beep                         # no beep on error
 setopt interactivecomments	           # enable comments on the command-line
 setopt correct_all	                   # auto correction of commands
 # unsetopt flow_control	                 # disable ^S/^Q in shell
-
-# Editor
-export VISUAL=vim
-export EDITOR="$VISUAL"
 
 autoload -U edit-command-line         # edit command in editor (in vim)
 zle -N edit-command-line
