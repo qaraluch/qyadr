@@ -73,7 +73,7 @@ noremap <leader>d "_d
 filetype plugin indent on
 set tabstop=2                                    " show existing tab with 2 spaces width
 set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
-set expandtab                                    " On pressing tab, insert 2 spaces
+set expandtab                                    " on pressing tab, insert 2 spaces
 
 "" line numbers
 set relativenumber
@@ -103,6 +103,8 @@ set directory^=$HOME/.vim/temp//                 " swap files dir
 set nrformats=                                   " number format for numbers like 007
 ""set notimeout
 ""set ttimeout
-set splitbelow splitright	                       " Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
-autocmd BufWritePre * %s/\s\+$//e                " Automatically deletes all trailing whitespace on save.
+set splitbelow splitright	                       " splits open at the bottom and right, which is non-retarded, unlike vim defaults.
+autocmd BufWritePre * %s/\s\+$//e                " automatically deletes all trailing whitespace on save.
 set encoding=utf-8
+set wildmenu	                                   " nvim has it so only for vim compatibility
+set wildmode=full
