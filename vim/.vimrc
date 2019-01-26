@@ -96,6 +96,18 @@ colorscheme ayu
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
 
+"" simple sessions manage setup (no plugin)
+if !isdirectory($HOME.'/.vim-sessions')
+    silent call mkdir ($HOME.'/.vim-sessions', 'p')
+endif
+
+let g:sessions_dir = '~/.vim-sessions'
+
+exec 'nnoremap ZS :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap ZR :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+
+autocmd VimLeave * mks! ~/.vim-sessions/shutdown-session.vim                " automatically save the current session whenever vim is closed
+
 "" etc...
 set ff=unix
 syntax on                                        " syntax highlights
