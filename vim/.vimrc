@@ -108,6 +108,9 @@ exec 'nnoremap ZR :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 
 autocmd VimLeave * mks! ~/.vim-sessions/shutdown-session.vim                " automatically save the current session whenever vim is closed
 
+"" clipboard for wsl
+set clipboard=unnamedplus
+
 "" etc...
 set ff=unix
 syntax on                                        " syntax highlights

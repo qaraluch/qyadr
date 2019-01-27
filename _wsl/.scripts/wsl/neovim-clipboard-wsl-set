@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 01.2019 - MIT
+# Utility that setup neovim and windows clipboard on WSL
+# see:  [FAQ · neovim/neovim Wiki](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
+# need to install neovim on Windows beforehand by
+# choco install neovim
+
+readonly windowsNeovimPath="/mnt/c/tools/neovim/Neovim"
+
+main() {
+  sudo ln -s "${windowsNeovimPath}/bin/win32yank.exe" "/usr/local/bin/win32yank"
+  [[ $? ]] && echo "[ QYADR ]" "Set up clipboard for neovim!"
+}
+
+main

@@ -7,3 +7,4 @@ all,extract-clip,Simple wrapper for ffmpeg to extract media clips.
 all,git-init,Set up new git repo.
 all,github-init,Set up new GitHub repo in git directory.
 wsl,wslpath,[wsl] Utility tool for translating unix paths to WSL and the oposite (i.e. /mnt/c/sth/ <-> C:\sth\).
+wsl,neovim-clipboard-wsl-set,[wsl] Utility that set up Windows clipboard to neovim.
