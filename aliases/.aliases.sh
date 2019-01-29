@@ -127,3 +127,4 @@ alias spectrum='zsh-spectrum-ls'
 alias spectrumbg='zsh-spectrum-ls-bg'
 
 alias v='nvim'
+alias vf='nvim $(fzf)'
