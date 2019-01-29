@@ -67,6 +67,8 @@ noremap <leader>d "_d
 
 "" fzf - find file
 nnoremap <C-p> :Files<Cr>
+nnoremap <C-S-p> :History<Cr>
+nnoremap <C-S-l> :Locate<Space>
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
