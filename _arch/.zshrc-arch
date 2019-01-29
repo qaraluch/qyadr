@@ -1,2 +1,4 @@
 alias b='browser-open'
 
+# VirtualBox utils
+command -v VBoxClient-all >/dev/null && VBoxClient-all
