@@ -12,6 +12,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'ayu-theme/ayu-vim'
+Plug '~/.plugs-cache/fzf/'
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -62,6 +64,9 @@ noremap <leader><leader>p }p
 
 "" delete action without register (vsc)
 noremap <leader>d "_d
+
+"" fzf - find file
+nnoremap <C-p> :Files<Cr>
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
