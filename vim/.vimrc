@@ -15,6 +15,8 @@ Plug 'ayu-theme/ayu-vim'
 Plug '~/.plugs-cache/fzf/'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -68,7 +70,7 @@ noremap <leader>d "_d
 
 "" fzf - find file
 nnoremap <C-p> :Files<Cr>
-nnoremap <C-S-p> :History<Cr>
+nnoremap <C-A-p> :History<Cr>
 nnoremap <C-S-l> :Locate
 
 "" edit/reload vimrc
@@ -131,6 +133,13 @@ autocmd VimLeave * mks! ~/.vim-sessions/shutdown-session.vim                " au
 
 "" clipboard for wsl
 set clipboard=unnamedplus
+
+"" Airline
+let g:airline_theme='base16'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 "" etc...
 set ff=unix
