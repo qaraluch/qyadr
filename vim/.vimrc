@@ -74,6 +74,11 @@ nnoremap <C-S-l> :Locate
 nmap <leader>rce :e ~/.vimrc<CR>
 nmap <leader>rcr :so ~/.vimrc<CR><Space>
 
+" buffers
+nnoremap <tab> :bn<CR>
+nnoremap <s-tab> :bp<CR>
+nnoremap <leader>bd :bd<CR>
+
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
 ""noremap <leader>yaf va{o0y
