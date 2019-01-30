@@ -98,8 +98,16 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 
+" paths
+" parent dir
+inoremap <F5> <C-R>=expand("%:p:h")<CR>
+" current file
+inoremap <F4> <C-R>=expand("%:p")<CR>
+
 "" prettier
-nmap <Leader>pr <Plug>(Prettier)
+"nmap <Leader>pr <Plug>(Prettier)
+"workaround:
+nmap <Leader>pr :PrettierCli --write <C-R>=expand("%:p")<CR><CR>:e!<CR>
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
@@ -161,7 +169,7 @@ autocmd BufWritePre * %s/\s\+$//e
 
 "" prettier
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
 
 "" etc...
 set ff=unix
