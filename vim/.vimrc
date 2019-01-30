@@ -17,6 +17,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -95,6 +96,8 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 
+"" prettier
+nmap <Leader>pr <Plug>(Prettier)
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
@@ -144,15 +147,19 @@ autocmd VimLeave * mks! ~/.vim-sessions/shutdown-session.vim                " au
 "" clipboard for wsl
 set clipboard=unnamedplus
 
-"" Airline
+"" airline
 let g:airline_theme='base16'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
-" Automatically deletes all trailing whitespace on save.
+"" automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
+
+"" prettier
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
 
 "" etc...
 set ff=unix
