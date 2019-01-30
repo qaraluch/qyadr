@@ -14,6 +14,7 @@ Plug 'tpope/vim-surround'
 Plug 'ayu-theme/ayu-vim'
 Plug '~/.plugs-cache/fzf/'
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -78,6 +79,10 @@ nmap <leader>rcr :so ~/.vimrc<CR><Space>
 nnoremap <tab> :bn<CR>
 nnoremap <s-tab> :bp<CR>
 nnoremap <leader>bd :bd<CR>
+
+" comments
+nmap <C-_> gcc
+  "" as ctrl-/
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
