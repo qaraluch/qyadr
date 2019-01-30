@@ -82,6 +82,8 @@ nmap <leader>rcr :so ~/.vimrc<CR><Space>
 nnoremap <tab> :bn<CR>
 nnoremap <s-tab> :bp<CR>
 nnoremap <leader>bd :bd<CR>
+nnoremap <leader>b :buffer *
+nnoremap gb :ls<CR>:b<Space>
 
 " comments
 nmap <C-_> gcc
