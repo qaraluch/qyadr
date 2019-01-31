@@ -19,6 +19,7 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }             " need node.js and npm
 Plug 'airblade/vim-gitgutter'
+Plug 'Shougo/neosnippet.vim'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -80,11 +81,12 @@ nmap <leader>rce :e ~/.vimrc<CR>
 nmap <leader>rcr :so ~/.vimrc<CR><Space>
 
 " buffers
-nnoremap <tab> :bn<CR>
-nnoremap <s-tab> :bp<CR>
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>b :buffer *
-nnoremap gb :ls<CR>:b<Space>
+nnoremap <S-tab> :b#<CR>
+nnoremap gp :bp<CR>
+nnoremap gn :bn<CR>
+nnoremap gl :ls<CR> :ls<CR>:b<Space>
 
 " comments
 nmap <C-_> gcc
@@ -175,6 +177,23 @@ autocmd BufWritePre * %s/\s\+$//e
 "" prettier
 let g:prettier#autoformat = 0
 "autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
+
+"" neosinppet
+let g:neosnippet#snippets_directory='~/.snippets'
+" Plugin key-mappings
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 "" etc...
 set ff=unix
