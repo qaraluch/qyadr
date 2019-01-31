@@ -116,6 +116,10 @@ nmap <Leader>pr :PrettierCli --write <C-R>=expand("%:p")<CR><CR>:e!<CR>
 nmap ]g <Plug>GitGutterNextHunk
 nmap [g <Plug>GitGutterPrevHunk
 
+"" spellcheck
+nnoremap <leader>s :setlocal spell! spelllang=en_us<CR>
+nnoremap <leader>sp :setlocal spell! spelllang=pl<CR>
+
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
 ""noremap <leader>yaf va{o0y
