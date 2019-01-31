@@ -17,7 +17,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }             " need node.js and npm
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -109,6 +110,10 @@ inoremap <F4> <C-R>=expand("%:p")<CR>
 "workaround:
 nmap <Leader>pr :PrettierCli --write <C-R>=expand("%:p")<CR><CR>:e!<CR>
 
+"" gitgutter
+nmap ]g <Plug>GitGutterNextHunk
+nmap [g <Plug>GitGutterPrevHunk
+
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
 ""noremap <leader>yaf va{o0y
@@ -183,3 +188,4 @@ autocmd BufWritePre * %s/\s\+$//e                " automatically deletes all tra
 set encoding=utf-8
 set wildmenu	                                   " nvim has it so only for vim compatibility
 set wildmode=full
+set updatetime=1000	                             " smaler for git gutter plugin
