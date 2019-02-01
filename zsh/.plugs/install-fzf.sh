@@ -59,5 +59,5 @@ export FZF_DEFAULT_OPTS='
     --color info:144,prompt:161,spinner:135,pointer:135,marker:118
 '
 
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_COMMAND='ag --follow --hidden --ignore .git --ignore .cache -g ""'
 
