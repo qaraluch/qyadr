@@ -74,7 +74,7 @@ noremap <leader>d "_d
 "" fzf - find file
 nnoremap <C-p> :Files<Cr>
 nnoremap <C-A-p> :History<Cr>
-nnoremap <C-S-l> :Locate
+" nnoremap <C-A-l> :Locate
 
 "" edit/reload vimrc
 nmap <leader>rce :e ~/.vimrc<CR>
@@ -127,6 +127,10 @@ nnoremap <leader>sp :setlocal spell! spelllang=pl<CR>
 "" relatvie line numbers toggle
 noremap <F3> :set invrelativenumber<CR>
 inoremap <F3> <C-O>:set invrelativenumber<CR>
+
+"" syntax highlighting refresh
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
