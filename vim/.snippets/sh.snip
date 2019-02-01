@@ -7,8 +7,7 @@ options head
 
 snippet function
 alias fun
-	${1:#:name}()
-	{
+	${1:#:name}() {
 		${0:TARGET}
 	}
 
@@ -27,9 +26,13 @@ snippet elif
 	elif ${1:#:condition} ; then
 		${0:TARGET}
 
-snippet var-localb
+snippet var-local
 alias   varl
 	local ${1:#:name}="${2:#:something}"
+
+snippet var-local-empty
+alias   varle
+	local ${1:#:name}
 
 snippet var
 alias   var
@@ -42,4 +45,8 @@ alias   varq
 snippet command-substitution
 alias   cmds
 	$(${0:#:cat })
+
+snippet echo-debug
+alias   ed
+	echo "${1:#:name} ---->" "$$1"${0}
 
