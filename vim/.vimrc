@@ -50,8 +50,8 @@ noremap <leader>n nzz
 noremap <leader>N Nzz
 
 "" move 5 up/down (vsc)
-noremap <leader>k 5k
-noremap <leader>j 5j
+noremap <leader>k 10k
+noremap <leader>j 10j
 
 "" replace word/WORD (vsc)
 noremap S ciw<C-r>0<Esc>
@@ -87,6 +87,10 @@ nnoremap <S-tab> :b#<CR>
 nnoremap gp :bp<CR>
 nnoremap gn :bn<CR>
 nnoremap gl :ls<CR> :ls<CR>:b<Space>
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
 
 " comments
 nmap <C-_> gcc
@@ -119,6 +123,10 @@ nmap [g <Plug>GitGutterPrevHunk
 "" spellcheck
 nnoremap <leader>s :setlocal spell! spelllang=en_us<CR>
 nnoremap <leader>sp :setlocal spell! spelllang=pl<CR>
+
+"" relatvie line numbers toggle
+noremap <F3> :set invrelativenumber<CR>
+inoremap <F3> <C-O>:set invrelativenumber<CR>
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
