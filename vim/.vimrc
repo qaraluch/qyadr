@@ -195,7 +195,11 @@ let g:prettier#autoformat = 0
 "autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
 
 "" neosinppet
+" which disables all runtime snippets
+let g:neosnippet#disable_runtime_snippets = { '_' : 1, }
+
 let g:neosnippet#snippets_directory='~/.snippets'
+
 " Plugin key-mappings
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -224,3 +228,4 @@ set encoding=utf-8
 set wildmenu	                                   " nvim has it so only for vim compatibility
 set wildmode=full
 set updatetime=1000	                             " smaler for git gutter plugin
+

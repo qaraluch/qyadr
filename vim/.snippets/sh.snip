@@ -1,11 +1,45 @@
-snippet #!
-abbr    #!/bin/bash
-alias   shebang
+snippet shebang
+abbr    #!/usr/bin/env bash
+alias   she
 options head
-	#!/bin/${1:sh}
+	#!/bin/bash
 	${0}
 
+snippet function
+alias fun
+	${1:#:name}()
+	{
+		${0:TARGET}
+	}
+
 snippet if
-	if [ ${1:#:condition} ]; then
+	if ${1:#:condition} ; then
 		${0:TARGET}
 	fi
+
+
+snippet el
+	else
+		${0:TARGET}
+
+
+snippet elif
+	elif ${1:#:condition} ; then
+		${0:TARGET}
+
+snippet var-localb
+alias   varl
+	local ${1:#:name}="${2:#:something}"
+
+snippet var
+alias   var
+	${${0:#:name}}
+
+snippet var-quoted
+alias   varq
+	"${${0:#:name}}"
+
+snippet command-substitution
+alias   cmds
+	$(${0:#:cat })
+
