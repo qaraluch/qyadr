@@ -132,6 +132,10 @@ inoremap <F3> <C-O>:set invrelativenumber<CR>
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
+"" for variable change (like global replace)
+nnoremap gr *:%s///gc<left><left><left>
+nnoremap gR *Ncgn
+
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
 ""noremap <leader>yaf va{o0y
