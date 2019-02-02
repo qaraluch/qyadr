@@ -12,6 +12,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'ayu-theme/ayu-vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'morhetz/gruvbox'
 Plug '~/.plugs-cache/fzf/'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
@@ -158,12 +160,15 @@ let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 "" colors & themes
-set bg=light
+set bg=dark
 set termguicolors     " enable true colors support
-let ayucolor="mirage" " for mirage version of theme
+" let ayucolor="mirage" " for mirage version of theme
 " let ayucolor="dark"   " for dark version of theme
 " let ayucolor="light"  " for light version of theme
-colorscheme ayu
+" colorscheme ayu
+" colorscheme nord
+colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'soft'
 
 "" save views and folds
 autocmd BufWinLeave *.* mkview
