@@ -74,9 +74,18 @@ noremap <leader><leader>p }p
 noremap <leader>d "_d
 
 "" fzf - find file
-nnoremap <C-p> :Files<Cr>
-nnoremap <C-A-p> :History<Cr>
+nnoremap <C-p> :Files<CR>
+nnoremap <C-A-p> :History<CR>
 " nnoremap <C-A-l> :Locate
+
+"" fzf - extra key bindings
+let g:fzf_action = { 'ctrl-v': 'vsplit' }
+
+"" fzf - qnb integration
+command! -bang -nargs=? Qnb
+  \ call fzf#run({'source': 'ag --follow --ignore .git -g "" /mnt/g/qnb/', 'sink': 'e'})
+
+nnoremap gq :Qnb<CR>
 
 "" edit/reload vimrc
 nmap <leader>rce :e ~/.vimrc<CR>
@@ -137,6 +146,9 @@ inoremap <F12> <C-o>:syntax sync fromstart<CR>
 "" for variable change (like global replace)
 nnoremap gr *:%s///gc<left><left><left>
 nnoremap gR *Ncgn
+
+"" Press Space to turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
