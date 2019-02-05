@@ -79,13 +79,31 @@ nnoremap <C-A-p> :History<CR>
 " nnoremap <C-A-l> :Locate
 
 "" fzf - extra key bindings
-let g:fzf_action = { 'ctrl-v': 'vsplit' }
+function! s:copy_results(lines)
+  let joined_lines = join(a:lines, "\n")
+  if len(a:lines) > 1
+    let joined_lines .= "\n"
+  endif
+  let @+ = joined_lines
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-v': 'vsplit',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-y': function('s:copy_results'),
+  \ }
 
 "" fzf - qnb integration
 command! -bang -nargs=? Qnb
-  \ call fzf#run({'source': 'ag --follow --ignore .git -g "" /mnt/g/qnb/', 'sink': 'e'})
+  \ call fzf#run(fzf#wrap('qnb-files', {'source': 'ag --follow --ignore .git -g ""', 'dir': '/mnt/g/qnb/'}), <bang>0)
 
 nnoremap gq :Qnb<CR>
+
+"" qnb commands
+command Qgs :!qnb git status
+command Qgc :!qnb git commit
+command -nargs=1 Qc :!qnb create new-note dump <q-args>
+command -nargs=* Qa :!qnb add new-topic dump <q-args>
 
 "" edit/reload vimrc
 nmap <leader>rce :e ~/.vimrc<CR>
@@ -134,7 +152,7 @@ nmap [g <Plug>GitGutterPrevHunk
 
 "" spellcheck
 nnoremap <F5> :setlocal spell! spelllang=en_us<CR>
-nnoremap <F6> sp :setlocal spell! spelllang=pl<CR>
+nnoremap <F6> :setlocal spell! spelllang=pl<CR>
 
 "" relatvie line numbers toggle
 noremap <F3> :set invrelativenumber<CR>
