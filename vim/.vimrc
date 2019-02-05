@@ -91,7 +91,7 @@ nnoremap gq :Qnb<CR>
 nmap <leader>rce :e ~/.vimrc<CR>
 nmap <leader>rcr :so ~/.vimrc<CR><Space>
 
-" buffers
+" buffer navigation
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>b :buffer *
 nnoremap <S-tab> :b#<CR>
@@ -115,10 +115,11 @@ inoremap [ []<left>
 inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
+  " use <C-v> in insert mode to escape it and use single char
 
 " paths
 " parent dir
-inoremap <F5> <C-R>=expand("%:p:h")<CR>
+inoremap <F3> <C-R>=expand("%:p:h")<CR>
 " current file
 inoremap <F4> <C-R>=expand("%:p")<CR>
 
@@ -132,8 +133,8 @@ nmap ]g <Plug>GitGutterNextHunk
 nmap [g <Plug>GitGutterPrevHunk
 
 "" spellcheck
-nnoremap <leader>s :setlocal spell! spelllang=en_us<CR>
-nnoremap <leader>sp :setlocal spell! spelllang=pl<CR>
+nnoremap <F5> :setlocal spell! spelllang=en_us<CR>
+nnoremap <F6> sp :setlocal spell! spelllang=pl<CR>
 
 "" relatvie line numbers toggle
 noremap <F3> :set invrelativenumber<CR>
@@ -237,6 +238,13 @@ let g:prettier#autoformat = 0
 let g:neosnippet#disable_runtime_snippets = { '_' : 1, }
 
 let g:neosnippet#snippets_directory='~/.snippets'
+
+"" gf configuration
+:set suffixesadd+=.md
+:set path+=/mnt/g/qnb
+
+"" cd util
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 "" etc...
 set ff=unix
