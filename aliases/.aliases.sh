@@ -24,6 +24,9 @@ alias qyadr-purge='~/.qyadr-purge.sh'
 alias qyadr-install='~/.qyadr-install.sh'
 alias qyadr-update='~/.qyadr-update.sh'
 
+# my dirs
+alias myq='cd /mnt/g/qnb/'
+
 # zsh - mgmt
 alias reload='zsh-reload'                         # .functions/zsh-mgmt.sh
 alias profile-zsh='zsh-measure-loading-times'     # .functions/zsh-mgmt.sh
