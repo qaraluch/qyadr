@@ -1,4 +1,18 @@
 snippet link
-abbr [link][]
+alias   l
 options word
-    [${1:#:link_id}][]${2}
+  [${1:#:link_id}][]${2}
+
+snippet code
+alias   co
+options word
+  \`\`\`
+  ${0}
+  \`\`\`
+
+snippet code-sh
+alias   cosh
+options word
+  \`\`\`sh
+  ${0}
+  \`\`\`
