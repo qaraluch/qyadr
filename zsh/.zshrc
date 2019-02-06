@@ -60,6 +60,11 @@ profileFor 'plugin - zsh-abbrev-alias'
 source $QYADR_PLUGS_ROOT/install-zsh-abbrev-alias.sh
 profileStop
 
+profileFor 'plugin - tmux-tpm'
+# [[ -f "${QYADR_PLUGS_ROOT}/install-tmux.tpm.sh" ]] && source $QYADR_PLUGS_ROOT/install-tmux-tpm.sh
+source $QYADR_PLUGS_ROOT/install-tmux-tpm.sh
+profileStop
+
 # Bindkeys
 [ -f ~/.zsh-bindkeys.zsh ] && source ~/.zsh-bindkeys.zsh
 
