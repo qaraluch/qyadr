@@ -100,10 +100,10 @@ command! -bang -nargs=? Qnb
 nnoremap gq :Qnb<CR>
 
 "" qnb commands
-command Qgs :!qnb git status
-command Qgc :!qnb git commit
-command -nargs=1 Qc :!qnb create new-note dump <q-args>
-command -nargs=* Qa :!qnb add new-topic dump <q-args>
+command! Qgs :!qnb git status
+command! Qgc :!qnb git commit
+command! -nargs=1 Qc :!qnb create new-note dump <q-args>
+command! -nargs=* Qa :!qnb add new-topic dump <q-args>
 
 "" edit/reload vimrc
 nmap <leader>rce :e ~/.vimrc<CR>
@@ -137,9 +137,13 @@ inoremap {;<CR> {<CR>};<ESC>O
 
 " paths
 " parent dir
-inoremap <F3> <C-R>=expand("%:p:h")<CR>
+inoremap <leader>pd <C-R>=expand("%:p:h")<CR>
 " current file
-inoremap <F4> <C-R>=expand("%:p")<CR>
+inoremap <leader>pf <C-R>=expand("%:p")<CR>
+" only filename without extension
+inoremap <leader>qf <C-R>=expand("%:t:r")<CR>
+" only filename
+inoremap <leader>f <C-R>=expand("%:t")<CR>
 
 "" prettier
 "nmap <Leader>pr <Plug>(Prettier)
@@ -186,10 +190,17 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 nnoremap <C-A-k> :NeoSnippetEdit<CR>
 
+"" save file in cwd
+nnoremap <leader>e :e <C-R>=expand("%:p:h")<CR>/
+
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
 ""noremap <leader>yaf va{o0y
 ""noremap <leader>yf V/}<CR>y
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+:iab konw know
 
 """""""""""""""""""""""""""""""""""""""""""""""" SETTINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" tabs
