@@ -168,7 +168,8 @@ inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 "" for variable change (like global replace)
 nnoremap gr *:%s///gc<left><left><left>
-nnoremap gR *Ncgn
+nnoremap gR :%s/<c-r><c-a>//gc<left><left><left>
+nnoremap <leader>gr *Ncgn
 
 "" Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
