@@ -131,4 +131,5 @@ alias spectrumbg='zsh-spectrum-ls-bg'
 
 alias v='nvim'
 alias vf='nvim $(fzf)'
+alias vfa='nvim $(find . -type f | fzf)'                                                         # all - all files (nothing ignored)
 alias vfq='nvim $(ag --follow --hidden --ignore .git -g "" /mnt/g/qnb | fzf)'

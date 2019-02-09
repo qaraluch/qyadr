@@ -136,14 +136,16 @@ inoremap {;<CR> {<CR>};<ESC>O
   " use <C-v> in insert mode to escape it and use single char
 
 " paths
-" parent dir
+" in insert - parent dir
 inoremap <leader>pd <C-R>=expand("%:p:h")<CR>
-" current file
+" in insert - current file
 inoremap <leader>pf <C-R>=expand("%:p")<CR>
-" only filename without extension
+" in insert - only filename without extension
 inoremap <leader>qf <C-R>=expand("%:t:r")<CR>
-" only filename
+" in insert - only filename
 inoremap <leader>f <C-R>=expand("%:t")<CR>
+" in normal - copy file path (full)
+nnoremap <leader>cf :let @* = expand("%:p")<CR>
 
 "" prettier
 "nmap <Leader>pr <Plug>(Prettier)
@@ -172,7 +174,7 @@ nnoremap gR :%s/<c-r><c-a>//gc<left><left><left>
 nnoremap <leader>gr *Ncgn
 
 "" Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+:nnoremap <silent> <leader><Space> :nohlsearch<Bar>:echo<CR>
 
 "" neosnippet key-mappings
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
@@ -193,6 +195,9 @@ nnoremap <C-A-k> :NeoSnippetEdit<CR>
 
 "" save file in cwd
 nnoremap <leader>e :e <C-R>=expand("%:p:h")<CR>/
+
+"" unfold
+nnoremap <Space> za
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
