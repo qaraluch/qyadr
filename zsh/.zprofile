@@ -1,5 +1,5 @@
 # Path
-[[ ":$PATH:" != *":${HOME}/.scripts:"* ]] && PATH="$PATH:$(du -L "$HOME/.scripts/" | cut -f2 | tr '\n' ':' | rev | cut -c 2- | rev)"
+[[ ":$PATH:" != *":${HOME}/.scripts/"* ]] && PATH="$PATH:$(du -L "$HOME/.scripts" | cut -f2 | tr '\n' ':' | rev | cut -c 2- | rev)"
   # also removes inconvenient trailing colon
 
 # [4 Arch] Start X server if i3 not already running.
