@@ -78,6 +78,10 @@ nnoremap <C-p> :Files<CR>
 nnoremap <C-A-p> :History<CR>
 " nnoremap <C-A-l> :Locate
 
+"" fzf - find all files (hidden too)
+command! -bang -nargs=? FilesAll
+  \ call fzf#run(fzf#wrap('all-files-in-cwd', {'source': 'find . -type f'}), <bang>0)
+
 "" fzf - extra key bindings
 function! s:copy_results(lines)
   let joined_lines = join(a:lines, "\n")
