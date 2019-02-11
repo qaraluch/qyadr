@@ -1,8 +1,7 @@
 snippet shebang
-abbr    #!/usr/bin/env bash
 alias   she
 options head
-	#!/bin/bash
+  #!/usr/bin/env bash
 	${0}
 
 snippet function
@@ -49,4 +48,8 @@ alias   cmds
 snippet echo-debug
 alias   ed
 	echo "${1:#:name} ---->" "$$1"${0}
+
+snippet color-yellow
+alias   coly
+	${_cy}${1:#:var}${_ce}
 
