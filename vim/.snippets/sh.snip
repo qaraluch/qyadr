@@ -6,40 +6,38 @@ options head
 
 snippet function
 alias fun
-	${1:#:name}() {
+	${1:name}() {
 		${0:TARGET}
 	}
 
 snippet if
-	if ${1:#:condition} ; then
+	if ${1:condition} ; then
 		${0:TARGET}
 	fi
-
 
 snippet el
 	else
 		${0:TARGET}
 
-
 snippet elif
-	elif ${1:#:condition} ; then
+	elif ${1:condition} ; then
 		${0:TARGET}
 
 snippet var-local
-alias   varl
-	local ${1:#:name}="${2:#:something}"
+alias   vl
+	local ${1:name}="${2:#:something}"
 
 snippet var-local-empty
-alias   varle
-	local ${1:#:name}
+alias   vle
+	local ${1:name}
 
 snippet var
-alias   var
-	${${0:#:name}}
+alias   v
+	${${0:name}}
 
 snippet var-quoted
-alias   varq
-	"${${0:#:name}}"
+alias   vq
+	"${${0:name}}"
 
 snippet command-substitution
 alias   cmds
@@ -47,7 +45,7 @@ alias   cmds
 
 snippet echo-debug
 alias   ed
-	echo "${1:#:name} ---->" "$$1"${0}
+	echo "${1:name} ---->" "$$1"${0}
 
 snippet color-yellow
 alias   coly
