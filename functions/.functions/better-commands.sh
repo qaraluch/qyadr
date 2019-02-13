@@ -38,3 +38,8 @@ rm-symlink() {
 path-print() {
   echo -e ${PATH//:/\\n}
 }
+
+ag-here() {
+  local flags=(--follow --hidden --ignore .git --ignore node_modules)
+  ag "${flags[@]}" $1 ./
+}

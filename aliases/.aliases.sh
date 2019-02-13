@@ -94,6 +94,7 @@ alias gld='git-log-date 10'
 alias glt='git-log-tree'
 alias gp='git-push'
 alias gpforce='git-push --force'
+alias greph='ag-here'
 
 alias h='show-history'
 alias ha='show-history-all'
