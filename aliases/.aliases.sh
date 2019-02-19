@@ -18,6 +18,8 @@ abbrev-alias -g FD="find . -type d"
 abbrev-alias -f TS="_getTimeStampDate"              # like Time Stamp
 abbrev-alias -f TSF="_getTimeStampHumanFile"        # like Time Stamp File
 
+abbrev-alias -g vs="nvim -S ~/.vim-sessions/"
+
 # IN TOPICAL ORDER -------------------------------------------------------
 # qyadr - dotfiles mgmt
 alias qyadr-purge='~/.qyadr-purge.sh'

@@ -67,8 +67,8 @@ noremap ZQ :q!<CR>
 "" paste at the end of line (vsc)
 noremap <leader>p A<space><Esc>p
 
-"" paste beneath paragraph (vsc)
-noremap <leader><leader>p }p
+"" paste beneath paragraph (vsc) - use gP / P
+" noremap <leader><leader>p }p
 
 "" delete action without register (vsc)
 noremap <leader>d "_d
@@ -115,7 +115,8 @@ nmap <leader>rcr :so ~/.vimrc<CR><Space>
 
 " buffer navigation
 nnoremap <leader>bd :bd<CR>
-nnoremap <leader>b :buffer *
+" nnoremap <leader>b :buffer *
+nnoremap <leader>b :Buffers<CR>
 nnoremap <S-tab> :b#<CR>
 nnoremap gp :bp<CR>
 nnoremap gn :bn<CR>
@@ -137,6 +138,7 @@ inoremap [ []<left>
 inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
+inoremap <leader>( ()
   " use <C-v> in insert mode to escape it and use single char
 
 " paths
@@ -173,8 +175,11 @@ noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 "" for variable change (like global replace)
-nnoremap gr *:%s///gc<left><left><left>
-nnoremap gR :%s/<c-r><c-a>//gc<left><left><left>
+"" replace a word
+nnoremap gr *:%s///g<left><left><left>
+"" replace a WORD
+nnoremap gR :%s/<c-r><c-a>//g<left><left><left>
+"" fast replace
 nnoremap <leader>gr *Ncgn
 
 "" Press Space to turn off highlighting and clear any message already displayed.
