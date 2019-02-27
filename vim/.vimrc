@@ -118,8 +118,9 @@ nnoremap <leader>bd :bd<CR>
 " nnoremap <leader>b :buffer *
 nnoremap <leader>b :Buffers<CR>
 nnoremap <S-tab> :b#<CR>
-nnoremap gp :bp<CR>
-nnoremap gn :bn<CR>
+" nnoremap gp :bp<CR>
+" nnoremap gn :bn<CR>
+" to way out coz gn is used to search
 nnoremap gl :ls<CR> :ls<CR>:b<Space>
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
@@ -157,6 +158,7 @@ nnoremap <leader>cf :let @* = expand("%:p")<CR>
 "nmap <Leader>pr <Plug>(Prettier)
 "workaround:
 nmap <Leader>pr :PrettierCli --write <C-R>=expand("%:p")<CR><CR>:e!<CR>
+  "" need node.js and prettier installed
 
 "" gitgutter
 nmap ]g <Plug>GitGutterNextHunk
@@ -176,9 +178,9 @@ inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 "" for variable change (like global replace)
 "" replace a word
-nnoremap gr *:%s///g<left><left><left>
+nnoremap gr *:%s///g<left><left>
 "" replace a WORD
-nnoremap gR :%s/<c-r><c-a>//g<left><left><left>
+nnoremap gR :%s/<c-r><c-a>//g<left><left>
 "" fast replace
 nnoremap <leader>gr *Ncgn
 
@@ -208,6 +210,17 @@ nnoremap <leader>e :e <C-R>=expand("%:p:h")<CR>/
 "" unfold
 nnoremap <Space> za
 
+"" * behavior in visual mode
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+
+function! s:VSetSearch(cmdtype)
+  let temp = @s
+  norm! gv"sy
+  let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @s = temp
+endfunction
+
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
 ""noremap <leader>yaf va{o0y
@@ -218,6 +231,21 @@ nnoremap <Space> za
 :iab konw know
 
 """""""""""""""""""""""""""""""""""""""""""""""" SETTINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" etc...
+set ff=unix
+syntax on                                        " syntax highlights
+set directory^=$HOME/.vim/temp//                 " swap files dir
+set nrformats=                                   " number format for numbers like 007
+""set notimeout
+""set ttimeout
+set splitbelow splitright	                       " splits open at the bottom and right, which is non-retarded, unlike vim defaults.
+autocmd BufWritePre * %s/\s\+$//e                " automatically deletes all trailing whitespace on save.
+set encoding=utf-8
+set wildmenu	                                   " nvim has it so only for vim compatibility
+set wildmode=full
+set updatetime=1000	                             " smaler for git gutter plugin
+
 "" tabs
 filetype plugin indent on
 set tabstop=2                                    " show existing tab with 2 spaces width
@@ -290,17 +318,14 @@ let g:neosnippet#snippets_directory='~/.snippets'
 "" cd util
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
-"" etc...
-set ff=unix
-syntax on                                        " syntax highlights
-set directory^=$HOME/.vim/temp//                 " swap files dir
-set nrformats=                                   " number format for numbers like 007
-""set notimeout
-""set ttimeout
-set splitbelow splitright	                       " splits open at the bottom and right, which is non-retarded, unlike vim defaults.
-autocmd BufWritePre * %s/\s\+$//e                " automatically deletes all trailing whitespace on save.
-set encoding=utf-8
-set wildmenu	                                   " nvim has it so only for vim compatibility
-set wildmode=full
-set updatetime=1000	                             " smaler for git gutter plugin
+"" Markdown
+let g:vim_markdown_folding_disabled = 0
+" let g:vim_markdown_override_foldtext = 0
+let g:vim_markdown_fenced_languages = ['bash=sh', 'javascript=js', 'go', 'html']
+let g:vim_markdown_new_list_item_indent = 0
+let g:vim_markdown_auto_insert_bullets = 0
+let g:vim_markdown_new_list_item_indent = 0
 
+"" Links
+let g:netrw_browsex_viewer="cmd.exe /C start"
+  "" for WSL

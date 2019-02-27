@@ -17,6 +17,7 @@ abbrev-alias -g FF="find . -type f"
 abbrev-alias -g FD="find . -type d"
 abbrev-alias -f TS="_getTimeStampDate"              # like Time Stamp
 abbrev-alias -f TSF="_getTimeStampHumanFile"        # like Time Stamp File
+abbrev-alias -f TSE="_getTimeStamp"                 # like Time Stamp Epoch
 
 abbrev-alias -g vs="nvim -S ~/.vim-sessions/"
 
