@@ -116,7 +116,9 @@ nmap <leader>rcr :so ~/.vimrc<CR><Space>
 " buffer navigation
 nnoremap <leader>bd :bd<CR>
 " nnoremap <leader>b :buffer *
-nnoremap <leader>b :Buffers<CR>
+nnoremap ,b :Buffers<CR>
+" too long, so changed it
+" nnoremap <leader>b :Buffers<CR>
 nnoremap <S-tab> :b#<CR>
 " nnoremap gp :bp<CR>
 " nnoremap gn :bn<CR>
@@ -140,6 +142,7 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 inoremap <leader>( ()
+inoremap <leader>[ []
   " use <C-v> in insert mode to escape it and use single char
 
 " paths
@@ -221,6 +224,12 @@ function! s:VSetSearch(cmdtype)
   let @s = temp
 endfunction
 
+"" Bash C-a and C-e in the insert mode
+inoremap <C-e> <Esc>A
+inoremap <C-a> <Esc>I
+
+inoremap <leader>l <Esc>la
+
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
 ""noremap <leader>yaf va{o0y
@@ -245,6 +254,7 @@ set encoding=utf-8
 set wildmenu	                                   " nvim has it so only for vim compatibility
 set wildmode=full
 set updatetime=1000	                             " smaler for git gutter plugin
+set noswapfile                                   " test - no swap files
 
 "" tabs
 filetype plugin indent on
@@ -317,6 +327,7 @@ let g:neosnippet#snippets_directory='~/.snippets'
 
 "" cd util
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <leader>ccd :pwd<CR>
 
 "" Markdown
 let g:vim_markdown_folding_disabled = 0
