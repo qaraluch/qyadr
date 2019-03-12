@@ -21,3 +21,8 @@ alias vsc='vscode-open'                             # _wsl/.functions/better-com
 
 # Open cwd in widows's explorer
 alias exp='explorer.exe .'
+
+# Golang
+export GOROOT=/usr/local/go
+export GOPATH=/mnt/h/devgo
+[[ ":$PATH:" != *":$GOPATH/bin:$GOROOT/bin"* ]] && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
