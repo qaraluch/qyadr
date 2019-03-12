@@ -29,6 +29,7 @@ bindkey -M vicmd "j" down-line-or-beginning-search
 
 # for convenience
 bindkey '^[[1;5C' forward-word                        # ctrl-> - move forward one word
+bindkey '^n' forward-word                             # ctrl-n - alternative move forward one word
 bindkey '^[[1;5D' backward-word                       # ctrl-< - move backward one word
 
 # completion
