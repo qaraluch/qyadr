@@ -22,6 +22,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }             " need node.js and npm
 Plug 'airblade/vim-gitgutter'
 Plug 'Shougo/neosnippet.vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -235,6 +236,42 @@ inoremap <leader>l <Esc>la
 ""noremap <leader>yaf va{o0y
 ""noremap <leader>yf V/}<CR>y
 
+"" golang setups
+autocmd FileType go nmap ,gr <Plug>(go-run)
+autocmd FileType go nmap ,gb <Plug>(go-build)
+autocmd FileType go nmap ,gt <Plug>(go-test)
+autocmd FileType go nmap ,gc <Plug>(go-coverage)
+autocmd FileType go nmap ,gi :GoImport<Space>
+autocmd FileType go nmap ,gd :GoDrop<Space>
+autocmd FileType go nmap ,gt :GoDeclsDir<CR>
+autocmd FileType go nmap ,ga :GoAlternate<CR>
+
+let g:go_auto_type_info = 1
+  "" vim-go - show type signature in command line
+
+let g:go_fmt_command = "goimports"
+  "" when its on no need :GoImport and :GoDrop?
+
+"" extra colors for vim-go syntax
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+
+let g:go_auto_sameids = 1
+  "" highlight variables (vim-go)
+
+let g:go_loaded_gosnippets = 1
+    "" disable vim-go snippets
+
+"" quickfix window
+noremap ]c :cnext<CR>
+noremap [c :cprevious<CR>
+nnoremap <leader>cc :cclose<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
@@ -246,8 +283,6 @@ set ff=unix
 syntax on                                        " syntax highlights
 set directory^=$HOME/.vim/temp//                 " swap files dir
 set nrformats=                                   " number format for numbers like 007
-""set notimeout
-""set ttimeout
 set splitbelow splitright	                       " splits open at the bottom and right, which is non-retarded, unlike vim defaults.
 autocmd BufWritePre * %s/\s\+$//e                " automatically deletes all trailing whitespace on save.
 set encoding=utf-8
@@ -255,13 +290,19 @@ set wildmenu	                                   " nvim has it so only for vim co
 set wildmode=full
 set updatetime=1000	                             " smaler for git gutter plugin
 set noswapfile                                   " test - no swap files
-
+"
 "" tabs
-filetype plugin indent on
-set tabstop=2                                    " show existing tab with 2 spaces width
-set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
-set expandtab                                    " on pressing tab, insert 2 spaces
-
+" filetype plugin indent on
+" set tabstop=2                                    " show existing tab with 2 spaces width
+" set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
+" set expandtab                                    " on pressing tab, insert 2 spaces
+if has("autocmd")
+  filetype on
+  " autocmd FileType go setlocal ts=8 sts=8 sw=8 noexpandtab
+  autocmd FileType go setlocal ts=4 sts=4 sw=4 noexpandtab
+  autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
+endif
+"
 "" line numbers
 set relativenumber
 set number
