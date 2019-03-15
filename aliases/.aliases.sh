@@ -70,7 +70,6 @@ alias 9='cd -9'
 
 alias cp='cp -ivrf'
 alias d='show-dirs'
-alias diff='diff --color=auto'
 alias e='exit'
 alias grep='grep --color=auto'
 
