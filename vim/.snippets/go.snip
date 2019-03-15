@@ -10,23 +10,25 @@ alias funt
     })
   }
 
+snippet test-run
+alias trun
+  t.Run("${2:...}", func(t *testing.T){
+    ${0}
+  })
+
 snippet variable-short
 alias v
 	${1} := ${0}
 
-snippet import-package
-alias imp
-	import "${1}"
-
 snippet error-test
-alias errt
-    if err == nil {
+alias iferr
+    if err ${1:=}= nil {
         t.Fatal("${1:expected to get an error}")
     }
     ${0}
 
 snippet ok
-    if !ok {
+    if ${1}ok {
         return ${0}
     }
 
@@ -81,8 +83,25 @@ alias forr
 snippet main
   package main
 
-  import "fmt"
-  import "os"
+  import (
+    "fmt"
+    ${1}
+  )
 
   func main() {
+    ${0}
   }
+
+snippet print-f
+alias pf
+  fmt.Printf("${0}")
+
+snippet print-ln
+alias pln
+  fmt.Println("${0}")
+
+snippet struct
+alias str
+	type ${1:Type} struct {
+		${0}
+	}
