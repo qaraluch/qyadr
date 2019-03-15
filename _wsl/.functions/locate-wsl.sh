@@ -47,28 +47,12 @@ _locate-update-db-config() {
 
 _locate-update-db-qnb() {
   local sourcePath1="${WSL_QNB}"
-  local sourcePath2="${WSL_QB}"
-  local sourcePath3="${WSL_ATV}"
   local sourceName1='qnb'
-  local sourceName2='qb'
-  local sourceName3='atv'
   if _isDir ${sourcePath1} ; then
     command updatedb -l 0 -U "${sourcePath1}/" -o "${QYADR_LOCATE_DIR}/${sourceName1}.db"
     __update-updatedMsg $sourceName1
   else
     __update-warnNotFound $sourcePath1
-  fi
-  if _isDir ${sourcePath2} ; then
-    command updatedb -l 0 -U "${sourcePath2}/" -o "${QYADR_LOCATE_DIR}/${sourceName2}.db"
-    __update-updatedMsg $sourceName2
-  else
-    __update-warnNotFound $sourcePath2
-  fi
-  if _isDir ${sourcePath3} ; then
-    command updatedb -l 0 -U "${sourcePath3}/" -o "${QYADR_LOCATE_DIR}/${sourceName3}.db"
-    __update-updatedMsg $sourceName3
-  else
-    __update-warnNotFound $sourcePath3
   fi
 }
 
@@ -98,8 +82,6 @@ locate-get-data() {
   echo "$(locate -d "${QYADR_LOCATE_DIR}/home.db" \
   -d "${QYADR_LOCATE_DIR}/config.db" \
   -d "${QYADR_LOCATE_DIR}/qnb.db" \
-  -d "${QYADR_LOCATE_DIR}/qb.db" \
-  -d "${QYADR_LOCATE_DIR}/atv.db" \
   -d "${QYADR_LOCATE_DIR}/dev.db" \
   -d "${QYADR_LOCATE_DIR}/dropbox.db" \
   /)"
