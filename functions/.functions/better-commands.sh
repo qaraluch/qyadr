@@ -43,3 +43,9 @@ ag-here() {
   local flags=(--follow --hidden --ignore .git --ignore node_modules)
   ag "${flags[@]}" $1 ./
 }
+
+# for golang dev
+ag-gopath() {
+  local flags=(--follow --hidden --ignore .git --ignore node_modules)
+  ag "${flags[@]}" $1 ${GOPATH}/src/proto/  ${GOPATH}/src/learn/  ${GOPATH}/src/db-github/
+}

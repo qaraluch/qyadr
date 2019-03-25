@@ -97,6 +97,7 @@ alias glt='git-log-tree'
 alias gp='git-push'
 alias gpforce='git-push --force'
 alias greph='ag-here'
+alias grepg='ag-gopath'
 
 alias h='show-history'
 alias ha='show-history-all'
@@ -136,3 +137,4 @@ alias v='nvim'
 alias vf='nvim $(fzf)'
 alias vfa='nvim $(find . -type f | fzf)'                                                         # all - all files (nothing ignored)
 alias vfq='nvim $(ag --follow --hidden --ignore .git -g "" /mnt/g/qnb | fzf)'
+alias vfg='nvim $(ag --follow --hidden --ignore .git -g "" $GOPATH/src/learn $GOPATH/src/db-github $GOPATH/src/proto | fzf)'
