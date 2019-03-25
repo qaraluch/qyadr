@@ -23,7 +23,7 @@ alias v
 snippet error-test
 alias iferr
     if err ${1:=}= nil {
-        t.Fatal("${1:expected to get an error}")
+        ${1}
     }
     ${0}
 
@@ -85,7 +85,6 @@ snippet main
 
   import (
     "fmt"
-    ${1}
   )
 
   func main() {
@@ -94,14 +93,42 @@ snippet main
 
 snippet print-f
 alias pf
-  fmt.Printf("${0}")
+  fmt.Printf(${0})
 
 snippet print-ln
 alias pln
-  fmt.Println("${0}")
+  fmt.Println(${0})
 
 snippet struct
 alias str
 	type ${1:Type} struct {
 		${0}
 	}
+
+snippet example-utils
+alias exu
+  package utils_test
+
+  import (
+    "db-github/utils"
+    "fmt"
+  )
+
+  func ExampleGetPwd() {
+    reults := utils.GetPwd()
+    fmt.Println(reults)
+    // Output: /mnt/h/devgo/src/db-github/utils
+  }
+
+
+snippet example-utils-unc
+alias exuf
+  func Example${1}() {
+    reults := utils.$1()
+    fmt.Println(reults)
+    // Output: ${0:XXX}
+  }
+
+snippet gotcha
+alias got
+  //GOTCHA: ${0}
