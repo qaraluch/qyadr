@@ -7,7 +7,7 @@ alias myqnb='cd ${WSL_QNB}'
 
 # f-mgmt v2
 alias myfmgmt='cd ${WSL_F_MGMT}'
-alias load-f-mgmt='source ${WSL_F_MGMT}/.sh/f-mgmt-source-this.sh'
+alias load-f-mgmt='source ${WSL_F_MGMT}/.sh/f-mgmt2-source-this.sh'
 
 # ytd-mgmt
 alias myytdmgmt='cd ${WSL_YTD_MGMT}'
