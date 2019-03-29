@@ -23,6 +23,7 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install' }             " need node.js
 Plug 'airblade/vim-gitgutter'
 Plug 'Shougo/neosnippet.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'mhartington/oceanic-next'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -117,7 +118,7 @@ nmap <leader>rcr :so ~/.vimrc<CR><Space>
 " buffer navigation
 nnoremap <leader>bd :bd<CR>
 " nnoremap <leader>b :buffer *
-nnoremap ,b :Buffers<CR>
+nnoremap ,; :Buffers<CR>
 " too long, so changed it
 " nnoremap <leader>b :Buffers<CR>
 nnoremap <S-tab> :b#<CR>
@@ -288,21 +289,22 @@ autocmd BufWritePre * %s/\s\+$//e                " automatically deletes all tra
 set encoding=utf-8
 set wildmenu	                                   " nvim has it so only for vim compatibility
 set wildmode=full
-set updatetime=1000	                             " smaler for git gutter plugin
+set updatetime=500	                             " smaler for git gutter plugin
 set noswapfile                                   " test - no swap files
 "
 "" tabs
+"" default
 " filetype plugin indent on
 " set tabstop=2                                    " show existing tab with 2 spaces width
 " set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
 " set expandtab                                    " on pressing tab, insert 2 spaces
+
 if has("autocmd")
   filetype on
-  " autocmd FileType go setlocal ts=8 sts=8 sw=8 noexpandtab
   autocmd FileType go setlocal ts=4 sts=4 sw=4 noexpandtab
   autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 endif
-"
+
 "" line numbers
 set relativenumber
 set number
@@ -315,13 +317,23 @@ let &t_EI = "\<Esc>[2 q"
 "" colors & themes
 set bg=dark
 set termguicolors     " enable true colors support
+
+"" ayu
 " let ayucolor="mirage" " for mirage version of theme
 " let ayucolor="dark"   " for dark version of theme
 " let ayucolor="light"  " for light version of theme
 " colorscheme ayu
-" colorscheme nord
-colorscheme gruvbox
-let g:gruvbox_contrast_dark = 'soft'
+
+"" gruvbox
+" colorscheme gruvbox
+" let g:gruvbox_contrast_dark = 'soft'
+
+"" nord
+colorscheme nord
+
+"" oceanic
+" let g:airline_theme='oceanicnext'
+" colorscheme OceanicNext
 
 "" save views and folds
 autocmd BufWinLeave *.* mkview
@@ -343,7 +355,7 @@ autocmd VimLeave * mks! ~/.vim-sessions/shutdown-session.vim                " au
 set clipboard=unnamedplus
 
 "" airline
-let g:airline_theme='base16'
+" let g:airline_theme='base16'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -381,3 +393,13 @@ let g:vim_markdown_new_list_item_indent = 0
 "" Links
 let g:netrw_browsex_viewer="cmd.exe /C start"
   "" for WSL
+
+"" Cursor
+if !empty($ConEmuBuild)
+    " let &t_SI = "\<Esc>[6 q"
+    " let &t_SR = "\<Esc>[4 q"
+    " let &t_EI = "\<Esc>[2 q"
+    " let &t_SI.="\e[5 q"
+    " let &t_SR.="\e[4 q"
+    " let &t_EI.="\e[1 q"
+endif
