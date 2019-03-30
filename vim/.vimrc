@@ -84,6 +84,9 @@ nnoremap <C-A-p> :History<CR>
 command! -bang -nargs=? FilesAll
   \ call fzf#run(fzf#wrap('all-files-in-cwd', {'source': 'find . -type f'}), <bang>0)
 
+" [CTags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R --exclude=.git .'
+
 "" fzf - extra key bindings
 function! s:copy_results(lines)
   let joined_lines = join(a:lines, "\n")
