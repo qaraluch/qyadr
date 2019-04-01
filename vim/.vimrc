@@ -24,6 +24,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'Shougo/neosnippet.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mhartington/oceanic-next'
+Plug 'junegunn/goyo.vim'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -234,6 +235,7 @@ inoremap <C-e> <Esc>A
 inoremap <C-a> <Esc>I
 
 inoremap <leader>l <Esc>la
+  "" ?? book ?
 
 "" bash/js function (from function name too) yank / delete (vsc)
 "" TODO: rozpracowc to. see qyadr-dev/vim
@@ -276,6 +278,23 @@ let g:go_loaded_gosnippets = 1
 noremap ]c :cnext<CR>
 noremap [c :cprevious<CR>
 nnoremap <leader>cc :cclose<CR>
+
+"" yank line but withoun new line
+nnoremap <leader>y ^y$
+
+"" Write Mode - goyo
+function! WriteMode()
+  call goyo#execute(0, [])
+  set spell noci nosi noai nolist noshowmode noshowcmd
+  set complete+=s
+  set bg=light
+  "" gruvbox
+  let g:gruvbox_contrast_dark = 'soft'
+  colorscheme gruvbox
+endfunction
+
+command! WriteMode call WriteMode()
+nmap <leader>w :WriteMode<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
