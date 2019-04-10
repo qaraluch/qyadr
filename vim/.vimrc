@@ -68,7 +68,9 @@ noremap ZZ :x<CR>
 noremap ZQ :q!<CR>
 
 "" paste at the end of line (vsc)
-noremap <leader>p A<space><Esc>p
+noremap <leader><leader>p A<space><Esc>p
+"" paste with space at the begining
+noremap <leader>p a<space><Esc>p
 
 "" paste beneath paragraph (vsc) - use gP / P
 " noremap <leader><leader>p }p
@@ -192,6 +194,8 @@ nnoremap gr *:%s///g<left><left>
 nnoremap gR :%s/<c-r><c-a>//g<left><left>
 "" fast replace
 nnoremap <leader>gr *Ncgn
+"" visual selection to search
+vnoremap // y/<C-R>"<CR>
 
 "" Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <leader><Space> :nohlsearch<Bar>:echo<CR>
@@ -236,11 +240,6 @@ inoremap <C-a> <Esc>I
 
 inoremap <leader>l <Esc>la
   "" ?? book ?
-
-"" bash/js function (from function name too) yank / delete (vsc)
-"" TODO: rozpracowc to. see qyadr-dev/vim
-""noremap <leader>yaf va{o0y
-""noremap <leader>yf V/}<CR>y
 
 "" golang setups
 autocmd FileType go nmap ,gr <Plug>(go-run)
@@ -292,6 +291,7 @@ function! WriteMode()
   let g:gruvbox_contrast_dark = 'soft'
   colorscheme gruvbox
 endfunction
+""TODO: add reverse function!
 
 command! WriteMode call WriteMode()
 nmap <leader>w :WriteMode<CR>
