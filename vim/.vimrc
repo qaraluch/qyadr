@@ -296,6 +296,23 @@ endfunction
 command! WriteMode call WriteMode()
 nmap <leader>w :WriteMode<CR>
 
+"" substitution pattern
+noremap ;; :%s:::g<Left><Left><Left>
+noremap ;' :%s:::cg<Left><Left><Left><Left>
+
+"" rename file
+function! RenameFile()
+    let oldName = expand('%')
+    let newName = input('New file name: ', expand('%'), 'file')
+    if newName != '' && newName != oldName
+        exec ':saveas ' . newName
+        exec ':silent !rm ' . oldName
+        exec ':bdelete' oldName
+        redraw!
+    endif
+endfunction
+command! Mv call RenameFile()
+
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
 
