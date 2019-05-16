@@ -123,6 +123,8 @@ nmap <leader>rcr :so ~/.vimrc<CR><Space>
 
 " buffer navigation
 nnoremap <leader>bd :bd<CR>
+" delete all buffers
+nnoremap <leader><leader>bd :bufdo :bd<CR>
 " nnoremap <leader>b :buffer *
 nnoremap ,; :Buffers<CR>
 " too long, so changed it
@@ -297,8 +299,8 @@ command! WriteMode call WriteMode()
 nmap <leader>w :WriteMode<CR>
 
 "" substitution pattern
-noremap ;; :%s:::g<Left><Left><Left>
-noremap ;' :%s:::cg<Left><Left><Left><Left>
+noremap ;s :%s:::g<Left><Left><Left>
+noremap ;sc :%s:::cg<Left><Left><Left><Left>
 
 "" rename file
 function! RenameFile()
