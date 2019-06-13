@@ -8,7 +8,7 @@ endif
 
 "" init plugins
 call plug#begin('~/.vim/plugged')
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'ayu-theme/ayu-vim'
@@ -22,9 +22,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }             " need node.js and npm
 Plug 'airblade/vim-gitgutter'
 Plug 'Shougo/neosnippet.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mhartington/oceanic-next'
 Plug 'junegunn/goyo.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'w0rp/ale'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -126,7 +128,7 @@ nnoremap <leader>bd :bd<CR>
 " delete all buffers
 nnoremap <leader><leader>bd :bufdo :bd<CR>
 " nnoremap <leader>b :buffer *
-nnoremap ,; :Buffers<CR>
+nnoremap ,, :Buffers<CR>
 " too long, so changed it
 " nnoremap <leader>b :Buffers<CR>
 nnoremap <S-tab> :b#<CR>
@@ -299,8 +301,8 @@ command! WriteMode call WriteMode()
 nmap <leader>w :WriteMode<CR>
 
 "" substitution pattern
-noremap ;s :%s:::g<Left><Left><Left>
-noremap ;sc :%s:::cg<Left><Left><Left><Left>
+noremap <leader>s :%s:::g<Left><Left><Left>
+noremap <leader>sc :%s:::cg<Left><Left><Left><Left>
 
 "" rename file
 function! RenameFile()
@@ -314,6 +316,23 @@ function! RenameFile()
     endif
 endfunction
 command! Mv call RenameFile()
+
+"" fixing & command (PV - tip 93)
+"" using this?
+" nnoremap & :&&<CR>
+" xnoremap & :&&<CR>
+
+"" Ale configuration
+nmap <silent> [c <Plug>(ale_previous_wrap)
+nmap <silent> ]c <Plug>(ale_next_wrap)
+
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '!'
+
+let b:ale_fixers = {'javascript': ['eslint']}
+" Set this variable to 1 to fix files when you save them.
+let g:ale_fix_on_save = 1
+nmap <F7> <Plug>(ale_fix)
 
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
@@ -335,16 +354,16 @@ set noswapfile                                   " test - no swap files
 "
 "" tabs
 "" default
-" filetype plugin indent on
-" set tabstop=2                                    " show existing tab with 2 spaces width
-" set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
-" set expandtab                                    " on pressing tab, insert 2 spaces
+filetype plugin indent on
+set tabstop=2                                    " show existing tab with 2 spaces width
+set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
+set expandtab                                    " on pressing tab, insert 2 spaces
 
-if has("autocmd")
-  filetype on
-  autocmd FileType go setlocal ts=4 sts=4 sw=4 noexpandtab
-  autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
-endif
+" if has("autocmd")
+"   filetype on
+"   autocmd FileType go setlocal ts=4 sts=4 sw=4 noexpandtab
+"   autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
+" endif
 
 "" line numbers
 set relativenumber
@@ -424,12 +443,13 @@ nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <leader>ccd :pwd<CR>
 
 "" Markdown
-let g:vim_markdown_folding_disabled = 0
-" let g:vim_markdown_override_foldtext = 0
-let g:vim_markdown_fenced_languages = ['bash=sh', 'javascript=js', 'go', 'html']
-let g:vim_markdown_new_list_item_indent = 0
-let g:vim_markdown_auto_insert_bullets = 0
-let g:vim_markdown_new_list_item_indent = 0
+"" polyglot instead?
+" let g:vim_markdown_folding_disabled = 0
+" " let g:vim_markdown_override_foldtext = 0
+" let g:vim_markdown_fenced_languages = ['bash=sh', 'javascript=js', 'go', 'html']
+" let g:vim_markdown_new_list_item_indent = 0
+" let g:vim_markdown_auto_insert_bullets = 0
+" let g:vim_markdown_new_list_item_indent = 0
 
 "" Links
 let g:netrw_browsex_viewer="cmd.exe /C start"
