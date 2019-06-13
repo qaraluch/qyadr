@@ -23,6 +23,6 @@ alias vsc='vscode-open'                             # _wsl/.functions/better-com
 alias exp='explorer.exe .'
 
 # Golang
-export GOROOT=/usr/local/go
-export GOPATH=/mnt/h/devgo
-[[ ":$PATH:" != *":$GOPATH/bin:$GOROOT/bin"* ]] && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+# export GOROOT=/usr/local/go
+# export GOPATH=/mnt/h/devgo
+# [[ ":$PATH:" != *":$GOPATH/bin:$GOROOT/bin"* ]] && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
