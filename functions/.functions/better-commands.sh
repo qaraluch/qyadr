@@ -39,6 +39,14 @@ path-print() {
   echo -e ${PATH//:/\\n}
 }
 
+path-executables-print-paths() {
+  print -rl -- $commands
+}
+
+path-executables-print() {
+  print -rl -- ${(ko)commands}
+}
+
 ag-here() {
   local flags=(--follow --hidden --ignore .git --ignore node_modules)
   ag "${flags[@]}" $1 ./
