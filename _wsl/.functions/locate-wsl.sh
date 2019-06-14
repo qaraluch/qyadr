@@ -84,7 +84,8 @@ locate-get-data() {
   -d "${QYADR_LOCATE_DIR}/qnb.db" \
   -d "${QYADR_LOCATE_DIR}/dev.db" \
   -d "${QYADR_LOCATE_DIR}/dropbox.db" \
-  /)"
+  /)" |\
+  grep -vE 'git|local|vim|npm|cache|mozilla|tmux/resurrect|workspaceStorage'
 }
 
 __update-updatedMsg(){
