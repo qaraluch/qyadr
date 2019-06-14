@@ -26,3 +26,7 @@ alias exp='explorer.exe .'
 # export GOROOT=/usr/local/go
 # export GOPATH=/mnt/h/devgo
 # [[ ":$PATH:" != *":$GOPATH/bin:$GOROOT/bin"* ]] && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# Node.js
+# For project tooling.
+[[ ":$PATH:" != *":./node_modules/.bin"* ]] && export PATH=$PATH:./node_modules/.bin
