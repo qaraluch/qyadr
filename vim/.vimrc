@@ -113,6 +113,12 @@ command! -bang -nargs=? Qnb
 
 nnoremap gq :Qnb<CR>
 
+"" fzf - dev
+command! -bang -nargs=? AgDev
+  \ call fzf#run(fzf#wrap('ag-dev', {'source': 'ag --follow --ignore .git -g ""', 'dir': '/mnt/h/dev/'}), <bang>0)
+
+nnoremap <leader>dev :AgDev<CR>
+
 "" qnb commands
 command! Qgs :!qnb git status
 command! Qgc :!qnb git commit
