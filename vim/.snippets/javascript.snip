@@ -1,0 +1,55 @@
+snippet async-await-default
+alias asy
+options indent
+  async function ${1:XXX}(${2:#:argument}) {
+    try {
+      const result = await $0${3:TARGET};
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+snippet function
+alias   func
+options word
+  function ${1:XXX}(${2:#:argument}) {
+    ${0:TARGET}
+  }
+
+snippet if
+options head
+options indent
+  if (${1:true}) {
+    ${0:TARGET}
+  }
+
+snippet else
+alias else
+options head
+options indent
+  } else {
+    ${3}
+  }
+
+snippet try
+options head
+options indent
+  try {
+    ${3:TARGET}
+  } catch (${1:error}) {
+    ${2}
+  }
+
+snippet console-log
+alias cl
+  console.log(${1:TARGET});
+
+snippet console-log-debug
+alias cld
+options indent
+  console.log("$1$0 ---->", ${1:TARGET});
+
+snippet require
+alias req
+options head
+  const $0$1 = require("${1:TARGET}");
