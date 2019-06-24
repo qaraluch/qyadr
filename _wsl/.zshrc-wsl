@@ -30,3 +30,8 @@ alias exp='explorer.exe .'
 # Node.js
 # For project tooling.
 [[ ":$PATH:" != *":./node_modules/.bin"* ]] && export PATH=$PATH:./node_modules/.bin
+
+# tiljs
+alias mytiljs='cd ${WSL_TILJS}'
+alias load-tiljs='source ${WSL_TILJS}/.sh/tiljs-source-this.sh'
+
