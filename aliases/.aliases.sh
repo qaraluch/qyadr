@@ -4,6 +4,9 @@
 # ghash - zle-fzf-git-get-hash	              # zsh/.functions/zsh-zle-fzf.zsh
 # gadd  - zle-fzf-git-get-status-item         # zsh/.functions/zsh-zle-fzf.zsh
 
+# NO AUTOCORRECTIONS ALAISES ---------------------------------------------
+alias nps='nocorrect nps '
+
 # GLOBAL ALIASES ---------------------------------------------------------
 alias -g ...='cd-grandparent'
 alias -g ....='cd-great-grandparent'
