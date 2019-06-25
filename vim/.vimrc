@@ -426,6 +426,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+"" fix proper rendering in tmux window
+let g:airline#extensions#tmuxline#enabled = 0
 
 "" automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
