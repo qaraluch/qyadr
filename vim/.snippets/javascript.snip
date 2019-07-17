@@ -10,7 +10,7 @@ options indent
   }
 
 snippet function
-alias   func
+alias   fun
 options word
   function ${1:XXX}(${2:#:argument}) {
     ${0:TARGET}
@@ -53,3 +53,28 @@ snippet require
 alias req
 options head
   const $0$1 = require("${1:TARGET}");
+
+snippet comment-block
+alias com
+options head
+  /*
+  $0
+  */
+
+snippet module-exports
+alias mode
+options head
+  module.exports = {
+    $0
+  };
+
+snippet iife
+alias ii
+options head
+  (async () => {
+    try {
+      ${0:TARGET}
+    } catch (error) {
+      throw new Error(`Sth. went wrong: ...\n ${error}`);
+    }
+  })();
