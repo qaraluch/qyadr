@@ -60,4 +60,5 @@ export FZF_DEFAULT_OPTS='
 '
 
 export FZF_DEFAULT_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g ""'
+export FZF_CTRL_T_COMMAND='ag --follow --hidden --ignore .git --ignore node_modules --ignore .cache -g "" | sed -e "s:/[^/]*$::" | uniq'
 
