@@ -8,7 +8,6 @@ endif
 
 "" init plugins
 call plug#begin('~/.vim/plugged')
-" Plug 'plasticboy/vim-markdown'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'ayu-theme/ayu-vim'
@@ -22,11 +21,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }             " need node.js and npm
 Plug 'airblade/vim-gitgutter'
 Plug 'Shougo/neosnippet.vim'
-" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mhartington/oceanic-next'
 Plug 'junegunn/goyo.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'w0rp/ale'
+" Plug 'plasticboy/vim-markdown'
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""" MAPPINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -81,7 +81,9 @@ noremap <leader>p a<space><Esc>p
 noremap <leader>d "_d
 
 "" fzf - find file
-nnoremap <C-p> :Files<CR>
+nnoremap <C-p> :FZF<CR>
+"" dont use :Files it changes cwd
+
 nnoremap <C-A-p> :History<CR>
 " nnoremap <C-A-l> :Locate
 
@@ -90,6 +92,7 @@ command! -bang -nargs=? FilesAll
   \ call fzf#run(fzf#wrap('all-files-in-cwd', {'source': 'find . -type f'}), <bang>0)
 
 " [CTags] Command to generate tags file
+" Use: :Tags - generate file when no present
 let g:fzf_tags_command = 'ctags -R --exclude=.git .'
 
 "" fzf - extra key bindings
@@ -147,12 +150,19 @@ nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
 
+"" remove all buffers but current one
+command! BufDoDelAll silent! execute "%bd|e#"
+" command! BufOnly silent! execute "%bd|e#|bd#"
+"" [Vim: Close All Buffers But This One - Stack " Overflow](https://stackoverflow.com/questions/4545275/vim-close-all-buffers-but-this-one)
+nnoremap <leader>bda :BufDoDelAll<CR>
+
 " comments
 nmap <C-_> gcc
   "" as ctrl-/
 
 " closing brackets
 inoremap " ""<left>
+inoremap ` ``<left>
 inoremap ' ''<left>
 inoremap ( ()<left>
 inoremap [ []<left>
@@ -316,8 +326,9 @@ function! RenameFile()
     let newName = input('New file name: ', expand('%'), 'file')
     if newName != '' && newName != oldName
         exec ':saveas ' . newName
-        exec ':silent !rm ' . oldName
+        " exec ':silent !rm ' . oldName
         exec ':bdelete' oldName
+        "" not working properly !!!
         redraw!
     endif
 endfunction
@@ -332,7 +343,7 @@ command! Mv call RenameFile()
 nmap <silent> [c <Plug>(ale_previous_wrap)
 nmap <silent> ]c <Plug>(ale_next_wrap)
 
-let g:ale_sign_error = '❌'
+let g:ale_sign_error = 'X'
 let g:ale_sign_warning = '!'
 
 let b:ale_fixers = {'javascript': ['eslint']}
@@ -340,8 +351,13 @@ let b:ale_fixers = {'javascript': ['eslint']}
 let g:ale_fix_on_save = 1
 nmap <F7> <Plug>(ale_fix)
 
+"" gutter render fix? is it working?
+" hi clear SignColumn
+""[Ale messes up gutter rendering · Issue #714 · w0rp/ale](https://github.com/w0rp/ale/issues/714)
+
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
+:iab cosnt const
 
 """""""""""""""""""""""""""""""""""""""""""""""" SETTINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -357,7 +373,8 @@ set wildmenu	                                   " nvim has it so only for vim co
 set wildmode=full
 set updatetime=500	                             " smaler for git gutter plugin
 set noswapfile                                   " test - no swap files
-"
+set wrap linebreak nolist                        " not working? why?
+
 "" tabs
 "" default
 filetype plugin indent on
