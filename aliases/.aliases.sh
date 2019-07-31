@@ -46,6 +46,7 @@ alias ls-long-no-dotfiles='ls -lh'    # long, human
 
 # dirs - movements
 alias cd..='cd ..'
+alias cd...='cd-grandparent'
 alias cd-grandparent='../..'
 alias cd-great-grandparent='../../..'
 alias show-dirs='dirs -v | head -10'
