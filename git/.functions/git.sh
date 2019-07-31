@@ -27,13 +27,13 @@ git-add-status() { git add $* && git-status-log-recent ; }
 git-add-commit() { git add $1 && git-commit-better $* ; }
 git-add-commit-message() { git add $1 && git-commit-message $* ; }
 git-add-commit-amend() { git add $1 && git-commit-amend ; }
-git-add-all-commit() { git add -A && git-commit-better $* }
-git-add-all-commit-message() { git add -A && git-commit-message $* }
-git-add-all-commit-amend() { git add -A && git-commit-amend }
-git-add-update-commit() { git add -u && git-commit-better $* }
-git-add-update-commit-message() { git add -u && git-commit-message $* }
-git-add-update-commit-amend() { git add -u && git-commit-amend }
-git-idiot() { git add -A && git commit --amend --no-edit }
+git-add-all-commit() { git add -A && git-commit-better $* ; }
+git-add-all-commit-message() { git add -A && git-commit-message $* ; }
+git-add-all-commit-amend() { git add -A && git-commit-amend ; }
+git-add-update-commit() { git add -u && git-commit-better $* ; }
+git-add-update-commit-message() { git add -u && git-commit-message $* ; }
+git-add-update-commit-amend() { git add -u && git-commit-amend ; }
+git-idiot() { git add -A && git commit --amend --no-edit ; }
 
 # Util functions
 git-get-current-branch() {
