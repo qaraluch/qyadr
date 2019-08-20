@@ -34,4 +34,3 @@ alias exp='explorer.exe .'
 # tiljs
 alias mytiljs='cd ${WSL_TILJS}'
 alias load-tiljs='source ${WSL_TILJS}/.sh/tiljs-source-this.sh'
-

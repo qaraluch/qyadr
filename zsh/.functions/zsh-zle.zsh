@@ -58,3 +58,8 @@ zle-jump-after-first-word() {
 }
 
 zle -N zle-jump-after-first-word
+
+zle-insert-datestamp() {
+  LBUFFER+=${(%):-'%D{%Y-%m-%d}'};
+}
+zle -N zle-insert-datestamp
