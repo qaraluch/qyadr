@@ -45,8 +45,9 @@ PROMPT_EOL_MARK='.'
 setopt extendedglob                    # globling see zsh.md
 setopt no_beep                         # no beep on error
 setopt interactivecomments	           # enable comments on the command-line
-setopt correct_all	                   # auto correction of commands
-# unsetopt flow_control	                 # disable ^S/^Q in shell
+# setopt correct_all	                 # auto correction of commands
+# unsetopt flow_control	               # disable ^S/^Q in shell
+setopt ignoreeof                       # ignore C-D for cose shell
 
 autoload -U edit-command-line         # edit command in editor (in vim)
 zle -N edit-command-line
