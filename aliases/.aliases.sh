@@ -105,6 +105,7 @@ alias gp='git-push'
 alias gpforce='git-push --force'
 alias greph='ag-here'
 alias grepg='ag-gopath'
+alias gr='git-rebase'
 
 alias h='show-history'
 alias ha='show-history-all'

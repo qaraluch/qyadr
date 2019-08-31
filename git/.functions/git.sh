@@ -33,7 +33,9 @@ git-add-all-commit-amend() { git add -A && git-commit-amend ; }
 git-add-update-commit() { git add -u && git-commit-better $* ; }
 git-add-update-commit-message() { git add -u && git-commit-message $* ; }
 git-add-update-commit-amend() { git add -u && git-commit-amend ; }
+
 git-idiot() { git add -A && git commit --amend --no-edit ; }
+git-rebase() { git rebase -i "HEAD~$1" ; }
 
 # Util functions
 git-get-current-branch() {
