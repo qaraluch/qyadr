@@ -48,7 +48,7 @@ path-executables-print() {
 }
 
 ag-here() {
-  local flags=(--follow --hidden --ignore .git --ignore node_modules)
+  local flags=(--follow --hidden --ignore .git --ignore node_modules --ignore package-lock.json)
   ag "${flags[@]}" $1 ./
 }
 
