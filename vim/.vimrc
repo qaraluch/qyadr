@@ -50,7 +50,7 @@ noremap <leader><leader>O O<Esc>j
 noremap <leader><leader>go O<Esc>jo<Esc>ki
 
 "" esc remap (vsc)
-imap jj <Esc>
+imap jk <Esc>
 
 "" search and center screen (vsc)
 noremap <leader>n nzz
@@ -66,6 +66,7 @@ noremap gS ciW<C-r>0<Esc>
 
 "" save / save&close / quit without save (vsc)
 noremap mm :w<CR>
+imap mm <Esc>:w<CR>
 noremap ZZ :x<CR>
 noremap ZQ :q!<CR>
 
@@ -382,11 +383,12 @@ set tabstop=2                                    " show existing tab with 2 spac
 set shiftwidth=2                                 " when indenting with '>', use 2 spaces width
 set expandtab                                    " on pressing tab, insert 2 spaces
 
-" if has("autocmd")
-"   filetype on
-"   autocmd FileType go setlocal ts=4 sts=4 sw=4 noexpandtab
-"   autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
-" endif
+if has("autocmd")
+  " filetype on
+  autocmd FileType sh setlocal tabstop=2 shiftwidth=2 expandtab
+  " autocmd FileType go setlocal ts=4 sts=4 sw=4 noexpandtab
+  " autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
+endif
 
 "" line numbers
 set relativenumber
