@@ -54,8 +54,9 @@ options head
   const { $0$1 } = require("${1:TARGET}");
 
 snippet comment-block
-alias com
+alias co
 options head
+options indent
   /*
   $0
   */
@@ -112,7 +113,14 @@ options head
 snippet it
 alias it
 options indent
-  it("${1}", () => {
+  it("should ${1}", () => {
+    $0
+  });
+
+snippet test
+alias te
+options indent
+  test("should ${1}", () => {
     $0
   });
 
@@ -140,3 +148,13 @@ snippet todo-comment
 alias to
 options head
   //TODO: $0
+
+snippet todo-implement-logic
+alias toil
+options head
+  //TODO: Implement logic!
+
+snippet todo-add-tiljs
+alias tot
+options head
+  //TODO: Add to tiljs!
