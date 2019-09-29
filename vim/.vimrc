@@ -189,7 +189,7 @@ nnoremap <leader>cf :let @* = expand("%:p")<CR>
 "" prettier
 "nmap <Leader>pr <Plug>(Prettier)
 "workaround:
-nmap <Leader>pr :PrettierCli --write <C-R>=expand("%:p")<CR><CR>:e!<CR>
+nmap <Leader>pr :w<CR>:PrettierCli --write <C-R>=expand("%:p")<CR><CR>:e!<CR>
   "" need node.js and prettier installed
 
 "" gitgutter
