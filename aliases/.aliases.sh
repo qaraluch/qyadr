@@ -18,9 +18,9 @@ abbrev-alias -g T2="| tail -40"
 abbrev-alias -g G="| egrep"
 abbrev-alias -g FF="find . -type f"
 abbrev-alias -g FD="find . -type d"
-abbrev-alias -f DD="_getTimeStampDate"              # like Time Stamp
-abbrev-alias -f DDF="_getTimeStampHumanFile"        # like Time Stamp File
-abbrev-alias -f DDL="_getTimeStamp"                 # like Time Stamp Epoch
+abbrev-alias -g -e DD="_getTimeStampDate"              # like Time Stamp
+abbrev-alias -g -e DDF="_getTimeStampHumanFile"        # like Time Stamp File
+abbrev-alias -g -e DDL="_getTimeStamp"                 # like Time Stamp Epoch
 # cavets: need space before (hard to use as a part of filename)
 
 abbrev-alias -g vs="nvim -S ~/.vim-sessions/"
