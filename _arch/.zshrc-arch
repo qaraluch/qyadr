@@ -1,4 +1,7 @@
 alias b='browser-open'
 
+# [4 Arch] Start X server if i3 not already running.
+[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && exec startx
+
 # VirtualBox utils
 command -v VBoxClient-all >/dev/null && VBoxClient-all
