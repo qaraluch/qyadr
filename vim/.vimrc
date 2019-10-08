@@ -352,9 +352,17 @@ let b:ale_fixers = {'javascript': ['eslint']}
 let g:ale_fix_on_save = 1
 nmap <F7> <Plug>(ale_fix)
 
-"" gutter render fix? is it working?
-" hi clear SignColumn
-""[Ale messes up gutter rendering · Issue #714 · w0rp/ale](https://github.com/w0rp/ale/issues/714)
+"" Manual markdown folding def
+function MarkdownLevel()
+  let h = matchstr(getline(v:lnum), '^#\+')
+    if empty(h)
+      return "="
+    else
+      return ">" . len(h)
+    endif
+endfunction
+au BufEnter *.md setlocal foldexpr=MarkdownLevel()
+au BufEnter *.md setlocal foldmethod=expr
 
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
@@ -375,6 +383,12 @@ set wildmode=full
 set updatetime=500	                             " smaler for git gutter plugin
 set noswapfile                                   " test - no swap files
 set wrap linebreak nolist                        " not working? why?
+
+"" folds
+set foldmethod=syntax                            " syntax highlighting items specify folds
+let javaScript_fold=1                            " activate folding by JS syntax
+set foldlevelstart=99                            " start file with all folds opened
+set foldnestmax=2
 
 "" tabs
 "" default
