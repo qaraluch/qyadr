@@ -65,8 +65,8 @@ noremap S ciw<C-r>0<Esc>
 noremap gS ciW<C-r>0<Esc>
 
 "" save / save&close / quit without save (vsc)
-noremap mm :w<CR>
-imap mm <Esc>:w<CR>
+noremap nm :w<CR>
+imap nm <Esc>:w<CR>
 noremap ZZ :x<CR>
 noremap ZQ :q!<CR>
 
@@ -164,7 +164,7 @@ nmap <C-_> gcc
 " closing brackets
 inoremap " ""<left>
 inoremap ` ``<left>
-inoremap ' ''<left>
+" inoremap ' ''<left>  " not often used
 inoremap ( ()<left>
 inoremap [ []<left>
 inoremap { {}<left>
@@ -193,8 +193,8 @@ nmap <Leader>pr :w<CR>:PrettierCli --write <C-R>=expand("%:p")<CR><CR>:e!<CR>
   "" need node.js and prettier installed
 
 "" gitgutter
-nmap ]g <Plug>GitGutterNextHunk
-nmap [g <Plug>GitGutterPrevHunk
+nmap ]g <Plug>(GitGutterNextHunk)
+nmap [g <Plug>(GitGutterPrevHunk)
 
 "" spellcheck
 nnoremap <F5> :setlocal spell! spelllang=en_us<CR>
@@ -341,8 +341,8 @@ command! Mv call RenameFile()
 " xnoremap & :&&<CR>
 
 "" Ale configuration
-nmap <silent> [c <Plug>(ale_previous_wrap)
-nmap <silent> ]c <Plug>(ale_next_wrap)
+nmap <silent> [e <Plug>(ale_previous_wrap)
+nmap <silent> ]e <Plug>(ale_next_wrap)
 
 let g:ale_sign_error = 'X'
 let g:ale_sign_warning = '!'
@@ -363,6 +363,12 @@ function MarkdownLevel()
 endfunction
 au BufEnter *.md setlocal foldexpr=MarkdownLevel()
 au BufEnter *.md setlocal foldmethod=expr
+
+"" in normal mode add space before cursor
+nnoremap <A--> i<space><esc><right>
+
+"" erase line - not removing
+nnoremap <leader>cc cc<Esc>
 
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
@@ -539,3 +545,4 @@ if !empty($ConEmuBuild)
     " let &t_SR.="\e[4 q"
     " let &t_EI.="\e[1 q"
 endif
+
