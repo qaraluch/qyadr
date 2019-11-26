@@ -25,6 +25,7 @@ Plug 'mhartington/oceanic-next'
 Plug 'junegunn/goyo.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'w0rp/ale'
+Plug 'mattn/emmet-vim'
 " Plug 'plasticboy/vim-markdown'
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
@@ -546,3 +547,5 @@ if !empty($ConEmuBuild)
     " let &t_EI.="\e[1 q"
 endif
 
+"" Activation of matchit that extends for html tags when using *
+runtime macros/matchit.vim
