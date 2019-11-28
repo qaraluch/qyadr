@@ -145,4 +145,5 @@ alias v='nvim'
 alias vf='nvim $(ag --follow --hidden --ignore .git --ignore node_modules -g "" ./ | fzf)'
 alias vfa='nvim $(find . -type f | fzf)'                                                         # all - all files (nothing ignored)
 alias vfq='nvim $(ag --follow --hidden --ignore .git -g "" /mnt/g/qnb | fzf)'
-alias vfg='nvim $(ag --follow --hidden --ignore .git -g "" $GOPATH/src/learn $GOPATH/src/db-github $GOPATH/src/proto | fzf)'
+alias vft='nvim $(ag --follow --hidden --ignore .git -g "" /mnt/h/dev/tiljs | fzf)'
+# alias vfg='nvim $(ag --follow --hidden --ignore .git -g "" $GOPATH/src/learn $GOPATH/src/db-github $GOPATH/src/proto | fzf)'
