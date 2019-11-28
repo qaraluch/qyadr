@@ -1,0 +1,5 @@
+Przy instalacji qyadr następujące błędy wywaliło:
+- dodaj do helpa, że default env jest wsl. albo arch (sprawdz to!)
+- refactor code dodaj przystanki...
+  - przeanalizuj default env gdy nie ma pliku example
+  - coś się nie zgadza przy install -e wsl nie zmienia w configu ?

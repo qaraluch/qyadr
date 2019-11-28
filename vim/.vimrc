@@ -371,6 +371,11 @@ nnoremap <A--> i<space><esc><right>
 "" erase line - not removing
 nnoremap <leader>cc cc<Esc>
 
+"" vim-emmet
+" [Self Closing Tag Syntax and Quoteless attributes? · Issue #341 · mattn/emmet-vim](https://github.com/mattn/emmet-vim/issues/341)
+inoremap <C-y>e <esc>:call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>wwi
+nnoremap <C-y>e :call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>ww
+
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
 :iab cosnt const
@@ -378,6 +383,7 @@ nnoremap <leader>cc cc<Esc>
 """""""""""""""""""""""""""""""""""""""""""""""" SETTINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" etc...
+set timeout timeoutlen=500                       " key combination timeout
 set ff=unix
 syntax on                                        " syntax highlights
 set directory^=$HOME/.vim/temp//                 " swap files dir
@@ -549,3 +555,8 @@ endif
 
 "" Activation of matchit that extends for html tags when using *
 runtime macros/matchit.vim
+
+"" Turn of Hot Module Reload (HMR) so file watchers like parcel can detect
+"" changes in the watched files
+"" https://stackoverflow.com/questions/55434553/parcel-watch-only-detects-first-file-change
+set backupcopy=yes
