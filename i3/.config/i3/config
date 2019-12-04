@@ -1,15 +1,17 @@
 # Basic
 for_window [class="^.*"] border pixel 2
-gaps inner 15
-gaps outer 15
+gaps inner 10
+gaps outer 10
 
 set $mod Mod4
 
 font pango:monospace 12   # for titles
 
+# Vars
+set $term --no-startup-id $TERMINAL
+
 # Keybindings - apps
-bindsym $mod+Return exec st       #terminal
-bindsym $mod-b exec $BROWSER
+# see: .config/sxhkb/sxhkbrc
 
 # Keybindings - ui
 

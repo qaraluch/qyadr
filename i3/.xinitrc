@@ -1,9 +1,9 @@
 #!/bin/sh
 
-[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 [ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
 
-xcompmgr &
 xset r rate 200 50
+xcompmgr &      # For window transparency / alpha
+sxhkd -m 1 &		# Bind keys with sxhkd
 
 exec i3

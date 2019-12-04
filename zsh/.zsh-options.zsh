@@ -1,7 +1,11 @@
 # Vars
 export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles path, used in aliases
 export QYADR_PLUGS_ROOT="${HOME}/.plugs"
+
+# Used for arch only
+# TODO: mov it, where?
 export BROWSER="brave"
+export TERMINAL="st"
 
 # Editor
 export VISUAL=nvim
