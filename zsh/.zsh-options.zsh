@@ -1,7 +1,7 @@
 # Vars
 export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles path, used in aliases
 export QYADR_PLUGS_ROOT="${HOME}/.plugs"
-export BROWSER="chromium"
+export BROWSER="brave"
 
 # Editor
 export VISUAL=nvim
