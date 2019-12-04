@@ -3,9 +3,10 @@ export QYADR_ROOT="${HOME}/.qyadr"                                   # dotfiles 
 export QYADR_PLUGS_ROOT="${HOME}/.plugs"
 
 # Used for arch only
-# TODO: mov it, where?
+# TODO: move it, where?
 export BROWSER="brave"
 export TERMINAL="st"
+export STATUSBAR="i3blocks"
 
 # Editor
 export VISUAL=nvim
