@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# X utils
+# Show your display basic info.
+
+main() {
+  xdpyinfo | grep -B2 resolution
+}
+
+main
