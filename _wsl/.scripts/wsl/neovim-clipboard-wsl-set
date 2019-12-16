@@ -5,6 +5,7 @@
 # need to install neovim on Windows beforehand by
 # choco install neovim
 
+
 readonly windowsNeovimPath="/mnt/c/tools/neovim/Neovim"
 
 main() {
