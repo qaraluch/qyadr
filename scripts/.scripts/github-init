@@ -24,8 +24,12 @@ main() {
     local repoUserName=$(_readUserInputDefault $gitUserName 'Input github user name')
     local repoName=$(_readUserInputDefault $dirName 'Input github repo name')
     local repoDescription=$(_readUserInputDefault '...' 'Input github repo description')
-    local repoType='public'
+    local repoTypeDefault='public'
+    local repoType=$(_readUserInputDefault $repoTypeDefault 'Input github repo type')
     local repoPrivateFlag=false
+    if _isStringEqual "${repoType}" 'private'; then
+      repoPrivateFlag=true
+    fi
     printSummary
     _pressAnyKey
     initNewGitHubRepo
@@ -118,6 +122,10 @@ _readUserInputDefault() {
 _pressAnyKey() {
   read -n 1 -s -r -p "${_pDel}${_ia} Press [any] key to continue. "
   echo >&2
+}
+
+_isStringEqual() {
+  [[ "$1" == "$2" ]]
 }
 
 main $_pArgs

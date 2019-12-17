@@ -5,7 +5,7 @@ case $- in
 esac
 
 # For WSL X Server (VcXsrv)
-export DISPLAY=localhost:0.0
+# export DISPLAY=localhost:0.0
 
 # launch zsh
 if [ -t 1 ]; then
