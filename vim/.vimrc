@@ -118,6 +118,12 @@ command! -bang -nargs=? Qnb
 
 nnoremap gq :Qnb<CR>
 
+"" fzf - tiljs integration
+command! -bang -nargs=? Tiljs
+  \ call fzf#run(fzf#wrap('qnb-files', {'source': 'ag --follow --ignore .git -g ""', 'dir': '/mnt/h/dev/tiljs/'}), <bang>0)
+
+nnoremap gt :Tiljs<CR>
+
 "" fzf - dev
 command! -bang -nargs=? AgDev
   \ call fzf#run(fzf#wrap('ag-dev', {'source': 'ag --follow --ignore .git -g ""', 'dir': '/mnt/h/dev/'}), <bang>0)
