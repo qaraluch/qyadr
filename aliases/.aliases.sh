@@ -143,8 +143,8 @@ alias spectrum='zsh-spectrum-ls'
 alias spectrumbg='zsh-spectrum-ls-bg'
 
 alias v='nvim'
-alias vf='nvim $(ag --follow --hidden --ignore .git --ignore node_modules -g "" ./ | fzf)'
-alias vfa='nvim $(find . -type f | fzf)'                                                         # all - all files (nothing ignored)
-alias vfq='nvim $(ag --follow --hidden --ignore .git -g "" /mnt/g/qnb | fzf)'
-alias vft='nvim $(ag --follow --hidden --ignore .git -g "" /mnt/h/dev/tiljs | fzf)'
+alias vf='ag --follow --hidden --ignore .git --ignore node_modules -g "" ./ | fzf | ifne xargs nvim'   # depends on ifne tool from moreutils
+alias vfa='find . -type f | fzf | ifne xargs nvim'                                                     # all - all files (nothing ignored)
+alias vfq='ag --follow --hidden --ignore .git -g "" /mnt/g/qnb | fzf | ifne xargs nvim'
+alias vft='ag --follow --hidden --ignore .git -g "" /mnt/h/dev/tiljs | fzf | ifne xargs nvim'
 # alias vfg='nvim $(ag --follow --hidden --ignore .git -g "" $GOPATH/src/learn $GOPATH/src/db-github $GOPATH/src/proto | fzf)'
