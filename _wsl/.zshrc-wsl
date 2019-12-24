@@ -1,16 +1,13 @@
 # WSL Paths
 [ -f ~/.wsl-paths.sh ] && source ~/.wsl-paths.sh
 
-# qnb
-alias myqnb='cd ${WSL_QNB}'
-[ -f ${WSL_QNB}/.sh/qnb-source-this.sh ] && source ${WSL_QNB}/.sh/qnb-source-this.sh
+# qnnb
+[ -f ${WSL_QNNB}/.sh/qnnb-source-this.sh ] && source ${WSL_QNNB}/.sh/qnnb-source-this.sh
 
 # f-mgmt v2
-alias myfmgmt='cd ${WSL_F_MGMT}'
 alias load-f-mgmt='source ${WSL_F_MGMT}/.sh/f-mgmt2-source-this.sh'
 
 # ytd-mgmt
-alias myytdmgmt='cd ${WSL_YTD_MGMT}'
 alias load-ytd-mgmt='source ${WSL_YTD_MGMT}/.sh/ytd-mgmt-source-this.sh'
 
 # alt+o workaround
@@ -32,5 +29,4 @@ alias exp='explorer.exe .'
 [[ ":$PATH:" != *":./node_modules/.bin"* ]] && export PATH=$PATH:./node_modules/.bin
 
 # tiljs
-alias mytiljs='cd ${WSL_TILJS}'
 alias load-tiljs='source ${WSL_TILJS}/.sh/tiljs-source-this.sh'

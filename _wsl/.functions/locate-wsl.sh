@@ -46,7 +46,7 @@ _locate-update-db-config() {
 }
 
 _locate-update-db-qnb() {
-  local sourcePath1="${WSL_QNB}"
+  local sourcePath1="${WSL_QNNB}"
   local sourceName1='qnb'
   if _isDir ${sourcePath1} ; then
     command updatedb -l 0 -U "${sourcePath1}/" -o "${QYADR_LOCATE_DIR}/${sourceName1}.db"
