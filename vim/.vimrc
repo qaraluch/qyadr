@@ -51,25 +51,30 @@ noremap <leader><leader>O O<Esc>j
 noremap <leader><leader>go O<Esc>jo<Esc>ki
 
 "" esc remap (vsc)
-imap jk <Esc>
+" imap jk <Esc>
+imap <leader>j <Esc>
 
 "" search and center screen (vsc)
 noremap <leader>n nzz
 noremap <leader>N Nzz
 
 "" move 5 up/down (vsc)
-noremap <leader>k 10k
-noremap <leader>j 10j
+" noremap <leader>k 10k
+" noremap <leader>j 10j
 
 "" replace word/WORD (vsc)
 noremap S ciw<C-r>0<Esc>
 noremap gS ciW<C-r>0<Esc>
 
 "" save / save&close / quit without save (vsc)
-noremap nm :w<CR>
-imap nm <Esc>:w<CR>
-noremap ZZ :x<CR>
-noremap ZQ :q!<CR>
+noremap <leader>f :w<CR>
+imap <leader>f <Esc>:w<CR>
+noremap <leader>z :x<CR>
+noremap <leader>q :q!<CR>
+" noremap nm :w<CR>
+" imap nm <Esc>:w<CR>
+" noremap ZZ :x<CR>
+" noremap ZQ :q!<CR>
 
 "" paste at the end of line (vsc)
 noremap <leader><leader>p A<space><Esc>p
@@ -179,6 +184,7 @@ inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 inoremap <leader>( ()
 inoremap <leader>[ []
+inoremap <leader>< <><left>
   " use <C-v> in insert mode to escape it and use single char
 
 " paths
@@ -187,10 +193,10 @@ inoremap <leader>pd <C-R>=expand("%:p:h")<CR>
 " in insert - current file
 inoremap <leader>pf <C-R>=expand("%:p")<CR>
 " in insert - only filename without extension
-inoremap <leader>qf <C-R>=expand("%:t:r")<CR>
+inoremap <leader>pff <C-R>=expand("%:t:r")<CR>
 " in insert - only filename
-inoremap <leader>f <C-R>=expand("%:t")<CR>
-" in normal - copy file path (full)
+inoremap <leader>pfff <C-R>=expand("%:t")<CR>
+" in normal - copy file path (full) to the clipboard
 nnoremap <leader>cf :let @* = expand("%:p")<CR>
 
 "" prettier
@@ -389,7 +395,7 @@ nnoremap <C-y>e :call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>w
 """""""""""""""""""""""""""""""""""""""""""""""" SETTINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" etc...
-set timeout timeoutlen=500                       " key combination timeout
+set timeout timeoutlen=800                       " key combination timeout
 set ff=unix
 syntax on                                        " syntax highlights
 set directory^=$HOME/.vim/temp//                 " swap files dir
@@ -529,6 +535,7 @@ let g:neosnippet#disable_runtime_snippets = { '_' : 1, }
 let g:neosnippet#snippets_directory='~/.snippets'
 
 "" gf configuration
+"" open file under cursor
 :set suffixesadd+=.md
 :set path+=/mnt/g/qnb
 
@@ -566,3 +573,5 @@ runtime macros/matchit.vim
 "" changes in the watched files
 "" https://stackoverflow.com/questions/55434553/parcel-watch-only-detects-first-file-change
 set backupcopy=yes
+
+set pastetoggle=<leader>x
