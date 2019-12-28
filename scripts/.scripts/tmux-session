@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 12.2019 - MIT
+
+readonly _pArgs="$@"
+readonly _pName=$(basename $0)
+readonly _pDel="[ ${_pName} ]"
+
+printUsage() {
+  cat <<EOL
+
+  Help:
+  ---------
+  ${_cy}${_pName}${_ce} - creates tmux session.
+
+  Usage:
+    ${_pName} ${_cy}[ name ]${_ce}              - creats tmux session from named preset
+
+  List of presets:
+    - bashdev   - shell scripting dev
+    - linux     - dealing with linux new stuff
+    ...
+    - tiljs     - til for js
+    - ramka     - project: ramka dev
+    - f-mgmt    - photo managment
+    - react     - react.js learning
+
+EOL
+  exit ${1:-1}
+}
+
+# CLI
+parseOptions() {
+	while [[ $# -gt 0 ]] ; do
+		flag="$1"
+		case $flag in
+			-h|--help)
+				printUsage
+				;;
+			*)
+				positional+=("$1")
+				shift
+				;;
+		esac
+	done
+}
+
+main() {
+	local positional=()
+	parseOptions $_pArgs
+	set -- "${positional[@]}"
+
+	local presetName="$1"
+
+	checkIfNamePassed
+
+	if _isStringEqual "${presetName}" 'bashdev' ; then
+		createTmuxSession_bashdev && doneScript
+	elif _isStringEqual "${presetName}" 'linux' ; then
+		createTmuxSession_linux && doneScript
+	elif _isStringEqual "${presetName}" 'tiljs' ; then
+		createTmuxSession_tiljs && doneScript
+	elif _isStringEqual "${presetName}" 'ramka' ; then
+		createTmuxSession_ramka && doneScript
+	elif _isStringEqual "${presetName}" 'f-mgmt' ; then
+		createTmuxSession_f-mgmt && doneScript
+	elif _isStringEqual "${presetName}" 'react' ; then
+		createTmuxSession_react && doneScript
+	else
+		_errorExit "Not found tmux preset session name: ${presetName}"
+	fi
+}
+
+doneScript() {
+  _echoIt "Created session from preset: ${_cy}${presetName}${_ce}"
+  _echoIt "Switch or attach (tmux a -t <session-name>) created session!" && \
+	_echoDone
+}
+
+checkIfNamePassed() {
+	if _isStringEmpty "${presetName}" ; then
+		_errorExit "Not passed preset of session name. Abort!"
+	fi
+}
+
+errorExitNoVarSourced() {
+  _errorExit "${_pName} - error: \$$1 not sourced. Check out qyadr dotfiles. Abort!"
+}
+
+checkVar_bashdevPath() {
+  if _isStringEmpty "${bashdevPath}"; then
+    errorExitNoVarSourced 'bashdevPath'
+  fi
+}
+
+checkVar_qyadrLocalPath() {
+  if _isStringEmpty "${qyadrLocalPath}"; then
+    errorExitNoVarSourced 'qyadrLocalPath'
+  fi
+}
+
+checkVar_qnnbPath() {
+  if _isStringEmpty "${qnnbPath}"; then
+    errorExitNoVarSourced 'qnnbPath'
+  fi
+}
+
+checkVar_archBootstrapPath() {
+  if _isStringEmpty "${archBootstrapPath}"; then
+    errorExitNoVarSourced 'archBootstrapPath'
+  fi
+}
+
+createTmuxSession_bashdev() {
+  checkVar_bashdevPath
+  checkVar_qyadrLocalPath
+  checkVar_qnnbPath
+  tmux-create "${presetName}"
+  tmux-add --remotely "${presetName}" "${presetName}" "${bashdevPath}"
+  tmux-add --remotely "${presetName}" "qyadr" "${qyadrLocalPath}"
+  tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+}
+
+createTmuxSession_linux() {
+  checkVar_qyadrLocalPath
+  checkVar_archBootstrapPath
+  checkVar_qnnbPath
+  tmux-create "${presetName}"
+  tmux-add --remotely "${presetName}" "qyadr" "${qyadrLocalPath}"
+  tmux-add --remotely "${presetName}" "arch-bootstrap" "${archBootstrapPath}"
+  tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+}
+
+#TODO: to implement
+createTmuxSession_tiljs() {
+  echo 'add to tiljs'
+}
+
+createTmuxSession_ramka() {
+  echo 'add to ramka'
+}
+
+createTmuxSession_f-mgmt() {
+  echo 'add to f-mgmt'
+}
+
+createTmuxSession_react() {
+  echo 'add to react'
+}
+
+# Utils:
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+  echo >&2
+}
+
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+
+_isStringEqual() {
+  [[ "$1" == "$2" ]]
+}
+
+_isStringEmpty() {
+  local var=$1
+  [[ -z $var ]]
+}
+
+main

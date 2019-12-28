@@ -23,4 +23,4 @@ export bashdevPath="$WSL_QNNB/shell/bashdev"
 export qnbPath="/mnt/g/qnb"
 export qyadrPath="/mnt/g/config/qyadr"
 export archBootstrapPath="/mnt/h/dev/tool/arch-bootstrap"
-
+export qnnbPath="${WSL_G}/qnnb"

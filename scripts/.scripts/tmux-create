@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# Author: qaraluch - 12.2019 - MIT
+
+readonly _pArgs="$@"
+readonly _pName=$(basename $0)
+readonly _pDel="[ ${_pName} ]"
+
+printUsage() {
+  cat <<EOL
+
+  Help:
+  ---------
+  ${_cy}${_pName}${_ce} - creates tmux session.
+
+  Usage:
+    ${_pName} ${_cy}<name>${_ce}              - creats tmux named session
+
+EOL
+  exit ${1:-1}
+}
+
+# CLI
+parseOptions() {
+	while [[ $# -gt 0 ]] ; do
+		flag="$1"
+		case $flag in
+			-h|--help)
+				printUsage
+				;;
+			*)
+				positional+=("$1")
+				shift
+				;;
+		esac
+	done
+}
+
+main() {
+	local positional=()
+	parseOptions $_pArgs
+	set -- "${positional[@]}"
+
+	local sessionName="$1"
+
+	checkIfNamePassed
+	checkIfSessionExists
+
+  createTmuxSession && doneScript
+}
+
+doneScript() {
+  _echoIt "Created session: ${sessionName}"
+}
+
+checkIfNamePassed() {
+	if _isStringEmpty "${sessionName}" ; then
+		_errorExit "Not passed preset of session name. Abort!"
+	fi
+}
+
+checkIfSessionExists() {
+	tmux has-session -t "${sessionName}" > /dev/null 2>&1
+		#  extra msg to dev/null
+		# -t target session
+	if [ $? == 0 ] ; then
+		_echoIt "Session named: ${sessionName} already exists. Switching!"
+		sleep 1
+		switchExistedSession
+		exit 0
+	fi
+}
+
+switchExistedSession() {
+	tmux switch -t "${sessionName}"
+}
+
+createTmuxSession() {
+	tmux new-session -d -s ${sessionName} -n 'home'
+		# new-session[-AdDEP] [-c start-directory] [-F format]
+		# [-n window-name] [-s session-name] [-t group-name]
+		# [-x width] [-y height] [shell-command]
+
+	# set default directory
+	tmux send-keys -t "${sessionName}":1 'cd ~/' C-m
+
+  # refresh so the session name will be visible
+  tmux source-file ~/.tmux.conf
+
+  # clear the screen
+	tmux send-keys -t "${sessionName}":1 'clear' C-m
+}
+
+# Utils:
+readonly _cy=$'\033[1;33m'            # color yellow
+readonly _cg=$'\033[1;32m'            # color green
+readonly _ce=$'\033[0m'               # color end
+readonly _cr=$'\033[0;31m'            # color red
+readonly _it="[ ${_cg}✔${_ce} ]"      # icon tick
+readonly _ic="[ ${_cr}✖${_ce} ]"      # icon cross
+
+_echoItConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-''} ; echo "${delimiter}${icon} $msg" >&2
+}
+
+_echoIt() {
+   _echoItConstructor "$_pDel" "${1}" "${2}"
+}
+
+_echoDone() {
+  _echoIt 'DONE' "${_it}"
+}
+
+_errorExitConstructor() {
+  local delimiter=$1 ; local msg=$2 ; local icon=${3:-"$_ic"} ; echo "${delimiter}${icon} ${msg}" 1>&2 ; exit 1
+}
+
+_errorExit() {
+  _errorExitConstructor "${_pDel}" "${1}"
+}
+
+_isStringEmpty() {
+  local var=$1
+  [[ -z $var ]]
+}
+
+main
