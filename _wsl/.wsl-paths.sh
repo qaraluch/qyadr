@@ -18,9 +18,11 @@ export WSL_WIN_DROPBOX="${WSL_G}/Dropbox"
 export WSL_WIN_DEV="${WSL_H}/dev"
 
 #TODO: cheange names and targets
-export qyadrLocalPath="$HOME/.qyadr"
+export qyadr_localPath="$HOME/.qyadr"
 export bashdevPath="$WSL_QNNB/shell/bashdev"
 export qnbPath="/mnt/g/qnb"
 export qyadrPath="/mnt/g/config/qyadr"
-export archBootstrapPath="/mnt/h/dev/tool/arch-bootstrap"
+export arch_bootstrapPath="/mnt/h/dev/tool/arch-bootstrap"
 export qnnbPath="${WSL_G}/qnnb"
+export f_mgmtPath="${WSL_H}/f-mgmt2"
+export photo_mgmtPath="${WSL_H}/dev/tool/photo-mgmt-v2"

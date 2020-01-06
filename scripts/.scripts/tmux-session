@@ -18,10 +18,10 @@ printUsage() {
   List of presets:
     - bashdev   - shell scripting dev
     - linux     - dealing with linux new stuff
+    - f-mgmt    - photo managment
     ...
     - tiljs     - til for js
     - ramka     - project: ramka dev
-    - f-mgmt    - photo managment
     - react     - react.js learning
 
 EOL
@@ -59,10 +59,10 @@ main() {
 		createTmuxSession_linux && doneScript
 	elif _isStringEqual "${presetName}" 'tiljs' ; then
 		createTmuxSession_tiljs && doneScript
-	elif _isStringEqual "${presetName}" 'ramka' ; then
-		createTmuxSession_ramka && doneScript
 	elif _isStringEqual "${presetName}" 'f-mgmt' ; then
 		createTmuxSession_f-mgmt && doneScript
+	elif _isStringEqual "${presetName}" 'ramka' ; then
+		createTmuxSession_ramka && doneScript
 	elif _isStringEqual "${presetName}" 'react' ; then
 		createTmuxSession_react && doneScript
 	else
@@ -93,8 +93,8 @@ checkVar_bashdevPath() {
 }
 
 checkVar_qyadrLocalPath() {
-  if _isStringEmpty "${qyadrLocalPath}"; then
-    errorExitNoVarSourced 'qyadrLocalPath'
+  if _isStringEmpty "${qyadr_localPath}"; then
+    errorExitNoVarSourced 'qyadr_localPath'
   fi
 }
 
@@ -105,29 +105,52 @@ checkVar_qnnbPath() {
 }
 
 checkVar_archBootstrapPath() {
-  if _isStringEmpty "${archBootstrapPath}"; then
-    errorExitNoVarSourced 'archBootstrapPath'
+  if _isStringEmpty "${arch_bootstrapPath}"; then
+    errorExitNoVarSourced 'arch_bootstrapPath'
+  fi
+}
+
+checkVar_f_mgmtPath() {
+  if _isStringEmpty "${f_mgmtPath}"; then
+    errorExitNoVarSourced 'f_mgmtPath'
+  fi
+}
+
+checkVar_photo_mgmtPath() {
+  if _isStringEmpty "${photo_mgmtPath}"; then
+    errorExitNoVarSourced 'photo_mgmtPath'
   fi
 }
 
 createTmuxSession_bashdev() {
   checkVar_bashdevPath
-  checkVar_qyadrLocalPath
+  checkVar_qyadr_localPath
   checkVar_qnnbPath
   tmux-create "${presetName}"
   tmux-add --remotely "${presetName}" "${presetName}" "${bashdevPath}"
-  tmux-add --remotely "${presetName}" "qyadr" "${qyadrLocalPath}"
+  tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
   tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
 }
 
 createTmuxSession_linux() {
-  checkVar_qyadrLocalPath
-  checkVar_archBootstrapPath
+  checkVar_qyadr_localPath
+  checkVar_arch_bootstrapPath
   checkVar_qnnbPath
   tmux-create "${presetName}"
-  tmux-add --remotely "${presetName}" "qyadr" "${qyadrLocalPath}"
-  tmux-add --remotely "${presetName}" "arch-bootstrap" "${archBootstrapPath}"
+  tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
+  tmux-add --remotely "${presetName}" "arch-bootstrap" "${arch_bootstrapPath}"
   tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+}
+
+createTmuxSession_f-mgmt() {
+  checkVar_qnnbPath
+  checkVar_f_mgmtPath
+  checkVar_photo_mgmtPath
+  tmux-create "${presetName}"
+  tmux-add --remotely "${presetName}" "f-mgmt" "${f_mgmtPath}"
+  tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+  tmux-add --remotely "${presetName}" "photo-mgmt" "${photo_mgmtPath}"
+	tmux send-keys -t "${presetName}":1 "cd "${f_mgmtPath}"" C-m
 }
 
 #TODO: to implement
@@ -137,10 +160,6 @@ createTmuxSession_tiljs() {
 
 createTmuxSession_ramka() {
   echo 'add to ramka'
-}
-
-createTmuxSession_f-mgmt() {
-  echo 'add to f-mgmt'
 }
 
 createTmuxSession_react() {
