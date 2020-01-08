@@ -59,9 +59,9 @@ main() {
   AboutDoneScript
 
   if _switchY "${remotelyFlag}" ; then
-    createTmuxWindowRemotely
+    createTmuxWindowRemotely "${sessionName}" "${windowName}" "${path}"
   else
-    createTmuxWindow
+    createTmuxWindow "${windowName}" "${path}"
   fi
 }
 
@@ -80,16 +80,21 @@ checkIfNamePassed() {
 }
 
 createTmuxWindow() {
+  local windowName="$1"
+  local path="$2"
 	tmux new-window -a -n "${windowName}"
 	tmux send-keys "cd ${path}" C-m
 	tmux send-keys 'clear' C-m
 }
 
 createTmuxWindowRemotely() {
+  local sessionName="$1"
+  local windowName="$2"
+  local path="$3"
 	tmux new-window -a -t "${sessionName}" -n "${windowName}"
   # -a flag appends last number of the window
-	tmux send-keys "cd ${path}" C-m
-	tmux send-keys 'clear' C-m
+	tmux send-keys -t "${sessionName}" "cd ${path}" C-m
+	tmux send-keys -t "${sessionName}" 'clear' C-m
 }
 
 # Utils:

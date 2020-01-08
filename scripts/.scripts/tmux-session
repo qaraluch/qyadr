@@ -86,13 +86,30 @@ errorExitNoVarSourced() {
   _errorExit "${_pName} - error: \$$1 not sourced. Check out qyadr dotfiles. Abort!"
 }
 
+checkIfSessionNoExists() {
+	tmux has-session -t "$1" > /dev/null 2>&1
+		#  extra msg to dev/null
+		# -t target session
+	if [ ! $? == 0 ] ; then
+    # echo 'session not exists so it returns 0 so true'
+		return 0
+  else
+    # echo 'session exists so it returns 1 so false'
+    return 1
+	fi
+}
+
+switchExistedSession() {
+	tmux switch -t "$1"
+}
+
 checkVar_bashdevPath() {
   if _isStringEmpty "${bashdevPath}"; then
     errorExitNoVarSourced 'bashdevPath'
   fi
 }
 
-checkVar_qyadrLocalPath() {
+checkVar_qyadr_localPath() {
   if _isStringEmpty "${qyadr_localPath}"; then
     errorExitNoVarSourced 'qyadr_localPath'
   fi
@@ -104,7 +121,7 @@ checkVar_qnnbPath() {
   fi
 }
 
-checkVar_archBootstrapPath() {
+checkVar_arch_bootstrapPath() {
   if _isStringEmpty "${arch_bootstrapPath}"; then
     errorExitNoVarSourced 'arch_bootstrapPath'
   fi
@@ -126,31 +143,44 @@ createTmuxSession_bashdev() {
   checkVar_bashdevPath
   checkVar_qyadr_localPath
   checkVar_qnnbPath
-  tmux-create "${presetName}"
-  tmux-add --remotely "${presetName}" "${presetName}" "${bashdevPath}"
-  tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
-  tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+  #TODO: fix strange bug. only for bashdev. scripts is good; sends correct commands; sth. wrong with tmux. check it out on arch on newer version of tmux!
+  if checkIfSessionNoExists "${presetName}"; then
+    tmux-create "${presetName}"
+    tmux-add --remotely "${presetName}" "${presetName}" "${bashdevPath}"
+    tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
+    tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+  else
+    switchExistedSession "${presetName}"
+  fi
 }
 
 createTmuxSession_linux() {
   checkVar_qyadr_localPath
   checkVar_arch_bootstrapPath
   checkVar_qnnbPath
-  tmux-create "${presetName}"
-  tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
-  tmux-add --remotely "${presetName}" "arch-bootstrap" "${arch_bootstrapPath}"
-  tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+  if checkIfSessionNoExists "${presetName}"; then
+    tmux-create "${presetName}"
+    tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
+    tmux-add --remotely "${presetName}" "arch-bootstrap" "${arch_bootstrapPath}"
+    tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+  else
+    switchExistedSession "${presetName}"
+  fi
 }
 
 createTmuxSession_f-mgmt() {
   checkVar_qnnbPath
   checkVar_f_mgmtPath
   checkVar_photo_mgmtPath
-  tmux-create "${presetName}"
-  tmux-add --remotely "${presetName}" "f-mgmt" "${f_mgmtPath}"
-  tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
-  tmux-add --remotely "${presetName}" "photo-mgmt" "${photo_mgmtPath}"
-	tmux send-keys -t "${presetName}":1 "cd "${f_mgmtPath}"" C-m
+  if checkIfSessionNoExists "${presetName}"; then
+    tmux-create "${presetName}"
+    tmux-add --remotely "${presetName}" "${presetName}" "${f_mgmtPath}"
+    tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+    tmux-add --remotely "${presetName}" "photo-mgmt" "${photo_mgmtPath}"
+    tmux send-keys -t "${presetName}":1 "cd ${f_mgmtPath}" C-m
+  else
+    switchExistedSession "${presetName}"
+  fi
 }
 
 #TODO: to implement
