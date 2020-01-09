@@ -75,7 +75,7 @@ switchExistedSession() {
 }
 
 createTmuxSession() {
-	tmux new-session -d -s ${sessionName} -n 'home'
+	tmux new-session -d -s ${sessionName} -n 'shell'
 		# new-session[-AdDEP] [-c start-directory] [-F format]
 		# [-n window-name] [-s session-name] [-t group-name]
 		# [-x width] [-y height] [shell-command]
