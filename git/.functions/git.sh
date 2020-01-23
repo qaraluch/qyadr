@@ -21,6 +21,7 @@ git-push() { git push $* && git-status-log-recent ; }
 
 git-commit-better() { git commit -v $* && git-status-log-recent ; }
 git-commit-amend() { git commit -v --amend && git-status-log-recent ; }
+git-commit-amend-noedit() { git commit -v --amend --no-edit && git-status-log-recent ; }
 git-commit-message() { git commit -vm $* && git-status-log-recent ; }
 
 git-add-status() { git add $* && git-status-log-recent ; }
