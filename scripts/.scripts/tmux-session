@@ -19,6 +19,7 @@ printUsage() {
     - bashdev   - shell scripting dev
     - linux     - dealing with linux new stuff
     - f-mgmt    - photo managment
+    - ytd-mgmt  - ytd managment
     - tiljs     - til for js
     - ramka     - project: ramka dev
     - react     - react.js learning
@@ -60,6 +61,8 @@ main() {
 		createTmuxSession_tiljs && doneScript
 	elif _isStringEqual "${presetName}" 'f-mgmt' ; then
 		createTmuxSession_f-mgmt && doneScript
+	elif _isStringEqual "${presetName}" 'ytd-mgmt' ; then
+		createTmuxSession_ytd-mgmt && doneScript
 	elif _isStringEqual "${presetName}" 'ramka' ; then
 		createTmuxSession_ramka && doneScript
 	elif _isStringEqual "${presetName}" 'react' ; then
@@ -150,6 +153,12 @@ checkVar_f_mgmtPath() {
   fi
 }
 
+checkVar_ytd_mgmtPath() {
+  if _isStringEmpty "${ytd_mgmtPath}"; then
+    errorExitNoVarSourced 'ytd_mgmtPath'
+  fi
+}
+
 checkVar_photo_mgmtPath() {
   if _isStringEmpty "${photo_mgmtPath}"; then
     errorExitNoVarSourced 'photo_mgmtPath'
@@ -195,6 +204,18 @@ createTmuxSession_f-mgmt() {
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
     tmux-add --remotely "${presetName}" "photo-mgmt" "${photo_mgmtPath}"
     tmux send-keys -t "${presetName}":1 "cd ${f_mgmtPath}" C-m
+  else
+    switchExistedSession "${presetName}"
+  fi
+}
+
+createTmuxSession_ytd-mgmt() {
+  checkVar_qnnbPath
+  checkVar_ytd_mgmtPath
+  if checkIfSessionNoExists "${presetName}"; then
+    tmux-create "${presetName}"
+    tmux-add --remotely "${presetName}" "${presetName}" "${ytd_mgmtPath}"
+    tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
   else
     switchExistedSession "${presetName}"
   fi
