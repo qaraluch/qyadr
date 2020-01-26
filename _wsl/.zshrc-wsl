@@ -1,5 +1,5 @@
-# WSL Paths
-[ -f ~/.wsl-paths.sh ] && source ~/.wsl-paths.sh
+# WSL Vars
+[ -f ~/.vars-wsl.sh ] && source ~/.vars-wsl.sh
 
 # qnnb
 [ -f ${WSL_QNNB}/.sh/qnnb-source-this.sh ] && source ${WSL_QNNB}/.sh/qnnb-source-this.sh

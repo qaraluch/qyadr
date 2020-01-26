@@ -1,3 +1,6 @@
+# WSL Vars
+[ -f ~/.vars-arch.sh ] && source ~/.vars-arch.sh
+
 alias b='browser-open'
 
 # VirtualBox utils
