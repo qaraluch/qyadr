@@ -388,6 +388,9 @@ nnoremap <leader>cc cc<Esc>
 inoremap <C-y>e <esc>:call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>wwi
 nnoremap <C-y>e :call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>ww
 
+"" Custom Read command (:r !)
+command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
+
 """"""""""""""""""""""""""""""""""""""""""""""""  ABBREVIATIONS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :iab konw know
 :iab cosnt const
@@ -395,7 +398,7 @@ nnoremap <C-y>e :call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>w
 """""""""""""""""""""""""""""""""""""""""""""""" SETTINGS """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" etc...
-set timeout timeoutlen=800                       " key combination timeout
+set timeout timeoutlen=1000                      " key combination timeout
 set ff=unix
 syntax on                                        " syntax highlights
 set directory^=$HOME/.vim/temp//                 " swap files dir
