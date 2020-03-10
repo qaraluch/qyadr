@@ -54,26 +54,29 @@ main() {
 	checkIfNamePassed
 
 	if _isStringEqual "${presetName}" 'bashdev' ; then
-		createTmuxSession_bashdev && doneScript
+		createTmuxSession_bashdev
 	elif _isStringEqual "${presetName}" 'linux' ; then
-		createTmuxSession_linux && doneScript
+		createTmuxSession_linux
 	elif _isStringEqual "${presetName}" 'tiljs' ; then
-		createTmuxSession_tiljs && doneScript
+		createTmuxSession_tiljs
 	elif _isStringEqual "${presetName}" 'f-mgmt' ; then
-		createTmuxSession_f-mgmt && doneScript
+		createTmuxSession_f-mgmt
 	elif _isStringEqual "${presetName}" 'ytd-mgmt' ; then
-		createTmuxSession_ytd-mgmt && doneScript
+		createTmuxSession_ytd-mgmt
 	elif _isStringEqual "${presetName}" 'ramka' ; then
-		createTmuxSession_ramka && doneScript
+		createTmuxSession_ramka
 	elif _isStringEqual "${presetName}" 'react' ; then
-		createTmuxSession_react && doneScript
+		createTmuxSession_react
 	else
 		_errorExit "Not found tmux preset session name: ${presetName}"
 	fi
 }
 
+aboutCreate() {
+  _echoIt " About to created session from preset: ${_cy}${presetName}${_ce}"
+}
+
 doneScript() {
-  _echoIt "Created session from preset: ${_cy}${presetName}${_ce}"
   _echoIt "Switch or attach (tmux a -t <session-name>) created session!" && \
 	_echoDone
 }
@@ -89,7 +92,7 @@ errorExitNoVarSourced() {
 }
 
 checkIfSessionNoExists() {
-	tmux has-session -t "$1" > /dev/null 2>&1
+	tmux has-session -t "$1"
 		#  extra msg to dev/null
 		# -t target session
 	if [ ! $? == 0 ] ; then
@@ -101,8 +104,24 @@ checkIfSessionNoExists() {
 	fi
 }
 
+checkIfSessionAttached() {
+  local sessionStatus=$(tmux ls -F "#{?session_attached,attached,notattached}" | head -n 1)
+  # list all sessions with its status - we need first result which is current session
+	if  _isStringEqual $sessionStatus "attached"; then
+    # echo 'session attached so it returns 0 so true'
+		return 0
+  else
+    # echo 'session no attached so it returns 1 so false'
+    return 1
+	fi
+}
+
 switchExistedSession() {
-	tmux switch -t "$1"
+  if checkIfSessionAttached ; then
+    tmux switch -t "$1"
+  else
+    tmux a -t "$1"
+  fi
 }
 
 checkVar_bashdevPath() {
@@ -166,6 +185,7 @@ checkVar_photo_mgmtPath() {
 }
 
 createTmuxSession_bashdev() {
+  aboutCreate
   checkVar_bashdevPath
   checkVar_qyadr_localPath
   checkVar_qnnbPath
@@ -175,12 +195,14 @@ createTmuxSession_bashdev() {
     tmux-add --remotely "${presetName}" "${presetName}" "${bashdevPath}"
     tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+    doneScript
   else
     switchExistedSession "${presetName}"
   fi
 }
 
 createTmuxSession_linux() {
+  aboutCreate
   checkVar_qyadr_localPath
   checkVar_arch_bootstrapPath
   checkVar_qnnbPath
@@ -189,12 +211,14 @@ createTmuxSession_linux() {
     tmux-add --remotely "${presetName}" "qyadr" "${qyadr_localPath}"
     tmux-add --remotely "${presetName}" "arch-bootstrap" "${arch_bootstrapPath}"
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+    doneScript
   else
     switchExistedSession "${presetName}"
   fi
 }
 
 createTmuxSession_f-mgmt() {
+  aboutCreate
   checkVar_qnnbPath
   checkVar_f_mgmtPath
   checkVar_photo_mgmtPath
@@ -204,24 +228,28 @@ createTmuxSession_f-mgmt() {
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
     tmux-add --remotely "${presetName}" "photo-mgmt" "${photo_mgmtPath}"
     tmux send-keys -t "${presetName}":1 "cd ${f_mgmtPath}" C-m
+    doneScript
   else
     switchExistedSession "${presetName}"
   fi
 }
 
 createTmuxSession_ytd-mgmt() {
+  aboutCreate
   checkVar_qnnbPath
   checkVar_ytd_mgmtPath
   if checkIfSessionNoExists "${presetName}"; then
     tmux-create "${presetName}"
     tmux-add --remotely "${presetName}" "${presetName}" "${ytd_mgmtPath}"
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+    doneScript
   else
     switchExistedSession "${presetName}"
   fi
 }
 
 createTmuxSession_tiljs() {
+  aboutCreate
   checkVar_qnnbPath
   checkVar_tiljsPath
   if checkIfSessionNoExists "${presetName}"; then
@@ -229,12 +257,14 @@ createTmuxSession_tiljs() {
     tmux-add --remotely "${presetName}" "${presetName}" "${tiljsPath}"
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
     tmux send-keys -t "${presetName}":1 "cd ${tiljsPath}" C-m
+    doneScript
   else
     switchExistedSession "${presetName}"
   fi
 }
 
 createTmuxSession_ramka() {
+  aboutCreate
   checkVar_qnnbPath
   checkVar_ramkaPath
   checkVar_tiljsPath
@@ -244,12 +274,14 @@ createTmuxSession_ramka() {
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
     tmux-add --remotely "${presetName}" "tiljs" "${tiljsPath}"
     tmux send-keys -t "${presetName}":1 "cd ${ramkaPath}" C-m
+    doneScript
   else
     switchExistedSession "${presetName}"
   fi
 }
 
 createTmuxSession_react() {
+  aboutCreate
   checkVar_qnnbPath
   checkVar_ramkaPath
   checkVar_tiljsPath
@@ -259,6 +291,7 @@ createTmuxSession_react() {
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
     tmux-add --remotely "${presetName}" "tiljs" "${tiljsPath}"
     tmux send-keys -t "${presetName}":1 "cd ${reactPath}" C-m
+    doneScript
   else
     switchExistedSession "${presetName}"
   fi

@@ -82,19 +82,16 @@ checkIfNamePassed() {
 createTmuxWindow() {
   local windowName="$1"
   local path="$2"
-	tmux new-window -a -n "${windowName}"
-	tmux send-keys "cd ${path}" C-m
-	tmux send-keys 'clear' C-m
+  tmux new-window -d -n "${windowName}" -c "${path}" 'clear;bash -i'
 }
 
 createTmuxWindowRemotely() {
   local sessionName="$1"
   local windowName="$2"
   local path="$3"
-	tmux new-window -a -t "${sessionName}" -n "${windowName}"
-  # -a flag appends last number of the window
-	tmux send-keys -t "${sessionName}" "cd ${path}" C-m
-	tmux send-keys -t "${sessionName}" 'clear' C-m
+  tmux send-keys -t "${sessionName}" "tmux new-window -d -n ${windowName} -c ${path} 'clear;bash -i'" C-m
+  # clean up
+  tmux send-keys -t "${sessionName}" "clear" C-m
 }
 
 # Utils:
