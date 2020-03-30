@@ -7,6 +7,7 @@ bindkey -M viins 'jk' vi-cmd-mode                 # escape remap
 # - ctrl-t - fzf - insert file name from cwd
 # - alt-c - fzf - cd dir
 # - ctrl-r - fzf - history
+bindkey '\C-e'    fzf-cd-widget                   # rebinding from alt-c in order to stay consistent with arch dotfiles
 
 # zsh-abbrev-alias
 # - space - expand global alias
