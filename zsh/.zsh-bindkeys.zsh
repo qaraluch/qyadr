@@ -1,6 +1,6 @@
 # Plugins Bindkeys
 bindkey '^ ' autosuggest-accept                   # ctrl+space (or right arrow)
-bindkey -M viins 'jk' vi-cmd-mode                 # escape remap
+bindkey -M viins '\\j' vi-cmd-mode                 # escape remap
 
 # Fzf and fzf-marks default (for reference)
 # - ctrl-g - fzf-marks - show
