@@ -99,6 +99,7 @@ alias gch='git checkout'
 alias gchm='git checkout master'
 alias gcm="git-commit-message"
 alias gd='git-diff'
+alias gds='git-diff --staged'
 alias gidiot='git-idiot'
 alias gl='git-log-recent 10'
 alias gld='git-log-date 10'
@@ -109,6 +110,9 @@ alias greph='ag-here'
 alias gh='ag-here'
 # alias grepg='ag-gopath'
 alias gr='git-rebase'
+
+alias gch='git-checkout'
+alias gchm='git-checkout master'
 
 alias h='show-history'
 alias ha='show-history-all'

@@ -19,6 +19,8 @@ git-status-log-recent() {git-status ; _echoIt ; git-log-recent 10}
 
 git-push() { git push $* && git-status-log-recent ; }
 
+git-checkout() { git checkout $* && git-status-log ; }
+
 git-commit-better() { git commit -v $* && git-status-log-recent ; }
 git-commit-amend() { git commit -v --amend && git-status-log-recent ; }
 git-commit-amend-noedit() { git commit -v --amend --no-edit && git-status-log-recent ; }
