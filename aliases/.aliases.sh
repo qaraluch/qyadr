@@ -154,3 +154,7 @@ alias vfa='find . -type f | fzf | ifne xargs nvim'                              
 alias vfq='ag --follow --hidden --ignore .git -g "" /mnt/g/qnb | fzf | ifne xargs nvim'
 alias vft='ag --follow --hidden --ignore .git -g "" /mnt/h/dev/tiljs | fzf | ifne xargs nvim'
 # alias vfg='nvim $(ag --follow --hidden --ignore .git -g "" $GOPATH/src/learn $GOPATH/src/db-github $GOPATH/src/proto | fzf)'
+
+
+# new
+alias package-scripts='print-npm-scripts'

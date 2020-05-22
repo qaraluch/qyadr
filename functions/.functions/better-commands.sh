@@ -57,3 +57,8 @@ ag-gopath() {
   local flags=(--follow --hidden --ignore .git --ignore node_modules)
   ag "${flags[@]}" $1 ${GOPATH}/src/proto/  ${GOPATH}/src/learn/  ${GOPATH}/src/db-github/
 }
+
+# node.js
+print-npm-scripts() {
+  jq '.scripts' ./package.json
+}
