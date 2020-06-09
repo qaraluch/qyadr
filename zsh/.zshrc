@@ -71,3 +71,6 @@ profileStop
 # Aliases
 [ -f ~/.aliases.sh ] && source ~/.aliases.sh
 
+# Deno
+export DENO_INSTALL="/home/qaraluch/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
