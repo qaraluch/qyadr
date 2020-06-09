@@ -58,7 +58,7 @@ call plug#end()
 " - for special, not common command
 " Used mental leader key: <Space>
 " - for common edit commands
-" Used mental leader key: ;
+" Used mental leader key: '
 " - for buffer and window navigation
 " change leader key example (for reference):
 " let mapleader=","
@@ -172,21 +172,21 @@ set pastetoggle=<leader>p
 "" Windows navigation
 " instead of <C-w>
 " split vertically
-nnoremap ;v :wincmd v<CR>
+nnoremap 'v :wincmd v<CR>
 " full size
-nnoremap ;o :wincmd o<CR>
+nnoremap 'o :wincmd o<CR>
 " top left
-nnoremap ;w :wincmd w<CR>
+nnoremap 'w :wincmd w<CR>
 " left
-nnoremap ;a :wincmd h<CR>
+nnoremap 'a :wincmd h<CR>
 " up
-nnoremap ;s :wincmd j<CR>
+nnoremap 's :wincmd j<CR>
 " down
-nnoremap ;d :wincmd k<CR>
+nnoremap 'd :wincmd k<CR>
 " left
-nnoremap ;f :wincmd l<CR>
+nnoremap 'f :wincmd l<CR>
 " swap
-nnoremap ;x :wincmd x<CR>
+nnoremap 'x :wincmd x<CR>
 
 "" [Plugin] Vim-markdown
 " https://github.com/plasticboy/vim-markdown
@@ -276,8 +276,8 @@ nnoremap <Space>bd :bd<CR>
 " use: :bufdo :bd<CR>
 
 " Buffer navigation commands
-nnoremap ;] :bnext<CR>
-nnoremap ;[ :bprevious<CR>
+nnoremap '] :bnext<CR>
+nnoremap '[ :bprevious<CR>
 "commands for reference
 "nnoremap <silent> [B :bfirst<CR>
 "nnoremap <silent> ]B :blast<CR>
