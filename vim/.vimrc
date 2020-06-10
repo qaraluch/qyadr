@@ -399,6 +399,23 @@ nmap <C-_> gcc
 command! -nargs=* -complete=shellcmd R
 			\ new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
 
+"" Auto comments mgmt
+" see :h formatoptions
+" default vim's value: formatoptions=jcroql (for js files)
+" some default vim plugins set above option by default
+function! AutoComment()
+  exec ':set formatoptions+=cro'
+  :set formatoptions?
+endfunction
+function! AutoCommentOff()
+  exec ':set formatoptions-=cro'
+  :set formatoptions?
+endfunction
+command! AutoComment call AutoComment()
+command! AutoCommentOff call AutoCommentOff()
+map <leader>cmt :set formatoptions-=cro<CR>
+map <leader>cmtb :set formatoptions+=cro<CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  ABBREVIATIONS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
