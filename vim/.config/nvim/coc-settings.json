@@ -5,7 +5,10 @@
   "suggest.autoTrigger": "none",
   // coc-snippets
   // https://github.com/neoclide/coc-snippets
-  "snippets.userSnippetsDirectory":"$HOME/.config/nvim/ultisnips",
+  "snippets.userSnippetsDirectory": "$HOME/.config/nvim/ultisnips",
+  "snippets.extends": {
+    "typescript": ["javascript"]
+  },
   // coc-prettier
   // https://github.com/neoclide/coc-prettier
   "coc.preferences.formatOnSaveFiletypes": ["markdown"],
@@ -20,6 +23,6 @@
   // coc
   "diagnostic.errorSign": "X",
   "diagnostic.warningSign": "!",
-  "diagnostic.infoSign":  "i",
+  "diagnostic.infoSign": "i",
   "diagnostic.hintSign": "i"
 }
