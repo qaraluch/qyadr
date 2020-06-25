@@ -24,6 +24,14 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 # Markdown
+snippet su "summary"
+summary: $0
+endsnippet
+
+snippet se "see"
+see: $0
+endsnippet
+
 snippet ins "Install code"
 Install:
 
@@ -41,12 +49,12 @@ snippet qd "qnnb date"
 endsnippet
 
 snippet qt "qnnb topic" b
-# `date +%Y-%m-%d_%H%M%S` | `!v expand("%:t:r")` | ${1:101}
+# `date +%Y-%m-%d_%H%M%S` | @`!v expand("%:t:r")` | ${1:101}
 $0
 endsnippet
 
 snippet qtw "qnnb topic - WIP" b
-# WIP | `!v expand("%:t:r")` | ${1:101}
+# WIP | @`!v expand("%:t:r")` | ${1:101}
 $0
 endsnippet
 
