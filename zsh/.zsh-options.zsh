@@ -70,3 +70,9 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 setopt hist_reduce_blanks     # tide up command from extra blank chars
 setopt inc_append_history     # add commands to HISTFILE in order of execution
+
+
+# Disabling flow control
+# ctrl+s ctrl+q
+#:help ctrl-s
+setopt noflowcontrol
