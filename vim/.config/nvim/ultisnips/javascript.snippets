@@ -36,12 +36,45 @@ snippet cld "console.log debug"
 console.log("$1$0 ---->", $1});
 endsnippet
 
-snippet ar "Arrow function" i
+snippet af "Arrow function" i
 ($1) => { $2 }
 endsnippet
 
-snippet fun
+snippet fun "Function"
 function ${1:name}(${2}) {
 	return ${3:results};
 }
+endsnippet
+
+snippet mode "module.exports"
+module.exports = $1;
+endsnippet
+
+snippet she "#!/usr/bin/env node" b
+#!/usr/bin/env node
+endsnippet
+
+snippet req "assign a CommonJS-style module to a var"
+const ${0:${1/(.+\/)*(\w+)(-|\b|$)(\..+$)?/\u$2/g}} = require("$1");
+endsnippet
+
+snippet if "if (condition) { ... }"
+if (${1:true}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet eif "esle if (condition) { ... }"
+else if (${1:true}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet rer "Return results statement"
+	const results = ${VISUAL}$0;
+	return results;
+endsnippet
+
+snippet re "Return statement"
+	return ${VISUAL}$0;
 endsnippet
