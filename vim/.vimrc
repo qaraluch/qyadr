@@ -579,6 +579,7 @@ command! Mv call MvFile()
 
 "" Set PWD for current opened file
 nnoremap <leader>cdf :cd %:p:h<CR>:pwd<CR>
+nnoremap <leader>cdd :cd..<CR>:pwd<CR>
 
 "" Check PWD for current opened file
 nnoremap <leader>cd :pwd<CR>
