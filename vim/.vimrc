@@ -553,6 +553,9 @@ nnoremap <leader>q :q!<CR>
 " use instead: jk + <Space>f
 " inoremap <Space>f <Esc>:w<CR>
 
+" save file as sudo
+command! -nargs=0 Sw w !sudo tee % > /dev/null
+
 "" Automatically deletes all trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 

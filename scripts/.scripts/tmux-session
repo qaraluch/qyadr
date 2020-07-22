@@ -22,6 +22,7 @@ printUsage() {
     - ytd-mgmt  - ytd managment
     - tiljs     - til for js
     - ramka     - project: ramka dev
+    - ramka2    - project: ramka dev v2
     - react     - react.js learning
     - notes     - all my notes systems
     - deno      - learn deno.js
@@ -67,6 +68,8 @@ main() {
 		createTmuxSession_ytd-mgmt
 	elif _isStringEqual "${presetName}" 'ramka' ; then
 		createTmuxSession_ramka
+	elif _isStringEqual "${presetName}" 'ramka2' ; then
+		createTmuxSession_ramka2
 	elif _isStringEqual "${presetName}" 'react' ; then
 		createTmuxSession_react
 	elif _isStringEqual "${presetName}" 'notes' ; then
@@ -169,6 +172,12 @@ checkVar_tiljsPath() {
 checkVar_ramkaPath() {
   if _isStringEmpty "${ramkaPath}"; then
     errorExitNoVarSourced 'ramkaPath'
+  fi
+}
+
+checkVar_ramkaPath2() {
+  if _isStringEmpty "${ramkaPath2}"; then
+    errorExitNoVarSourced 'ramkaPath2'
   fi
 }
 
@@ -292,6 +301,22 @@ createTmuxSession_ramka() {
     tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
     tmux-add --remotely "${presetName}" "tiljs" "${tiljsPath}"
     tmux send-keys -t "${presetName}":1 "cd ${ramkaPath}" C-m
+    doneScript
+  else
+    switchExistedSession "${presetName}"
+  fi
+}
+
+createTmuxSession_ramka2() {
+  aboutCreate
+  checkVar_ramkaPath2
+  checkVar_qnnbPath
+  checkVar_tiljsPath
+  if checkIfSessionNoExists "${presetName}"; then
+    tmux-create "${presetName}"
+    tmux-add --remotely "${presetName}" "${presetName}" "${ramkaPath2}"
+    tmux-add --remotely "${presetName}" "qnnb" "${qnnbPath}"
+    tmux send-keys -t "${presetName}":1 "cd ${ramkaPath2}" C-m
     doneScript
   else
     switchExistedSession "${presetName}"
