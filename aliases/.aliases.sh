@@ -125,6 +125,12 @@ alias jm='jump'                                         # jump mark - see: fzf-m
 alias mv='mv -iv'
 alias mvt='mv -ivt'                                     # move to the target
 
+# node.js an npm
+alias nt='npm test'
+alias nrd='npm run dev'
+alias nis='npm install --save'
+alias nisd='npm install --save-dev'
+
 alias l='ls-default'
 alias ll='ls-long'
 alias ln='ln -iv'
