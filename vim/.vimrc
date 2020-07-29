@@ -875,3 +875,12 @@ set shortmess+=c
 " diagnostics appear/become resolved. (?)
 set signcolumn=yes
 
+"" Open init.vim
+" source vimrc when leave
+augroup initVimAutoCmd
+  au!
+  au BufLeave $MYVIMRC :source $MYVIMRC
+augroup END
+
+" open vimrc to edit
+command! -nargs=0 RC e $MYVIMRC
