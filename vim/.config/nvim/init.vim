@@ -755,6 +755,9 @@ endfunction
 " Open Coc config file (:CC)
 call SetupCommandAbbrs('CC', 'CocConfig')
 
+" Restart Coc Server
+call SetupCommandAbbrs('CR', 'CocRestart')
+
 " Not red-highlight comments in the json files
 " for coc config file
 " https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file
@@ -884,3 +887,39 @@ augroup END
 
 " open vimrc to edit
 command! -nargs=0 RC e $MYVIMRC
+
+"" TDD Folds Expression definition
+" TODO: fix it"
+" add to qnnb
+" [folding - How to write a fold-expr? - Vi and Vim Stack Exchange](https://vi.stackexchange.com/questions/2176/how-to-write-a-fold-expr)
+" [Folding with Regular Expression | Vim Tips Wiki | Fandom](https://vim.fandom.com/wiki/Folding_with_Regular_Expression)
+" [Advanced Folding / Learn Vimscript the Hard Way](https://learnvimscriptthehardway.stevelosh.com/chapters/49.html)
+function TDDLevel()
+  let h = matchstr(getline(v:lnum), 'it(\+')
+    if empty(h)
+      return "="
+    else
+      return ">" . len(h)
+    endif
+endfunction
+function! TDDFoldText()
+    let s:info = '('.string(v:foldend-v:foldstart).' l)'
+    let s:line = getline(v:foldstart)
+    if strwidth(s:line) > 120 - len(s:info) - 3
+        return s:line[:119-len(s:info)-3+len(s:line)-strwidth(s:line)].'...'.s:info
+    else
+        return s:line.repeat(' ', 120 - strwidth(s:line) - len(s:info)).s:info
+    endif
+endfunction
+autocmd BufEnter *.test.js
+	\ setlocal foldexpr=TDDLevel() |
+	\ setlocal foldtext=TDDFoldText() |
+	\ setlocal foldmethod=expr
+
+"" Word boundries
+" by adding to the 'iskeyword' you exclude char from wordboundry
+" for js files exclude dot from wordboundry
+" check :set iskeyword?
+" check where set :verbose set iskeyword?
+"
+:autocmd BufReadPost *.js set iskeyword+=.
