@@ -24,6 +24,8 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 # Markdown
+# .config/nvim/ultisnips/markdown.snippets
+
 snippet su "summary"
 summary: $0
 endsnippet
@@ -46,6 +48,10 @@ endsnippet
 
 snippet qd "qnnb date"
 `date +%Y-%m-%d_%H%M%S`$0
+endsnippet
+
+snippet dd "date"
+`date +%Y-%m-%d`$0
 endsnippet
 
 snippet qt "qnnb topic" b
@@ -75,4 +81,8 @@ endsnippet
 
 snippet to "Todo"
 TODO: $0
+endsnippet
+
+snippet do "Todo - do"
+- [ ] $0
 endsnippet
