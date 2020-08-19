@@ -36,6 +36,7 @@ Plug 'tpope/vim-surround'																"https://github.com/tpope/vim-surround
 Plug 'itchyny/lightline.vim'                            "https://github.com/itchyny/lightline.vim
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         "https://github.com/neoclide/coc.nvim
 Plug 'airblade/vim-gitgutter'                           "https://github.com/airblade/vim-gitgutter
+Plug 'mattn/emmet-vim'                                  "https://github.com/mattn/emmet-vim
 " Plug 'arcticicestudio/nord-vim' 			                  "https://github.com/arcticicestudio/nord-vim
 " Plug 'mileszs/ack.vim'																  "https://github.com/mileszs/ack.vim
 call plug#end()
@@ -923,3 +924,11 @@ autocmd BufEnter *.test.js
 " check where set :verbose set iskeyword?
 "
 :autocmd BufReadPost *.js set iskeyword+=.
+
+"" vim-emmet
+" [Self Closing Tag Syntax and Quoteless attributes? · Issue #341 · mattn/emmet-vim](https://github.com/mattn/emmet-vim/issues/341)
+" Leader key is C-e + trailing char ,
+let g:user_emmet_leader_key='<C-e>'
+inoremap <C-e>c <esc>:call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>wwi
+nnoremap <C-e>c :call emmet#expandAbbr(0,"")<cr>h:call emmet#splitJoinTag()<cr>ww
+
