@@ -28,7 +28,7 @@ git-commit-message() { git commit -vm $* && git-status-log-recent ; }
 
 git-add-status() { git add $* && git-status-log-recent ; }
 git-add-commit() { git add $1 && git-commit-better $* ; }
-git-add-commit-message() { git add $1 && git-commit-message $* ; }
+git-add-commit-message() { git add $1 && git-commit-message $2 ; }
 git-add-commit-amend() { git add $1 && git-commit-amend ; }
 git-add-all-commit() { git add -A && git-commit-better $* ; }
 git-add-all-commit-message() { git add -A && git-commit-message $* ; }

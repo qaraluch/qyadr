@@ -87,6 +87,7 @@ alias gaac='git-add-all-commit'
 alias gaacm='git-add-all-commit-message'
 alias gaaca='git-add-all-commit-amend'
 alias gac='git-add-commit'
+# add to qdots
 alias gacm='git-add-commit-message'
 alias gacma='git-add-commit-amend'
 alias gacma='git-add-commit-amend'
