@@ -128,6 +128,7 @@ alias mvt='mv -ivt'                                     # move to the target
 
 # node.js an npm
 alias nt='npm test'
+alias ns='npm start'
 alias nrd='npm run dev'
 alias nis='npm install --save'
 alias nisd='npm install --save-dev'
