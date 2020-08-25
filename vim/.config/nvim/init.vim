@@ -774,7 +774,8 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-yank',
       \ 'coc-prettier',
-      \ 'coc-tsserver'
+      \ 'coc-tsserver',
+      \ 'coc-tailwindcss'
       \ ]
 " above extensions is installed by default.
 " to manage it, run:
@@ -922,8 +923,11 @@ autocmd BufEnter *.test.js
 " for js files exclude dot from wordboundry
 " check :set iskeyword?
 " check where set :verbose set iskeyword?
-"
-:autocmd BufReadPost *.js set iskeyword+=.
+" na razie musiałem to wyłączyć
+" bo
+" intelisense nie działa dla wieloczłonowych nazw
+" widzi to jako jeden wyraz
+" :autocmd BufReadPost *.js set iskeyword+=.
 
 "" vim-emmet
 " [Self Closing Tag Syntax and Quoteless attributes? · Issue #341 · mattn/emmet-vim](https://github.com/mattn/emmet-vim/issues/341)
