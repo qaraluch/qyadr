@@ -5,7 +5,7 @@
 <h1 align="center">:package: QYADR</h1>
 
 <p align="center">
- <b>Qaraluch's Yet Another Dotfiles Repo</b>
+ <b>(DEPRECATED) Qaraluch's Yet Another Dotfiles Repo</b>
 </p>
 
 <p align="center">
